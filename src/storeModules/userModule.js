@@ -11,7 +11,7 @@ const mutations = {
 }
 
 const actions = {
-    makeNewRoom: (roomName) => {
+    readAllUsers: () => {
         // Add the user UID to it
         return new Promise((resolve, reject) => {
             db.collection('Users').get().then(res => {
