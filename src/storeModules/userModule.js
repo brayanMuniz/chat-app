@@ -14,8 +14,8 @@ const actions = {
     readAllUsers: () => {
         // Add the user UID to it
         return new Promise((resolve, reject) => {
-            db.collection('Users').get().then(res => {
-                resolve(res)
+            db.collection('Users').get().then(querySnapshot => {
+                resolve(querySnapshot)
             }).catch(err => {
                 reject(err)
             })
@@ -23,6 +23,22 @@ const actions = {
     },
     deleteRoom: (roomID) => {
         // Make sure that user is an owner in that room
+    },
+    addTestUser: ({}, payload) => {
+
+        return new Promise((resolve, reject) => {
+            db.collection('Users').add({
+                userName: payload
+            }).then(res => {
+                resolve(res)
+            }).catch(err => {
+                reject(err)
+            })
+        })
+    },
+
+    makeNewUser: (userData) => {
+        // Use firebase auth API
     }
 }
 
