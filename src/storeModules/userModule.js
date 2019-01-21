@@ -12,7 +12,7 @@ const mutations = {
 
 const actions = {
     readAllUsers: () => {
-        // Add the user UID to it
+        // One Time read
         return new Promise((resolve, reject) => {
             db.collection('Users').get().then(querySnapshot => {
                 resolve(querySnapshot)
@@ -25,7 +25,6 @@ const actions = {
         // Make sure that user is an owner in that room
     },
     addTestUser: ({}, payload) => {
-
         return new Promise((resolve, reject) => {
             db.collection('Users').add({
                 userName: payload
