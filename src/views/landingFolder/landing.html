@@ -9,7 +9,9 @@
 
         <div class="col-md-6">
             <h2>RoomNames</h2>
-            <h3 class="mt-1" v-for='room in allRooms' :key='room.roomId'>{{room.roomData.roomName}}</h3>
+            <!-- When vising chat enter UID as prop -->
+            <!-- Todo: go pragmatically -->
+            <router-link v-for='room in allRooms' :key='room.roomId' :to="{ name: 'room', params: { roomName: room.roomData.roomName, roomUID: room.roomId }}">{{room.roomData.roomName}}</router-link>
         </div>
     </div>
     <div class="row">

@@ -1,8 +1,13 @@
 export default {
     name: 'room',
+    props: {
+        roomUID: String
+    },
     data() {
         return {}
     },
     methods: {},
-    created() {},
+    created() {
+        console.log(this.roomUID)
+    },
 }

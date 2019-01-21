@@ -15,8 +15,9 @@ export default new Router({
     },
     {
       path: '/rooms/:roomName',
-      name: room,
-      component: room
+      name: 'room',
+      component: room,
+      props: true
     },
     {
       path: '/user/:userName',
