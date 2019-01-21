@@ -9,8 +9,10 @@ export default {
             allUsers: [],
             allRooms: [],
             testUserName: null,
-            myUserUID: 'n5XZ51yjn9k2Eh4jb7iS',
-            testRoomName: null
+            newUser: {},
+            testRoomName: null,
+            email: null,
+            password: null
         }
     },
     created() {
@@ -19,15 +21,23 @@ export default {
         this.getRealTimeChatRooms();
     },
     methods: {
-        // user
         makeNewUser() {
-            this.$store.dispatch('addTestUser', this.testUserName).then(res => {
+            let newUserData = {
+                userName: this.testUserName,
+            }
+            let signUp = {
+                email: this.email,
+                password: this.password
+            }
+            this.newUser['signUp'] = signUp
+            this.newUser['newUserData'] = newUserData
+            console.log(this.newUser)
+            this.$store.dispatch('makeNewUser', this.newUser).then(res => {
                 console.log(res)
             }).catch(err => {
                 console.log(err)
             })
         },
-
         // rooms
         makeNewRoom() {
             let roomData = {
@@ -55,6 +65,7 @@ export default {
             })
         },
         getRealTimeChatRooms() {
+            // use.doc(roomUID) to get realtime updates there
             db.collection('chatRooms').onSnapshot(doc => {
                 this.allRooms = [];
                 doc.docs.forEach(kek => {
