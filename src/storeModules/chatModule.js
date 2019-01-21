@@ -1,6 +1,7 @@
 import firebase from '../firebaseConfig'
 let firebaseRef = firebase.firebase
 let db = firebase.db
+
 const state = {
 
 }
@@ -18,7 +19,8 @@ const actions = {
         return new Promise((resolve, reject) => {
             db.collection('chatRooms').add({
                 users: [myUID],
-                roomName: roomData.roomName
+                roomName: roomData.roomName,
+                dateCreated: roomData.dateCreated
             }).then(res => {
                 resolve(res)
             }).catch(err => {
@@ -26,10 +28,14 @@ const actions = {
             })
         })
     },
-    deleteRoom: (roomID) => {
+    deleteRoom: ({}, roomID) => {
         // Make sure that user is an owner in that room
     },
-    textToToom: (roomID, respondTo) => {}
+    textToToom: ({
+        dispatch
+    }, roomData) => {
+        // To(index of the array to respond to), From(userName), Message(String), dateSent(date) 
+    },
 }
 
 export default {

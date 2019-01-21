@@ -2,12 +2,10 @@ export default {
     name: 'navbar',
     data() {
         return {
-
+            userName: null
         }
     },
-    created() {
-        // this.getData()
-    },
+    created() {},
     mounted() {
 
     },
@@ -15,6 +13,8 @@ export default {
 
     },
     computed: {
-
+        getUserName() {
+            return this.$store.getters.getUserData.userName
+        }
     },
 }

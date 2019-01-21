@@ -6,7 +6,9 @@ const state = {
     userData: null
 }
 const getters = {
-
+    getUserData: (state) => {
+        return state.userData
+    },
 }
 const mutations = {
     setUserAuth(state) {
