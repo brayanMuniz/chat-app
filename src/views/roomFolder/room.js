@@ -1,10 +1,8 @@
 export default {
-    name: 'user',
+    name: 'room',
     data() {
         return {}
     },
     methods: {},
-    created() {
-
-    },
+    created() {},
 }
