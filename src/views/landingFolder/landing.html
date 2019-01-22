@@ -9,9 +9,12 @@
 
         <div class="col-md-6">
             <h2>RoomNames</h2>
+            <div class="list-group">
+                <router-link class="list-group-item list-group-item-action" v-for='room in allRooms' :key='room.roomId'
+                    :to="{ name: 'room', params: { roomName: room.roomData.roomName, roomUID: room.roomId }}">{{room.roomData.roomName}}</router-link>
+            </div>
             <!-- When vising chat enter UID as prop -->
             <!-- Todo: go pragmatically -->
-            <router-link v-for='room in allRooms' :key='room.roomId' :to="{ name: 'room', params: { roomName: room.roomData.roomName, roomUID: room.roomId }}">{{room.roomData.roomName}}</router-link>
         </div>
     </div>
     <div class="row">

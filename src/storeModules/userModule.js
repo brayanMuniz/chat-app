@@ -23,9 +23,9 @@ const mutations = {
     }
 }
 
+// Do not check for valid data because that should be handled with vue-validate and generally in the clients
 const actions = {
     // User Firebase Auth API 
-
     // After the user signs up send them an email verification and add them to the databases
     createUserWithEmail: ({}, payload) => {
         console.log('createUserWithEmail', payload)
@@ -47,13 +47,12 @@ const actions = {
         })
     },
     createUserInDB: ({
-        state
+        commit
     }, payload) => {
-        // Do not check for valid data because that should be handled with vue-validate and generally in the clients
-        // Set the uid as the users uid
+        // Todo: add Datecreated 
         return new Promise((resolve, reject) => {
             let userUID = firebaseRef.auth().currentUser.uid
-            state.userData = payload
+            commit('setUserData', payload)
             // Todo: configure rules in firebase so only the user with his UID can change his data
             db.collection('Users').doc(userUID).set({
                 userName: payload.userName

@@ -13,12 +13,20 @@ const mutations = {
 }
 
 const actions = {
-    makeNewRoom: ({}, roomData) => {
-        // Todo: Add the user UID to it for the initial room creation 
+    makeNewRoom: ({
+        getters
+    }, roomData) => {
+        // ! Does not work until todo done()
+        // Todo: set roomData correctlysa
+        // Tip: Do not try to access state directly instead use getters to get it and commit to mutate it
         let myUID = firebaseRef.auth().currentUser.uid
+        let userName = getters.getUserData.userName
         return new Promise((resolve, reject) => {
             db.collection('chatRooms').add({
-                users: [myUID],
+                users: [{
+                    userName: userName,
+                    userUID: myUID
+                }],
                 roomName: roomData.roomName,
                 dateCreated: roomData.dateCreated
             }).then(res => {

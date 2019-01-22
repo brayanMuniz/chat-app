@@ -1,6 +1,7 @@
 /* eslint-disable */
 // Todo: when actually writing to firebase use vuelidate for client side
 import firebase from '../../firebaseConfig'
+let firebaseRef = firebase.firebase
 let db = firebase.db
 export default {
     name: 'landing',
@@ -16,12 +17,14 @@ export default {
         }
     },
     created() {
+        console.log(firebaseRef.auth().currentUser)
         // Do not add another listener one is enough
         this.getRealTimeUserUpdates();
         this.getRealTimeChatRooms();
     },
     methods: {
         makeNewUser() {
+            // Todo: add Datecreated 
             let newUserData = {
                 userName: this.testUserName,
             }
@@ -41,7 +44,8 @@ export default {
         // rooms
         makeNewRoom() {
             let roomData = {
-                roomName: this.testRoomName
+                roomName: this.testRoomName,
+                dateCreated: new Date()
             }
             this.$store.dispatch('makeNewRoom', roomData).then(res => {
                 console.log(res)
