@@ -86,9 +86,13 @@ const actions = {
         })
     },
     updateUserRooms: ({
-        commit
-    }) => {
-        
+            commit,
+            dispatch
+        },
+        roomData) => {
+        let userUID = firebaseRef.auth().currentUser.uid
+        // roomData should have the roomName and room Id
+        // db.collection('Users').doc(userUID).update()
     },
     makeNewUser: ({
         dispatch,

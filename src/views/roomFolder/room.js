@@ -14,9 +14,11 @@ export default {
     },
     methods: {
         getChatUpdate() {
-            db.collection('chatRooms').doc(this.roomUID).collection('messages').onSnapshot(docData => {
+            db.collection('chatRooms').doc(this.roomUID).collection('messages').orderBy('dateSent').onSnapshot(docData => {
+                console.log(docData)
                 this.chatRoomMessages = []
                 docData.docs.forEach(message => {
+                    console.log(message)
                     if (message.exists) {
                         let msg = {
                             messageId: message.id,
@@ -41,22 +43,30 @@ export default {
                 roomId: this.roomUID,
             }
             this.$store.dispatch('sendMessageToRoom', payload).then(res => {
-                console.log('​sendMessages -> res', res)
+                console.log('​sendMessages -> res', res);
+
             }).catch(err => {
-                console.log('​sendMessages -> err', err)
-            })
+                console.log('​sendMessages -> err', err);
+            });
         },
         convertTime(time) {
             return moment.unix(time).format("MMMM Do, h:mm:ss a")
+        },
+        organizeByDate() {
+
         }
     },
     created() {
         if (this.roomUID == null) {
-            this.$router.push('/')
+            this.$router.push('/');
         } else {
-            console.log(this.roomUID)
-            this.getChatUpdate()
+            this.$store.commit('setCurrentRoom', this.roomUID);
+            console.log(this.roomUID);
+            this.getChatUpdate();
         }
 
+        // else if (this.$store.getters.currentRoom) {
+        //     // get user data
+        // }
     },
 }
