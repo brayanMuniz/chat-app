@@ -9,6 +9,13 @@ const getters = {
     getUserData: (state) => {
         return state.userData
     },
+    isUserVerified: (state) => {
+        if (state.userAuth) {
+            return false;
+        } else {
+            return state.userAuth
+        }
+    }
 }
 const mutations = {
     setUserAuth(state) {
@@ -65,10 +72,13 @@ const actions = {
         })
 
     },
-    getUserData: ({}) => {
+    getUserData: ({
+        commit
+    }) => {
         let userUID = firebaseRef.auth().currentUser.uid
         return new Promise((resolve, reject) => {
             db.collection('Users').doc(userUID).get().then(querySnapshot => {
+                commit('setUserData', querySnapshot.data())
                 resolve(querySnapshot.data())
             }).catch(err => {
                 reject(err)
@@ -107,16 +117,51 @@ const actions = {
             })
         })
     },
-    logInUser: ({}, payload) => {
+    logInUserAuth: ({
+        commit,
+        dispatch
+    }, payload) => {
         return new Promise((resolve, reject) => {
             firebaseRef.auth().signInWithEmailAndPassword(payload.email, payload.password).then(res => {
-                resolve(res)
+                commit('setUserAuth')
+                dispatch('getUserData').then(res => {
+                    console.log(res)
+                    resolve(res)
+                }).catch(err => {
+                    console.log(err)
+                })
             }).catch(error => {
                 reject(error)
             });
         })
     },
-    deleteUser: ({}) => {
+    signOutUserAuth: ({}) => {
+        return new Promise((resolve, reject) => {
+            firebaseRef.auth().signOut().then((res) => {
+                console.log('Signed Out');
+                resolve(res);
+            }, err => {
+                console.error('Sign Out Error', error);
+                reject(err);
+            });
+        })
+    },
+    signOutUserTotal: ({
+        commit,
+        dispatch
+    }) => {
+        return new Promise((resolve, reject) => {
+            dispatch('signOutUserAuth').then(res => {
+                commit('clearUser');
+                resolve(res);
+            }).catch(err => {
+                reject(err);
+            })
+        })
+    },
+    deleteUser: ({
+        commit
+    }) => {
         return new Promise((resolve, reject) => {
             var user = firebaseRef.auth().currentUser;
             user.delete().then((res) => {

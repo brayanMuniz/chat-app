@@ -40,10 +40,11 @@ const actions = {
         // Make sure that user is an owner in that room
     },
     textToToom: ({
-        dispatch
+        dispatch,
+        getters
     }, roomData) => {
         // To(index of the array to respond to), From(userName), Message(String), dateSent(date) 
-    },
+    }
 }
 
 export default {

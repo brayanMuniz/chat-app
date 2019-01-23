@@ -41,6 +41,17 @@ export default {
                 console.log(err)
             })
         },
+        signIn() {
+            let payload = {
+                email: this.email,
+                password: this.password
+            }
+            this.$store.dispatch('logInUserAuth', payload).then(res => {
+                console.log('​signIn -> res', res)
+            }).catch(err => {
+                console.log('​signIn -> err', err)
+            })
+        },
         // rooms
         makeNewRoom() {
             let roomData = {
