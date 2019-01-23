@@ -1,4 +1,5 @@
 import firebase from '../../firebaseConfig'
+import moment from 'moment'
 let db = firebase.db
 export default {
     name: 'room',
@@ -14,6 +15,7 @@ export default {
     methods: {
         getChatUpdate() {
             db.collection('chatRooms').doc(this.roomUID).collection('messages').onSnapshot(docData => {
+                this.chatRoomMessages = []
                 docData.docs.forEach(message => {
                     if (message.exists) {
                         let msg = {
@@ -22,8 +24,6 @@ export default {
                         }
                         this.chatRoomMessages.push(msg)
                     }
-                    console.log(message)
-                    console.log(message.data())
                 })
             })
         },
@@ -45,6 +45,9 @@ export default {
             }).catch(err => {
                 console.log('​sendMessages -> err', err)
             })
+        },
+        convertTime(time) {
+            return moment.unix(time).format("MMMM Do, h:mm:ss a")
         }
     },
     created() {

@@ -4,7 +4,16 @@
         <div class="row">
             <!-- Messages -->
             <div class="col-md-8 mt-5">
-                {{chatRoomMessages}}
+                <div class="card w-100 my-1" v-for='message in chatRoomMessages' :key='message.messageId'>
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted" v-if='message.messageData.from'>{{message.messageData.from.userName}}</h6>
+                        <p class="card-text">{{message.messageData.newMessage}}</p>
+                        <div class="card-footer text-muted">
+                            {{convertTime(message.messageData.dateSent.seconds)}}
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             <aside class="col-md-4 mt-5">
@@ -15,6 +24,7 @@
                     </div>
                     <button type="submit" class="btn btn-primary my-4 ml-auto">Write To Room</button>
                 </form>
+
             </aside>
 
         </div>
