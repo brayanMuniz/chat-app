@@ -1,4 +1,5 @@
 import firebase from '../firebaseConfig'
+import room from '../views/roomFolder/room';
 let firebaseRef = firebase.firebase
 let db = firebase.db
 
@@ -13,6 +14,7 @@ const mutations = {
 }
 
 const actions = {
+    // Update the user rooms in his own data
     makeNewRoom: ({
         getters
     }, roomData) => {
@@ -39,11 +41,20 @@ const actions = {
     deleteRoom: ({}, roomID) => {
         // Make sure that user is an owner in that room
     },
-    textToToom: ({
+    sendMessageToRoom: ({
         dispatch,
         getters
-    }, roomData) => {
-        // To(index of the array to respond to), From(userName), Message(String), dateSent(date) 
+    }, payload) => {
+        let roomData = payload.msgData
+        console.log('​roomData', roomData)
+        db.collection('chatRooms').doc(payload.roomId).collection('messages').add(
+                roomData
+            ).then(function () {
+                console.log("Document successfully written!");
+            })
+            .catch(function (error) {
+                console.error("Error writing document: ", error);
+            });
     }
 }
 

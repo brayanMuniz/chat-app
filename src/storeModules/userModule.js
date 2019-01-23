@@ -85,6 +85,11 @@ const actions = {
             })
         })
     },
+    updateUserRooms: ({
+        commit
+    }) => {
+        
+    },
     makeNewUser: ({
         dispatch,
         commit

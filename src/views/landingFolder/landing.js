@@ -27,6 +27,7 @@ export default {
             // Todo: add Datecreated 
             let newUserData = {
                 userName: this.testUserName,
+                dateCreated: new Date()
             }
             let signUp = {
                 email: this.email,
