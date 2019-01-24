@@ -1,3 +1,43 @@
-<div class="container">
+<div class="container-fluid mt-5 pt-2">
+    <div class="row">
+        <main class="col-md-9">
+            <h1>Public Rooms</h1>
+            <div class="card-columns mt-2">
+                <!-- :to="{ name: 'room', params: { roomName: room.roomData.roomName, roomUID: room.roomId }}" -->
 
+                <div class="card" v-for='room in allRooms' :key='room.roomId'>
+                    <div class="card-body">
+                        <h5 class="card-title">{{room.roomData.roomName}} <span class="badge badge-light">{{room.roomData.msgLength}}</span></h5>
+                        <p class="card-text">{{room.roomData.roomDescription}}</p>
+                        <router-link :to="{ name: 'room', params: { roomName: room.roomData.roomName, roomUID: room.roomId }}">To
+                            Room</router-link>
+                    </div>
+                    <div class="card-footer text-muted">
+                        Made {{convertTime(room.roomData.dateCreated.seconds)}}
+                    </div>
+                </div>
+            </div>
+        </main>
+        <aside class="col-md-3 mb-2">
+            <div class="sticky-top">
+                <h4>Make New Room</h4>
+                <form @submit.prevent="makeNewRoom">
+
+                    <div class="form-row">
+                        <label>Room Name</label>
+                        <input type="text" class="form-control" v-model='newRoomName' placeholder="testRoomName">
+                    </div>
+                    <div class="form-row">
+                        <label>Room Description</label>
+                        <textarea rows="3" type="text" class="form-control" v-model='newRoomDesc' placeholder="Room Description"></textarea>
+                        <!-- <input type="text" class="form-control" v-model='newRoomDesc' placeholder="Room Description"> -->
+                    </div>
+
+                    <button type="submit" class="btn btn-danger ml-auto my-2">New Room</button>
+
+                </form>
+            </div>
+
+        </aside>
+    </div>
 </div>

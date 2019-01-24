@@ -17,7 +17,7 @@ export default {
         }
     },
     created() {
-        console.log(firebaseRef.auth().currentUser)
+        console.log(firebaseRef.auth().currentUser);
         // Do not add another listener one is enough
         this.getRealTimeUserUpdates();
         this.getRealTimeChatRooms();
@@ -59,11 +59,16 @@ export default {
                 roomName: this.testRoomName,
                 dateCreated: new Date()
             }
-            this.$store.dispatch('makeNewRoom', roomData).then(res => {
-                console.log(res)
-            }).catch(err => {
-                console.log(err)
-            })
+            if (this.testRoomName == null || this.testRoomName.length > 50) {
+                alert('stop it')
+            } else {
+                this.$store.dispatch('makeNewRoom', roomData).then(res => {
+                    console.log(res)
+                }).catch(err => {
+                    console.log(err)
+                })
+            }
+
         },
         // Live Updates
         getRealTimeUserUpdates() {
