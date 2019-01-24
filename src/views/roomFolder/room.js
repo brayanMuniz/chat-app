@@ -43,7 +43,7 @@ export default {
                 roomId: this.roomUID,
             }
 
-            if (this.newMessage == null || this.newMessage.length > 250) {
+            if (this.newMessage == null || this.newMessage.length > 750) {
                 alert('stop it');
             } else {
                 this.newMessage = null
