@@ -42,9 +42,9 @@ export default {
                 },
                 roomId: this.roomUID,
             }
+            this.newMessage = null
             this.$store.dispatch('sendMessageToRoom', payload).then(res => {
                 console.log('​sendMessages -> res', res);
-
             }).catch(err => {
                 console.log('​sendMessages -> err', err);
             });

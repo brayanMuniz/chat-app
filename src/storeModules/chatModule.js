@@ -35,7 +35,7 @@ const actions = {
                 }],
                 roomName: roomData.roomName,
                 dateCreated: roomData.dateCreated,
-                messsagesLength: 0
+                msgLength: 0
             }).then(res => {
                 resolve(res)
             }).catch(err => {
@@ -43,6 +43,7 @@ const actions = {
             })
         });
     },
+    // Way later
     inviteUserToChatRoom: ({}, payload) => {
 
     },
@@ -54,21 +55,42 @@ const actions = {
         getters
     }, payload) => {
         let roomData = payload.msgData
-        console.log('​roomData', roomData)
-        // stringInterpolitatoin => 'chatRooms/
-        db.collection('chatRooms').doc(payload.roomId).collection('messages').add(
-                roomData
-            ).then(function () {
-                console.log("Document successfully written!");
+        return new Promise((resolve, reject) => {
+            dispatch('changeRoomMSGLength', payload.roomId).then(res => {
+                db.collection('chatRooms').doc(payload.roomId).collection('messages').add(
+                        roomData
+                    ).then(function () {
+                        console.log("Document successfully written!");
+                        resolve()
+                    })
+                    .catch(function (error) {
+                        console.error("Error writing document: ", error);
+                        reject()
+                    });
             })
-            .catch(function (error) {
-                console.error("Error writing document: ", error);
-            });
+
+        })
+
     },
-    incrementRoomMSGLength: ({
-    }, roomId) => {
-        db.collection('chatRooms').doc(roomId).update({
-            "messagesLength": 1
+    // abstract this with a an additional parameter saying if you want to add or subtract it and by how much
+    changeRoomMSGLength: ({}, roomId) => {
+        let roomRef = db.collection('chatRooms').doc(roomId)
+        return new Promise((resolve, reject) => {
+            db.runTransaction(transaction => {
+                return transaction.get(roomRef).then(res => {
+                    console.log(res)
+                    if (res.exists) {
+                        let newRoomAmount = res.data().msgLength + 1;
+                        transaction.update(roomRef, {
+                            msgLength: newRoomAmount
+                        })
+                    }
+                }).catch(err => {
+                    reject(err)
+                })
+            }).then(res => {
+                resolve(res)
+            })
         })
     }
 }

@@ -84,7 +84,9 @@ export default {
             // use.doc(roomUID) to get realtime updates there
             db.collection('chatRooms').onSnapshot(doc => {
                 this.allRooms = [];
+
                 doc.docs.forEach(kek => {
+                    console.log(kek.data())
                     if (kek.exists) {
                         let room = {
                             roomId: kek.id,

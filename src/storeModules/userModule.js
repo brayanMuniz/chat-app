@@ -19,7 +19,7 @@ const getters = {
 }
 const mutations = {
     setUserAuth(state) {
-        state.userAuth = firebaseRef.auth().currentUser
+        state.userAuth = firebaseRef.auth().currentUser;
     },
     setUserData(state, newData) {
         state.userData = newData

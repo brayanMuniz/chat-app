@@ -1,7 +1,8 @@
 <div class="mt-5">
     <!-- Todo: when the user comes here add a currentRoomID state to store so the user does not have to be go bek over here -->
-    <main role="main" class="container">
+    <main role="main" class="container-fluid">
         <div class="row">
+
             <!-- Messages -->
             <div class="col-md-8 mt-5">
                 <div class="card w-100 my-1" v-for='message in chatRoomMessages' :key='message.messageId'>
@@ -15,16 +16,19 @@
                 </div>
 
             </div>
-
-            <aside class="col-md-4 mt-5">
-                <form @submit.prevent='sendMessage'>
-                    <div class="form-row">
-                        <label>Message</label>
-                        <textarea class="form-control" v-model='newMessage' placeholder="New Message" rows="3"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary my-4 ml-auto">Write To Room</button>
-                </form>
-                <!-- Todo: make a list group and have a route tag that sends them to the users profile -->
+            
+            <!-- Send Messages -->
+            <aside class="col-md-4">
+                <div class="sticky-top">
+                    <form @submit.prevent='sendMessage' @keyup.enter="sendMessage">
+                        <div class="form-row pt-2">
+                            <label class="mt-5">Message</label>
+                            <textarea class="form-control" v-model='newMessage' placeholder="New Message" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary my-3 ml-auto">Write To Room</button>
+                    </form>
+                    <!-- Todo: make a list group and have a route tag that sends them to the users profile -->
+                </div>
             </aside>
 
         </div>
