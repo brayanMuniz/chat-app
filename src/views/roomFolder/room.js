@@ -43,8 +43,8 @@ export default {
                 roomId: this.roomUID,
             }
 
-            if (this.newMessage == null || this.newMessage.length > 50) {
-                alert('stop it')
+            if (this.newMessage == null || this.newMessage.length > 250) {
+                alert('stop it');
             } else {
                 this.newMessage = null
                 this.$store.dispatch('sendMessageToRoom', payload).then(res => {
