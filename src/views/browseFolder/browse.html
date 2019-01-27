@@ -33,11 +33,11 @@
                         <!-- <input type="text" class="form-control" v-model='newRoomDesc' placeholder="Room Description"> -->
                     </div>
                     <div class="form-row mt-2">
-                        <input type="text" class="form-control" v-model='roomPictureName' placeholder="Room Picture Name">
+                        <input type="text" class="form-control" v-model.trim='roomPictureName' placeholder="Room Picture Name">
                     </div>
                     <div class="custom-file mx-auto my-2" v-if="!roomPicture">
                         <input type="file" class="custom-file-input form-control" id="customFile" @change="onFileChange">
-                        <label class="custom-file-label" for="customFile">Choose file</label>
+                        <label class="custom-file-label">Choose file</label>
                     </div>
                     <div v-else class="mt-2">
                         <img class="img-fluid" :src="roomPicture" />

@@ -36,7 +36,8 @@ const actions = {
                 }],
                 roomName: roomData.roomName,
                 dateCreated: roomData.dateCreated,
-                msgLength: 0
+                msgLength: 0,
+                roomPicture: roomData.roomPicture
             }).then(res => {
                 resolve(res)
             }).catch(err => {

@@ -12,9 +12,10 @@ const mutations = {
 const actions = {
     getPicture({}, filePath) {
         console.log(filePath)
+        // ! SPACES MATTER
+        let testPath = '/chatRooms/2ZGpLzJ6xPnlJ8vpMd9d/Hello '
         return new Promise((resolve, reject) => {
             storage.ref(filePath).getDownloadURL().then(url => {
-                console.log(url)
                 resolve(url)
             }).catch(err => {
                 console.log('TCL: getStorage -> err', err)
@@ -24,7 +25,8 @@ const actions = {
     },
     uploadPicture({}, fileData) {
         return new Promise((resolve, reject) => {
-            storage.ref().child(fileData.path).put(fileData.file).then(res => {
+            // To have a progress bar set storage.ref().put into a variable and get its snapshot
+            storage.ref(fileData.path).put(fileData.file).then(res => {
                 console.log('TCL: uploadPicture -> res', res)
                 resolve(res)
             }).catch(err => {
