@@ -165,6 +165,10 @@
     position: relative;
 }
 
+.active {
+    background-color: #343a40;
+}
+
 .msg_cotainer_send {
     margin-top: auto;
     margin-bottom: auto;
