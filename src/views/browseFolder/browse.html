@@ -1,11 +1,10 @@
 <div class="container-fluid mt-5 pt-2">
     <div class="row">
-        <main class="col-md-9">
+        <main class="col-md-8">
             <h1>Public Rooms</h1>
             <div class="card-columns mt-2">
-                <!-- :to="{ name: 'room', params: { roomName: room.roomData.roomName, roomUID: room.roomId }}" -->
-
                 <div class="card" v-for='room in allRooms' :key='room.roomId'>
+                    <img :src="room.urlPicture" v-if='room.urlPicture' class="card-img-top" alt="">
                     <div class="card-body">
                         <h5 class="card-title">{{room.roomData.roomName}} <span class="badge badge-light">{{room.roomData.msgLength}}</span></h5>
                         <p class="card-text">{{room.roomData.roomDescription}}</p>
@@ -18,6 +17,7 @@
                 </div>
             </div>
         </main>
+
         <aside class="col-md-3 mb-2">
             <div class="sticky-top">
                 <h4>Make New Room</h4>
@@ -25,12 +25,23 @@
 
                     <div class="form-row">
                         <label>Room Name</label>
-                        <input type="text" class="form-control" v-model='newRoomName' placeholder="testRoomName">
+                        <input type="text" class="form-control" v-model='newRoomName' placeholder="New Room Name">
                     </div>
                     <div class="form-row">
                         <label>Room Description</label>
                         <textarea rows="3" type="text" class="form-control" v-model='newRoomDesc' placeholder="Room Description"></textarea>
                         <!-- <input type="text" class="form-control" v-model='newRoomDesc' placeholder="Room Description"> -->
+                    </div>
+                    <div class="form-row mt-2">
+                        <input type="text" class="form-control" v-model='roomPictureName' placeholder="Room Picture Name">
+                    </div>
+                    <div class="custom-file mx-auto my-2" v-if="!roomPicture">
+                        <input type="file" class="custom-file-input form-control" id="customFile" @change="onFileChange">
+                        <label class="custom-file-label" for="customFile">Choose file</label>
+                    </div>
+                    <div v-else class="mt-2">
+                        <img class="img-fluid" :src="roomPicture" />
+                        <button class="btn-sm btn p-1 btn-danger mt-3 ml-auto" @click="removeImage">Remove image</button>
                     </div>
 
                     <button type="submit" class="btn btn-danger ml-auto my-2">New Room</button>

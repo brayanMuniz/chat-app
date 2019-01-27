@@ -38,12 +38,7 @@ const actions = {
                 dateCreated: roomData.dateCreated,
                 msgLength: 0
             }).then(res => {
-                dispatch('addUsersRooms', roomData).then(res => {
-                    
-                    resolve(res)
-                }).catch(err => {
-                    reject(err)
-                })
+                resolve(res)
             }).catch(err => {
                 reject(err)
             })
