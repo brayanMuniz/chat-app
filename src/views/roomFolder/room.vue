@@ -1,6 +1,6 @@
 <template src="./room.html"></template>
 <script src="./room.js">
 </script>
-<style>
+<style scoped>
     @import './room.css';
 </style>
