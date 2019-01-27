@@ -21,7 +21,8 @@ const mutations = {
 const actions = {
     // Update the user rooms in his own data
     makeNewRoom: ({
-        getters
+        getters,
+        dispatch
     }, roomData) => {
         // Todo: set roomData correctlysa
         // Tip: Do not try to access state directly instead use getters to get it and commit to mutate it
@@ -37,7 +38,12 @@ const actions = {
                 dateCreated: roomData.dateCreated,
                 msgLength: 0
             }).then(res => {
-                resolve(res)
+                dispatch('addUsersRooms', roomData).then(res => {
+                    
+                    resolve(res)
+                }).catch(err => {
+                    reject(err)
+                })
             }).catch(err => {
                 reject(err)
             })
@@ -52,29 +58,29 @@ const actions = {
     },
     sendMessageToRoom: ({
         dispatch,
-        getters
+        getters,
+        commit
     }, payload) => {
         let roomData = payload.msgData
         return new Promise((resolve, reject) => {
             dispatch('changeRoomMSGLength', payload.roomId).then(res => {
                 db.collection('chatRooms').doc(payload.roomId).collection('messages').add(
                         roomData
-                    ).then(function () {
+                    ).then(res => {
                         console.log("Document successfully written!");
-                        resolve()
+                        resolve(res);
                     })
-                    .catch(function (error) {
+                    .catch(error => {
                         console.error("Error writing document: ", error);
-                        reject()
+                        reject(error);
                     });
             })
 
         })
-
     },
     // abstract this with a an additional parameter saying if you want to add or subtract it and by how much
     changeRoomMSGLength: ({}, roomId) => {
-        let roomRef = db.collection('chatRooms').doc(roomId)
+        let roomRef = db.collection('chatRooms').doc(roomId);
         return new Promise((resolve, reject) => {
             db.runTransaction(transaction => {
                 return transaction.get(roomRef).then(res => {

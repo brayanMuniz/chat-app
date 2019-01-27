@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 Vue.use(Vuex)
-import firebase from './firebaseConfig'
 import chatModule from "./storeModules/chatModule";
 import userModule from './storeModules/userModule'
 

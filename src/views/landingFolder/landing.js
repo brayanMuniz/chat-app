@@ -3,6 +3,7 @@
 import firebase from '../../firebaseConfig'
 let firebaseRef = firebase.firebase
 let db = firebase.db
+let storage = firebase.firebase.storage();
 export default {
     name: 'landing',
     data() {
@@ -13,7 +14,8 @@ export default {
             newUser: {},
             testRoomName: null,
             email: null,
-            password: null
+            password: null,
+            testImg: null
         }
     },
     created() {
@@ -21,6 +23,7 @@ export default {
         // Do not add another listener one is enough
         this.getRealTimeUserUpdates();
         this.getRealTimeChatRooms();
+        this.getStorage()
     },
     methods: {
         makeNewUser() {
@@ -102,6 +105,17 @@ export default {
                 })
             })
         },
+        getStorage() {
+            // storage.ref('VueJs2.png').getDownloadURL().then(url => {
+            //     console.log(url)
+            //     this.testImg = url
+            // }).catch(err => {
+            //     console.log('TCL: getStorage -> err', err)
+            // })
+        },
+        uploadFile() {
+
+        }
     },
     computed: {}
 }

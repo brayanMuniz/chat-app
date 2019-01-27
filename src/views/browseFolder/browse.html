@@ -9,7 +9,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{{room.roomData.roomName}} <span class="badge badge-light">{{room.roomData.msgLength}}</span></h5>
                         <p class="card-text">{{room.roomData.roomDescription}}</p>
-                        <router-link :to="{ name: 'room', params: { roomName: room.roomData.roomName, roomUID: room.roomId }}">To
+                        <router-link :to="{ name: 'room', params: { roomName: room.roomData.roomName, roomData: room }}">To
                             Room</router-link>
                     </div>
                     <div class="card-footer text-muted">

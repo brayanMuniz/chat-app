@@ -9,12 +9,9 @@ let config = {
 }
 firebase.initializeApp(config);
 let db = firebase.firestore();
-// Disable deprecated features
-db.settings({
-    timestampsInSnapshots: true
-});
-
+let storage = firebase.storage();
 export default {
     firebase,
-    db
+    db,
+    storage
 }

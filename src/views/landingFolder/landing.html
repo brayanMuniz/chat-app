@@ -1,27 +1,9 @@
 <div class="container-fluid mt-5 mb-5">
-    <!-- Add key later -->
-    <!-- Reading all the userss -->
-    <div class="row mb-3">
-        <!-- <div class="col-md-6">
-            <h2>Users</h2>
-            <span class="badge badge-pill badge-light" v-for='user in allUsers' :key='user.userId'>{{user.userData.userName}}</span>
-        </div> -->
+    <img :src="testImg" alt="" v-if='testImg' class="img-fluid">
 
-        <div class="col-md-6">
-            <h2>Rooms</h2>
-            <div class="list-group">
-                <router-link class="list-group-item list-group-item-action" v-for='room in allRooms' :key='room.roomId'
-                    :to="{ name: 'room', params: { roomName: room.roomData.roomName, roomUID: room.roomId }}">{{room.roomData.roomName}}
-                    <span class="badge badge-primary badge-pill" v-if='room.roomData.msgLength'>{{room.roomData.msgLength}}</span>
-                </router-link>
-            </div>
-            <!-- When vising chat enter UID as prop -->
-            <!-- Todo: go pragmatically -->
-        </div>
-    </div>
     <!-- Users -->
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 mt-5">
             <h5>Sign Up</h5>
             <form @submit.prevent="makeNewUser">
                 <div class="form-row">
@@ -40,7 +22,7 @@
 
             </form>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 mt-5">
             <h5>Sign In</h5>
             <form @submit.prevent="signIn">
                 <div class="form-row">
@@ -57,15 +39,5 @@
         </div>
     </div>
 
-    <form @submit.prevent="makeNewRoom">
-
-        <div class="form-row">
-            <label>chatRoomName</label>
-            <input type="text" class="form-control" v-model='testRoomName' placeholder="testRoomName">
-        </div>
-
-        <button type="submit" class="btn btn-danger ml-auto">New Room</button>
-
-    </form>
 
 </div>

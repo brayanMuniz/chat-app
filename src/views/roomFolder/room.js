@@ -4,21 +4,20 @@ let db = firebase.db
 export default {
     name: 'room',
     props: {
-        roomUID: String
+        roomData: Object
     },
     data() {
         return {
             chatRoomMessages: [],
-            newMessage: null
+            chatRoomData: null,
+            newMessage: null,
         }
     },
     methods: {
         getChatUpdate() {
-            db.collection('chatRooms').doc(this.roomUID).collection('messages').orderBy('dateSent').onSnapshot(docData => {
-                console.log(docData)
+            db.collection('chatRooms').doc(this.roomData.roomId).collection('messages').orderBy('dateSent').onSnapshot(docData => {
                 this.chatRoomMessages = []
                 docData.docs.forEach(message => {
-                    console.log(message)
                     if (message.exists) {
                         let msg = {
                             messageId: message.id,
@@ -27,7 +26,9 @@ export default {
                         this.chatRoomMessages.push(msg)
                     }
                 })
+                this.scrollChatToBottom()
             })
+
         },
         sendMessage() {
             // Todo: figure out a way to order the documnets
@@ -40,39 +41,35 @@ export default {
                         userUID: firebase.firebase.auth().currentUser.uid
                     }
                 },
-                roomId: this.roomUID,
+                roomId: this.roomData.roomId,
             }
-
-            if (this.newMessage == null || this.newMessage.length > 750) {
+            if (this.newMessage == null || this.newMessage.length > 1000) {
                 alert('stop it');
             } else {
-                this.newMessage = null
                 this.$store.dispatch('sendMessageToRoom', payload).then(res => {
                     console.log('​sendMessages -> res', res);
                 }).catch(err => {
                     console.log('​sendMessages -> err', err);
                 });
+                this.newMessage = null;
             }
-
         },
         convertTime(time) {
             return moment.unix(time).format("MMMM Do, h:mm:ss a")
         },
-        organizeByDate() {
-
+        scrollChatToBottom() {
+            let chatMSGScroll = document.getElementById('card_msg_body');
+            chatMSGScroll.scrollTo(0, chatMSGScroll.scrollHeight)
         }
     },
     created() {
-        if (this.roomUID == null) {
+        if (this.roomData == null) {
             this.$router.push('/');
         } else {
-            this.$store.commit('setCurrentRoom', this.roomUID);
-            console.log(this.roomUID);
-            this.getChatUpdate();
+            this.$store.commit('setCurrentRoom', this.roomData.roomId);
         }
-
-        // else if (this.$store.getters.currentRoom) {
-        //     // get user data
-        // }
+    },
+    mounted() {
+        this.getChatUpdate();
     },
 }

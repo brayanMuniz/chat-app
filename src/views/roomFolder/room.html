@@ -1,37 +1,161 @@
 <div class="mt-5">
-    <!-- Todo: when the user comes here add a currentRoomID state to store so the user does not have to be go bek over here -->
-    <main role="main" class="container-fluid">
-        <div class="row">
-
-            <!-- Messages -->
-            <div class="col-md-8 mt-5">
-                <div class="card w-100 my-1" v-for='message in chatRoomMessages' :key='message.messageId'>
-                    <div class="card-body">
-                        <h6 class="card-subtitle mb-2 text-muted" v-if='message.messageData.from'>{{message.messageData.from.userName}}</h6>
-                        <p class="card-text">{{message.messageData.newMessage}}</p>
-                        <div class="card-footer text-muted">
-                            {{convertTime(message.messageData.dateSent.seconds)}}
-                        </div>
+    <!-- Messages -->
+    <div class="chat mt-3">
+        <div class="card custom-card">
+            <!-- Head -->
+            <div class="card-header msg_head">
+                <div class="d-flex bd-highlight">
+                    <div class="img_cont">
+                        <img src="https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Flh3.googleusercontent.com%2F-Zs7cWeyXzTI%2FAAAAAAAAAAI%2FAAAAAAAAAB4%2F5PA9c08gzhQ%2Fphoto.jpg&f=1" class="rounded-circle user_img">
+                        <span class="online_icon"></span>
+                    </div>
+                    <div class="user_info">
+                        <span>{{roomData.roomData.roomName}}</span>
+                        <p>{{chatRoomMessages.length}} Messages</p>
                     </div>
                 </div>
-
-            </div>
-            
-            <!-- Send Messages -->
-            <aside class="col-md-4">
-                <div class="sticky-top">
-                    <form @submit.prevent='sendMessage' @keyup.enter="sendMessage">
-                        <div class="form-row pt-2">
-                            <label class="mt-5">Message</label>
-                            <textarea class="form-control" v-model='newMessage' placeholder="New Message" rows="3"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary my-3 ml-auto">Write To Room</button>
-                    </form>
-                    <!-- Todo: make a list group and have a route tag that sends them to the users profile -->
+                <span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span>
+                <div class="action_menu">
+                    <ul>
+                        <li><i class="fas fa-user-circle"></i> View profile</li>
+                        <li><i class="fas fa-users"></i> Add to close friends</li>
+                        <li><i class="fas fa-plus"></i> Add to group</li>
+                        <li><i class="fas fa-ban"></i> Block</li>
+                    </ul>
                 </div>
-            </aside>
+            </div>
 
+
+            <!-- Messages -->
+            <div class="card-body msg_card_body px-4" id="card_msg_body">
+                <div v-for='msg in chatRoomMessages' :key='msg.id'>
+                    <!-- If you Sent message -->
+                    <div class="d-flex justify-content-end mb-2" v-if='msg.messageData.from.userName == $store.getters.getUserData.userName'>
+                        <div class="msg_cotainer_send">
+                            {{msg.messageData.newMessage}}
+                            <span class="msg_time_send" v-if='msg.messageData.newMessage.length > 10'>{{convertTime(msg.messageData.dateSent.seconds)}}</span>
+                        </div>
+                        <div class="img_cont_msg">
+                            <img src="https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia1.tenor.com%2Fimages%2Ff0822af46cd66c92d56fe1106e0f6a71%2Ftenor.gif%3Fitemid%3D4695405&f=1"
+                                class="rounded-circle user_img_msg">
+                        </div>
+                    </div>
+
+                    <!-- If you did not send this message -->
+                    <div class="d-flex justify-content-start mb-2" v-else>
+                        <!-- Make an if='profilePicture' -->
+                        <div class="img_cont_msg">
+                            <img src="https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Flh3.googleusercontent.com%2F-Zs7cWeyXzTI%2FAAAAAAAAAAI%2FAAAAAAAAAB4%2F5PA9c08gzhQ%2Fphoto.jpg&f=1"
+                                class="rounded-circle user_img_msg">
+                        </div>
+                        <div class="msg_cotainer">
+                            {{msg.messageData.newMessage}}
+                            <span class="msg_time" v-if='msg.messageData.newMessage.length > 10'>{{convertTime(msg.messageData.dateSent.seconds)}}</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!-- Send Messages -->
+            <div class="card-footer mt-0">
+                <form class="input-group" @submit.prevent='sendMessage' @keyup.enter="sendMessage">
+                    <!-- <div class="input-group-append">
+                        <span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
+                    </div> -->
+
+                    <textarea v-model.trim='newMessage' class="form-control" placeholder="Type your message..."></textarea>
+                    <!-- <div class="input-group-append">
+                        <span class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></span>
+                    </div> -->
+                    <button class="btn btn-primary" type="submit">Send</button>
+                </form>
+            </div>
         </div>
-
-    </main>
+    </div>
+    <!-- ? Friends -->
+    <!-- <div class="col-md-4 col-xl-3 chat mt-3">
+                <div class="card custom-card mb-sm-3 mb-md-0 contacts_card">
+                    <div class="card-header">
+                        <div class="input-group">
+                            <input type="text" placeholder="Search..." name="" class="form-control search">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text search_btn"><i class="fas fa-search"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body contacts_body">
+                        <ui class="contacts">
+                            <li class="active">
+                                <div class="d-flex bd-highlight">
+                                    <div class="img_cont">
+                                        <img src="https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Flh3.googleusercontent.com%2F-Zs7cWeyXzTI%2FAAAAAAAAAAI%2FAAAAAAAAAB4%2F5PA9c08gzhQ%2Fphoto.jpg&f=1"
+                                            class="rounded-circle user_img">
+                                        <span class="online_icon"></span>
+                                    </div>
+                                    <div class="user_info">
+                                        <span>Maryam Naz</span>
+                                        <p>Maryam is online</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="d-flex bd-highlight">
+                                    <div class="img_cont">
+                                        <img src="https://2.bp.blogspot.com/-8ytYF7cfPkQ/WkPe1-rtrcI/AAAAAAAAGqU/FGfTDVgkcIwmOTtjLka51vineFBExJuSACLcBGAs/s320/31.jpg"
+                                            class="rounded-circle user_img">
+                                        <span class="online_icon offline"></span>
+                                    </div>
+                                    <div class="user_info">
+                                        <span>Sahar Darya</span>
+                                        <p>Sahar left 7 mins ago</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="d-flex bd-highlight">
+                                    <div class="img_cont">
+                                        <img src="https://i.pinimg.com/originals/54/6e/6d/546e6d4c6ce4322e6aa3b2f8ca73ac28.jpg"
+                                            class="rounded-circle user_img">
+                                        <span class="online_icon"></span>
+                                    </div>
+                                    <div class="user_info">
+                                        <span>Yolduz Rafi</span>
+                                        <p>Yolduz is online</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="d-flex bd-highlight">
+                                    <div class="img_cont">
+                                        <img src="http://profilepicturesdp.com/wp-content/uploads/2018/07/sweet-girl-profile-pictures-9.jpg"
+                                            class="rounded-circle user_img">
+                                        <span class="online_icon offline"></span>
+                                    </div>
+                                    <div class="user_info">
+                                        <span>Nargis Hawa</span>
+                                        <p>Nargis left 30 mins ago</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="d-flex bd-highlight">
+                                    <div class="img_cont">
+                                        <img src="https://www.freshmorningquotes.com/wp-content/uploads/2015/11/cute-and-beautifull-girls-profile-pictures.jpg"
+                                            class="rounded-circle user_img">
+                                        <span class="online_icon offline"></span>
+                                    </div>
+                                    <div class="user_info">
+                                        <span>Khadija Mehr</span>
+                                        <p>Khadija left 50 mins ago</p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ui>
+                    </div>
+                    <div class="card-footer"></div>
+                </div>
+            </div> -->
+    <!-- Todo: when the user comes here add a currentRoomID state to store so the user does not have to be go bek over here -->
 </div>

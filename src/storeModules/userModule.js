@@ -1,6 +1,7 @@
 import firebase from '../firebaseConfig'
 let firebaseRef = firebase.firebase
 let db = firebase.db
+let firestoreRoot = firebase.firebase.firestore
 const state = {
     userAuth: firebaseRef.auth().currentUser,
     userData: null
@@ -85,14 +86,26 @@ const actions = {
             })
         })
     },
-    updateUserRooms: ({
+    addUsersRooms: ({
             commit,
             dispatch
         },
         roomData) => {
         let userUID = firebaseRef.auth().currentUser.uid
+        let userRef = db.collection('Users').doc(userUID)
         // roomData should have the roomName and room Id
-        // db.collection('Users').doc(userUID).update()
+        return new Promise((resolve, reject) => {
+            userRef.update({
+                rooms: firestoreRoot.FieldValue.arrayUnion(roomData)
+            }).then(res => {
+                console.log(res)
+                resolve(res)
+            }).catch(err => {
+                console.log('​err', err)
+                reject(err)
+            })
+        })
+
     },
     makeNewUser: ({
         dispatch,
