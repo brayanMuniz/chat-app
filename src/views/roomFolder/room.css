@@ -89,10 +89,6 @@
     margin-bottom: 15px !important;
 }
 
-.active {
-    background-color: rgba(0, 0, 0, 0.3);
-}
-
 .user_img {
     height: 70px;
     width: 70px;
