@@ -51,14 +51,14 @@ export default {
                 roomName: this.newRoomName,
                 dateCreated: new Date(),
                 roomDescription: this.newRoomDesc,
-                roomPicture: this.roomPictureName
+                roomPicture: this.roomPictureUpload.name
             }
             console.log(roomData)
             this.$store.dispatch('makeNewRoom', roomData).then(res => {
                 console.log(res)
                 console.log(res.id)
-                let fullPath = `chatRooms/${res.id}/${this.roomPictureName}`
-                if (this.roomPicture == null || this.roomPictureName == null || res.id == null) {
+                let fullPath = `chatRooms/${res.id}/${this.roomPictureUpload.name}`
+                if (this.roomPicture == null || res.id == null) {
                     console.log('did nbot ')
                 } else {
                     this.uploadRoomPicture(fullPath).then(res => {

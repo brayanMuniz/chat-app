@@ -32,9 +32,6 @@
                         <textarea rows="3" type="text" class="form-control" v-model='newRoomDesc' placeholder="Room Description"></textarea>
                         <!-- <input type="text" class="form-control" v-model='newRoomDesc' placeholder="Room Description"> -->
                     </div>
-                    <div class="form-row mt-2">
-                        <input type="text" class="form-control" v-model.trim='roomPictureName' placeholder="Room Picture Name">
-                    </div>
                     <div class="custom-file mx-auto my-2" v-if="!roomPicture">
                         <input type="file" class="custom-file-input form-control" id="customFile" @change="onFileChange">
                         <label class="custom-file-label">Choose file</label>
