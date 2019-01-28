@@ -1,6 +1,7 @@
 import firebase from '../../firebaseConfig'
 import moment from 'moment'
 let db = firebase.db
+
 export default {
     name: 'room',
     props: {
@@ -11,6 +12,7 @@ export default {
             chatRoomMessages: [],
             chatRoomData: null,
             newMessage: null,
+            usersImgLinks: {}
         }
     },
     methods: {
@@ -26,8 +28,6 @@ export default {
                         this.chatRoomMessages.push(msg)
                     }
                 })
-
-                this.scrollChatToBottom()
             })
 
         },
@@ -57,20 +57,43 @@ export default {
             }
         },
         convertTime(time) {
-            return moment.unix(time).format("MMMM Do, h:mm:ss ")
+            return moment.unix(time).format("MMMM Do, h:mm:ss")
         },
         scrollChatToBottom() {
             let chatMSGScroll = document.getElementById('card_msg_body');
             chatMSGScroll.scrollTo(0, chatMSGScroll.scrollHeight)
+        },
+        getProfileImageLink(path) {
+            return this.$store.dispatch('getPicture', path)
+        },
+        matchUserToProfilePic(userUID) {
+            if (userUID in Object.keys(this.usersImgLinks)) {
+                return null;
+            } else {
+                // add userImgLink to it
+            }
         }
     },
     created() {
-        console.log(this.roomData)
-        if (this.roomData == null) {
+        if (this.roomData == null || this.$store.getters.getUserData == null) {
             this.$router.push('/');
         } else {
             this.$store.commit('setCurrentRoom', this.roomData.roomId);
         }
+        if (this.$store.getters.getProfileImageLink) {
+            // dont set the users profile images
+        } else {
+            let usersProfileImagePath = `Users/${this.$store.getters.getUserAuth.uid}/${this.$store.getters.getUserData.profileImage}`
+            this.getProfileImageLink(usersProfileImagePath).then(res => {
+                this.$store.commit('updateUserPictureURL', res)
+                console.log(res);
+            }).catch(err => {
+                console.log('TCL: created -> err', err);
+            })
+
+        }
+        console.log(this.roomData)
+
     },
     mounted() {
         this.getChatUpdate();

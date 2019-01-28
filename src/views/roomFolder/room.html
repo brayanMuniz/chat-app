@@ -2,6 +2,7 @@
     <!-- Messages -->
     <div class="chat mt-3">
         <div class="card custom-card">
+
             <!-- Head -->
             <div class="card-header msg_head">
                 <div class="d-flex bd-highlight">
@@ -26,19 +27,17 @@
                 </div>
             </div>
 
-
             <!-- Messages -->
             <div class="card-body msg_card_body px-4" id="card_msg_body">
                 <div v-for='msg in chatRoomMessages' :key='msg.id'>
                     <!-- If you Sent message -->
-                    <div class="d-flex justify-content-end mb-2" v-if='msg.messageData.from.userName == $store.getters.getUserData.userName'>
+                    <div class="d-flex justify-content-end mb-2" v-if='msg.messageData.from.userUID == $store.getters.getUserAuth.uid'>
                         <div class="msg_cotainer_send">
                             {{msg.messageData.newMessage}}
                             <span class="msg_time_send" v-if='msg.messageData.newMessage.length > 10'>{{convertTime(msg.messageData.dateSent.seconds)}}</span>
                         </div>
                         <div class="img_cont_msg">
-                            <img src="https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia1.tenor.com%2Fimages%2Ff0822af46cd66c92d56fe1106e0f6a71%2Ftenor.gif%3Fitemid%3D4695405&f=1"
-                                class="rounded-circle user_img_msg">
+                            <img :src="$store.getters.getProfileImageLink" class="rounded-circle user_img_msg">
                         </div>
                     </div>
 
@@ -72,6 +71,7 @@
                     <button class="btn btn-primary" type="submit">Send</button>
                 </form>
             </div>
+
         </div>
     </div>
     <!-- ? Friends -->

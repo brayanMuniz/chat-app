@@ -8,7 +8,18 @@ const state = {
 }
 const getters = {
     getUserData: (state) => {
-        return state.userData
+        return state.userData;
+    },
+    getUserAuth: (state) => {
+        return state.userAuth;
+    },
+    getProfileImageLink: (state) => {
+        if (state.userData == null) {
+            return null
+        } else {
+            console.log(state.userData.profileImageLink)
+            return state.userData.profileImageLink
+        }
     },
     isUserVerified: (state) => {
         if (state.userAuth) {
@@ -24,6 +35,9 @@ const mutations = {
     },
     setUserData(state, newData) {
         state.userData = newData
+    },
+    updateUserPictureURL(state, newData) {
+        state.userData.profileImageLink = newData;
     },
     clearUser(state) {
         state.userAuth = null;

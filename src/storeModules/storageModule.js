@@ -3,15 +3,10 @@ let storage = firebase.firebase.storage();
 const state = {
 
 }
-const getters = {
-
-}
-const mutations = {
-
-}
+const getters = {}
+const mutations = {}
 const actions = {
     getPicture({}, filePath) {
-        console.log(filePath)
         // ! SPACES MATTER
         let testPath = '/chatRooms/2ZGpLzJ6xPnlJ8vpMd9d/Hello '
         return new Promise((resolve, reject) => {

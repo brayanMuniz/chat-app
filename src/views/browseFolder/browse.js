@@ -45,12 +45,12 @@ export default {
             return moment.unix(time).format("MMMM Do");
         },
         makeNewRoom() {
-            // ! Better to get the name from the file itself 
             // ! Room Picture gave an undefined 
             let myUID = firebaseRef.auth().currentUser.uid;
             let userName = this.$store.getters.getUserData.userName;
             let roomData = {
                 roomName: this.newRoomName,
+                msgLength: 0,
                 dateCreated: new Date(),
                 roomDescription: this.newRoomDesc,
                 roomPicture: this.roomPictureUpload.name,
