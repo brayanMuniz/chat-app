@@ -2,6 +2,7 @@
 import moment from 'moment'
 import firebase from '../../firebaseConfig'
 let db = firebase.db
+let firebaseRef = firebase.firebase
 export default {
     name: 'browse',
     data() {
@@ -47,8 +48,8 @@ export default {
             // ! Better to get the name from the file itself 
             // ! Room Picture gave an undefined 
 
-            let myUID = firebase.firebase.auth.auth().currentUser.uid
-            let userName = getters.getUserData.userName
+            let myUID = firebaseRef.auth().currentUser.uid;
+            let userName = this.$store.getters.getUserData.userName;
             let roomData = {
                 roomName: this.newRoomName,
                 dateCreated: new Date(),
