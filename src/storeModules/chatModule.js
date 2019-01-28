@@ -28,9 +28,9 @@ const actions = {
         // Tip: Do not try to access state directly instead use getters to get it and commit to mutate it
         return new Promise((resolve, reject) => {
             db.collection('chatRooms').add(roomData).then(res => {
-                resolve(res)
+                resolve(res);
             }).catch(err => {
-                reject(err)
+                reject(err);
             })
         });
     },
@@ -43,8 +43,6 @@ const actions = {
     },
     sendMessageToRoom: ({
         dispatch,
-        getters,
-        commit
     }, payload) => {
         let roomData = payload.msgData
         return new Promise((resolve, reject) => {

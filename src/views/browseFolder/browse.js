@@ -42,12 +42,11 @@ export default {
             })
         },
         convertTime(time) {
-            return moment.unix(time).format("MMMM Do")
+            return moment.unix(time).format("MMMM Do");
         },
         makeNewRoom() {
             // ! Better to get the name from the file itself 
             // ! Room Picture gave an undefined 
-
             let myUID = firebaseRef.auth().currentUser.uid;
             let userName = this.$store.getters.getUserData.userName;
             let roomData = {
@@ -62,7 +61,6 @@ export default {
             }
             console.log(roomData)
             this.$store.dispatch('makeNewRoom', roomData).then(res => {
-                console.log(res)
                 console.log(res.id)
                 let fullPath = `chatRooms/${res.id}/${this.roomPictureUpload.name}`
                 if (this.roomPicture == null || res.id == null) {

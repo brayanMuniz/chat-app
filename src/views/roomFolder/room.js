@@ -49,7 +49,7 @@ export default {
             } else {
                 this.$store.dispatch('sendMessageToRoom', payload).then(res => {
                     console.log('​sendMessages -> res', res);
-                    this.scrollChatToBottom()
+                    this.scrollChatToBottom();
                 }).catch(err => {
                     console.log('​sendMessages -> err', err);
                 });
