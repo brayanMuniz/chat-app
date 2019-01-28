@@ -6,12 +6,13 @@
             <div class="card-header msg_head">
                 <div class="d-flex bd-highlight">
                     <div class="img_cont">
-                        <img src="https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Flh3.googleusercontent.com%2F-Zs7cWeyXzTI%2FAAAAAAAAAAI%2FAAAAAAAAAB4%2F5PA9c08gzhQ%2Fphoto.jpg&f=1" class="rounded-circle user_img">
-                        <span class="online_icon"></span>
+                        <img :src="roomData.urlPicture" class="rounded-circle user_img">
+                        <!-- <span class="online_icon"></span> -->
                     </div>
                     <div class="user_info">
                         <span>{{roomData.roomData.roomName}}</span>
-                        <p>{{chatRoomMessages.length}} Messages</p>
+                        <p class="mb-1">{{chatRoomMessages.length}} Messages</p>
+                        <!-- <p class="mt-0">{{chatRoomMessages.length}} Users Online</p> -->
                     </div>
                 </div>
                 <span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span>

@@ -55,7 +55,7 @@ export default {
             }
         },
         convertTime(time) {
-            return moment.unix(time).format("MMMM Do, h:mm:ss a")
+            return moment.unix(time).format("MMMM Do, h:mm:ss ")
         },
         scrollChatToBottom() {
             let chatMSGScroll = document.getElementById('card_msg_body');
@@ -63,6 +63,7 @@ export default {
         }
     },
     created() {
+        console.log(this.roomData)
         if (this.roomData == null) {
             this.$router.push('/');
         } else {
