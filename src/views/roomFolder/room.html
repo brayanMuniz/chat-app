@@ -58,14 +58,13 @@
                 </div>
             </div>
 
-
             <!-- Send Messages -->
             <div class="card-footer mt-0">
                 <form class="input-group" @submit.prevent='sendMessage' @keyup.enter="sendMessage">
                     <!-- <div class="input-group-append">
                         <span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
                     </div> -->
-
+                    <!-- <input v-validate="'min:3'" data-vv-as="field" name="min_field" type="text"> -->
                     <textarea v-model.trim='newMessage' class="form-control" placeholder="Type your message..."></textarea>
                     <!-- <div class="input-group-append">
                         <span class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></span>

@@ -2,7 +2,6 @@
 import moment from 'moment'
 import firebase from '../../firebaseConfig'
 let db = firebase.db
-let storage = firebase.firebase.storage()
 export default {
     name: 'browse',
     data() {
@@ -47,11 +46,18 @@ export default {
         makeNewRoom() {
             // ! Better to get the name from the file itself 
             // ! Room Picture gave an undefined 
+
+            let myUID = firebase.firebase.auth.auth().currentUser.uid
+            let userName = getters.getUserData.userName
             let roomData = {
                 roomName: this.newRoomName,
                 dateCreated: new Date(),
                 roomDescription: this.newRoomDesc,
-                roomPicture: this.roomPictureUpload.name
+                roomPicture: this.roomPictureUpload.name,
+                users: [{
+                    userName: myUID,
+                    userUID: userName
+                }]
             }
             console.log(roomData)
             this.$store.dispatch('makeNewRoom', roomData).then(res => {

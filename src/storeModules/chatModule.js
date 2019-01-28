@@ -26,19 +26,8 @@ const actions = {
     }, roomData) => {
         // Todo: set roomData correctlysa
         // Tip: Do not try to access state directly instead use getters to get it and commit to mutate it
-        let myUID = firebaseRef.auth().currentUser.uid
-        let userName = getters.getUserData.userName
         return new Promise((resolve, reject) => {
-            db.collection('chatRooms').add({
-                users: [{
-                    userName: userName,
-                    userUID: myUID
-                }],
-                roomName: roomData.roomName,
-                dateCreated: roomData.dateCreated,
-                msgLength: 0,
-                roomPicture: roomData.roomPicture
-            }).then(res => {
+            db.collection('chatRooms').add(roomData).then(res => {
                 resolve(res)
             }).catch(err => {
                 reject(err)

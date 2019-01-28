@@ -26,6 +26,7 @@ export default {
                         this.chatRoomMessages.push(msg)
                     }
                 })
+
                 this.scrollChatToBottom()
             })
 
@@ -43,11 +44,12 @@ export default {
                 },
                 roomId: this.roomData.roomId,
             }
-            if (this.newMessage == null || this.newMessage.length > 1000) {
+            if (this.newMessage == null || this.newMessage.length > 1000 || this.newMessage.length == 0) {
                 alert('stop it');
             } else {
                 this.$store.dispatch('sendMessageToRoom', payload).then(res => {
                     console.log('​sendMessages -> res', res);
+                    this.scrollChatToBottom()
                 }).catch(err => {
                     console.log('​sendMessages -> err', err);
                 });

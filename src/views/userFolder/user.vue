@@ -2,8 +2,7 @@
     
 </template>
 
-<style src="./user.css">
-
+<style scoped src="./user.css">
 </style>
 
 <script src="./user.js">
