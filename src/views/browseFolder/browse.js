@@ -19,7 +19,7 @@ export default {
     methods: {
         getRealTimeChatRooms() {
             // use.doc(roomUID) to get realtime updates there
-            db.collection('chatRooms').onSnapshot(doc => {
+            db.collection('chatRooms').orderBy('dateCreated').onSnapshot(doc => {
                 this.allRooms = [];
                 doc.docs.forEach(kek => {
                     if (kek.exists) {
@@ -87,7 +87,6 @@ export default {
             console.log(path)
             return this.$store.dispatch('uploadPicture', fileData)
         },
-
         // File changes
         onFileChange(e) {
             var files = e.target.files || e.dataTransfer.files;
