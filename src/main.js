@@ -3,11 +3,10 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import bootstrap from 'bootstrap'
-import Vuelidate from 'vuelidate'
+import VeeValidate from 'vee-validate';
+Vue.use(VeeValidate);
 
-Vue.use(Vuelidate)
-Vue.config.productionTip = true
-
+Vue.config.productionTip = true;
 new Vue({
   router,
   store,
