@@ -62,9 +62,7 @@ const actions = {
             let userUID = firebaseRef.auth().currentUser.uid
             commit('setUserData', payload)
             // Todo: configure rules in firebase so only the user with his UID can change his data
-            db.collection('Users').doc(userUID).set({
-                userName: payload.userName
-            }).then(res => {
+            db.collection('Users').doc(userUID).set(payload).then(res => {
                 console.log('createUserInDB', res)
                 resolve(res)
             }).catch(err => {
@@ -117,7 +115,8 @@ const actions = {
                 commit('setUserAuth')
                 // If either of these fail then the new user will be deleted
                 Promise.all([dispatch('sendEmailVerification'), dispatch('createUserInDB', payload.newUserData)]).then(res => {
-                    resolve(res)
+                    console.log('TCL: res', res)
+                    resolve(madeUser)
                 }).catch(err => {
                     console.log('Failed one of them', err)
                     dispatch('deleteUser').catch(deletedNewUser => {

@@ -1,14 +1,14 @@
 <div class="container-fluid mt-5 mb-5">
-    <img :src="testImg" alt="" v-if='testImg' class="img-fluid">
-
     <!-- Users -->
     <div class="row">
+
+        <!-- Sign Up -->
         <div class="col-md-6 mt-5">
             <h5>Sign Up</h5>
             <form @submit.prevent="makeNewUser">
                 <div class="form-row">
                     <label>userName</label>
-                    <input type="text" class="form-control" v-model='testUserName' placeholder="userName">
+                    <input type="text" class="form-control" v-model.trim='testUserName' placeholder="userName">
                 </div>
                 <div class="form-row">
                     <label>Email</label>
@@ -18,10 +18,20 @@
                     <label>Password</label>
                     <input type="password" class="form-control" v-model='password' placeholder="password">
                 </div>
+                <div class="custom-file mx-auto my-2" v-if="!showProfileImg">
+                    <input type="file" class="custom-file-input form-control" id="customFile" @change="onFileChange">
+                    <label class="custom-file-label">Choose file</label>
+                </div>
+                <div v-else class="mt-2">
+                    <img class="img-fluid" :src="showProfileImg" />
+                    <button class="btn-sm btn p-1 btn-danger my-3 ml-auto" @click="removeImage" type="button">Remove
+                        image</button>
+                </div>
                 <button type="submit" class="btn btn-primary ml-auto">New User</button>
 
             </form>
         </div>
+        <!-- Sign In -->
         <div class="col-md-6 mt-5">
             <h5>Sign In</h5>
             <form @submit.prevent="signIn">

@@ -27,7 +27,6 @@ export default {
                             roomId: kek.id,
                             roomData: kek.data()
                         }
-                        console.log(room.roomData)
                         let fullPath = `chatRooms/${room.roomId}/${room.roomData.roomPicture}`
                         this.getPicture(fullPath).then(res => {
                             room['urlPicture'] = res
@@ -46,6 +45,7 @@ export default {
             return moment.unix(time).format("MMMM Do")
         },
         makeNewRoom() {
+            // ! Better to get the name from the file itself 
             // ! Room Picture gave an undefined 
             let roomData = {
                 roomName: this.newRoomName,
