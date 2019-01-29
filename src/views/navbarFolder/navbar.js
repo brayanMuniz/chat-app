@@ -5,6 +5,8 @@ export default {
             userName: null
         }
     },
+    beforeCreate() {
+    },
     created() {},
     mounted() {
 

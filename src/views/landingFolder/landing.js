@@ -20,10 +20,7 @@ export default {
             showProfileImg: null
         }
     },
-    created() {
-        console.log(firebaseRef.auth().currentUser);
-        // Do not add another listener one is enough
-    },
+    created() {},
     methods: {
         makeNewUser() {
             // Todo: add profileImage

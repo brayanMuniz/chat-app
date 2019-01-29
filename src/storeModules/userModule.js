@@ -1,4 +1,5 @@
 import firebase from '../firebaseConfig'
+import router from '../router'
 let firebaseRef = firebase.firebase
 let db = firebase.db
 let firestoreRoot = firebase.firebase.firestore
@@ -15,16 +16,23 @@ const getters = {
     },
     getProfileImageLink: (state) => {
         if (state.userData == null) {
+            console.log(state)
             return null
         } else {
             console.log(state.userData.profileImageLink)
             return state.userData.profileImageLink
         }
     },
+    isAUserSignedIn: (state) => {
+        if (state.userData == null || state.userAuth == null) {
+            // redirect user to landing page
+        }
+    },
     isUserVerified: (state) => {
-        if (state.userAuth) {
+        if (state.userAuth == null) {
             return false;
         } else {
+            // ? emailVerified
             return state.userAuth
         }
     }

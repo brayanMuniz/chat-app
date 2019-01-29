@@ -113,7 +113,12 @@ export default {
             this.roomPictureUpload = null;
         },
     },
+    created() {
+
+        // if there is no user redirect them to the landing page
+    },
     mounted() {
+        this.$store.getters.isAUserSignedIn
         this.getRealTimeChatRooms()
     }
 }

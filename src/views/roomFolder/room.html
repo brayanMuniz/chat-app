@@ -5,13 +5,14 @@
 
             <!-- Head -->
             <div class="card-header msg_head">
+
                 <div class="d-flex bd-highlight">
                     <div class="img_cont">
                         <img :src="roomData.urlPicture" class="rounded-circle user_img">
                         <!-- <span class="online_icon"></span> -->
                     </div>
                     <div class="user_info">
-                        <span>{{roomData.roomData.roomName}}</span>
+                        <span>{{roomData.roomData.roomName}} </span>
                         <p class="mb-1">{{chatRoomMessages.length}} Messages</p>
                         <!-- <p class="mt-0">{{chatRoomMessages.length}} Users Online</p> -->
                     </div>
@@ -39,8 +40,8 @@
                         <div class="img_cont_msg">
                             <img :src="$store.getters.getProfileImageLink" class="rounded-circle user_img_msg">
                         </div>
-                    </div>
 
+                    </div>
                     <!-- If you did not send this message -->
                     <div class="d-flex justify-content-start mb-2" v-else>
                         <!-- Make an if='profilePicture' -->
