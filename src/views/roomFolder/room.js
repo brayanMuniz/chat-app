@@ -1,5 +1,6 @@
 import firebase from '../../firebaseConfig'
 import moment from 'moment'
+let firebaseRef = firebase.firebase
 let db = firebase.db
 
 export default {
@@ -13,7 +14,8 @@ export default {
             chatRoomData: null,
             newMessage: null,
             usersImgLinks: {},
-            defaultUser: "https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Flh3.googleusercontent.com%2F-Zs7cWeyXzTI%2FAAAAAAAAAAI%2FAAAAAAAAAB4%2F5PA9c08gzhQ%2Fphoto.jpg&f=1"
+            defaultUser: "https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Flh3.googleusercontent.com%2F-Zs7cWeyXzTI%2FAAAAAAAAAAI%2FAAAAAAAAAB4%2F5PA9c08gzhQ%2Fphoto.jpg&f=1",
+            roomMsgLength: 0
         }
     },
     methods: {
@@ -28,7 +30,12 @@ export default {
                         }
                         this.chatRoomMessages.push(msg)
                     }
+
                 })
+                if (this.roomMsgLength < this.chatRoomMessages.length) {
+                    this.scrollChatToBottom()
+                    this.roomMsgLength = this.chatRoomMessages.length
+                }
             })
 
         },
@@ -49,12 +56,32 @@ export default {
                 alert('stop it');
             } else {
                 this.$store.dispatch('sendMessageToRoom', payload).then(res => {
-                    console.log('​sendMessages -> res', res);
+                    console.log('​sendMessageToRoom -> res', res);
                     this.scrollChatToBottom();
                 }).catch(err => {
-                    console.log('​sendMessages -> err', err);
+                    console.log('​sendMessageToRoom -> err', err);
                 });
                 this.newMessage = null;
+                this.addUserToChat().then(res => {
+                    console.log('TCL: addUserToChat -> res', res)
+                }).catch(err => {
+                    console.log('TCL: sendMessage -> err', err)
+                })
+            }
+        },
+        addUserToChat() {
+            // decoupple these later
+            let userAlreadyInChat = false
+            this.roomData.roomData.users.forEach(user => {
+                console.log('TCL: addUserToChat -> user', user)
+                if (user.userUID == firebaseRef.auth().currentUser.uid) {
+                    userAlreadyInChat = true
+                }
+            })
+            if (userAlreadyInChat) {
+                console.log('Doing nothing')
+            } else {
+                return this.$store.dispatch('addUserToChat', this.roomData.roomId)
             }
         },
         convertTime(time) {
@@ -79,16 +106,7 @@ export default {
         if (this.roomData == null || this.$store.getters.getUserData == null) {
             this.$router.push('/');
         }
-
-
-        let usersProfileImagePath = `Users/${this.$store.getters.getUserAuth.uid}/${this.$store.getters.getUserData.profileImage}`
-        this.getProfileImageLink(usersProfileImagePath).then(res => {
-            this.$store.commit('updateUserPictureURL', res)
-            console.log(res);
-            console.log(this.$store.getters.getProfileImageLink)
-        }).catch(err => {
-            console.log('TCL: created -> err', err);
-        })
+        console.log(this.roomData)
     },
     mounted() {
         this.getChatUpdate();

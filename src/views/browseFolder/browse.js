@@ -55,8 +55,8 @@ export default {
                 roomDescription: this.newRoomDesc,
                 roomPicture: this.roomPictureUpload.name,
                 users: [{
-                    userName: myUID,
-                    userUID: userName
+                    userName: userName,
+                    userUID: myUID
                 }]
             }
             console.log(roomData)

@@ -38,7 +38,7 @@ const actions = {
     inviteUserToChatRoom: ({}, payload) => {
 
     },
-    deleteRoom: ({}, roomID) => {
+    deleteRoom: ({}, roomId) => {
         // Make sure that user is an owner in that room
     },
     sendMessageToRoom: ({
@@ -67,7 +67,6 @@ const actions = {
         return new Promise((resolve, reject) => {
             db.runTransaction(transaction => {
                 return transaction.get(roomRef).then(res => {
-                    console.log(res)
                     if (res.exists) {
                         let newRoomAmount = res.data().msgLength + 1;
                         transaction.update(roomRef, {
@@ -79,6 +78,31 @@ const actions = {
                 })
             }).then(res => {
                 resolve(res)
+            })
+        })
+    },
+    addUserToChat: ({
+        getters
+    }, roomId) => {
+        return new Promise((resolve, reject) => {
+            let myUID = firebaseRef.auth().currentUser.uid;
+            let userName = getters.getUserData.userName;
+            let userProfileImage = getters.getProfileImageLink
+            let userData = {
+                userName: userName,
+                userUID: myUID,
+                userProfileImg: userProfileImage
+            }
+            console.log(userData)
+            console.log(roomId)
+            db.collection('chatRooms').doc(roomId).update({
+                users: firebaseRef.firestore.FieldValue.arrayUnion(userData)
+            }).then(res => {
+                console.log('TCL: res', res)
+                resolve(res)
+            }).catch(err => {
+                console.log('TCL: err', err)
+                reject(err)
             })
         })
     }

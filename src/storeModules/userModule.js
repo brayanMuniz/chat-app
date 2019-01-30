@@ -38,6 +38,7 @@ const getters = {
             // ? emailVerified
             return state.userAuth
         }
+
     }
 }
 const mutations = {
@@ -49,7 +50,6 @@ const mutations = {
     },
     updateUserPictureURL(state, newData) {
         state.userData.profileImageLink = newData;
-        console.log(state.userData.profileImageLink)
     },
     clearUser(state) {
         state.userAuth = null;

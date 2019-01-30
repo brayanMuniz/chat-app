@@ -20,7 +20,11 @@ export default {
             showProfileImg: null
         }
     },
-    created() {},
+    created() {
+        if (this.$store.getters.isUserSignedIn) {
+            this.$router.push('/browse')
+        }
+    },
     methods: {
         userNameCheck(userName) {
             return this.$store.dispatch('lookForuserName', userName)

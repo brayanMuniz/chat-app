@@ -1,6 +1,7 @@
 <div class="mt-5">
     <div class="row">
-        <div class="col-md-8 col-xl-9">
+        <!-- Messages -->
+        <div class="col-md-8 col-xl-9 pr-0">
             <!-- Messages -->
             <div class="chat">
                 <div class="card custom-card">
@@ -59,7 +60,7 @@
                         </div>
                     </div>
 
-                    <!-- Send Messages -->
+                    <!-- Send Messages Footer-->
                     <div class="card-footer mt-0">
                         <form class="input-group" @submit.prevent='sendMessage' @keyup.enter="sendMessage">
                             <!-- <div class="input-group-append">
@@ -77,8 +78,9 @@
                 </div>
             </div>
         </div>
+
         <!-- Users In Chat Room -->
-        <div class="col-md-4 col-xl-3 chat">
+        <div class="col-md-4 col-xl-3 chat pl-0">
             <div class="card custom-card mb-md-0 contacts_card px-0 border-0">
                 <div class="card-header">
                     <div class="input-group text-white">
@@ -93,19 +95,19 @@
                         <!-- Todo: Make all of these router links -->
                         <!-- Todo: Add a like and disklike button -->
                         <!-- Todo: Add a petition voting system -->
-                        <li class="active">
-                            <div class="d-flex bd-highlight">
-                                <div class="img_cont">
-                                    <img :src="defaultUser" class="rounded-circle user_img">
-                                    <span class="online_icon"></span>
+                        <li class="active my-0 py-0 mb-0" v-for='user in roomData.roomData.users' :key='user.userUID'>
+                            <div class="d-flex bd-highlight mb-0">
+                                <div class="room_img_cont">
+                                    <img :src="user.userProfileImage || defaultUser" class="img-fluid">
+                                    <!-- <span class="online_icon"></span> -->
                                 </div>
                                 <div class="user_info">
-                                    <span>Kek0</span>
-                                    <p>Maryam is online</p>
+                                    <span>{{user.userName}}</span>
+                                    <!-- <p>{{user}}</p> -->
                                 </div>
                             </div>
                         </li>
-                        <li>
+                        <!-- <li>
                             <div class="d-flex bd-highlight">
                                 <div class="img_cont">
                                     <img :src="defaultUser" class="rounded-circle user_img">
@@ -116,7 +118,7 @@
                                     <p>Sahar left 7 mins ago</p>
                                 </div>
                             </div>
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
                 <div class="card-footer"></div>
