@@ -2,15 +2,11 @@ export default {
     name: 'navbar',
     data() {
         return {
-            userName: null
+            userName: null,
         }
     },
-    beforeCreate() {
-    },
     created() {},
-    mounted() {
-
-    },
+    mounted() {},
     methods: {
         signOutUser() {
             this.$store.dispatch('signOutUserTotal').then(res => {

@@ -12,7 +12,8 @@ export default {
             chatRoomMessages: [],
             chatRoomData: null,
             newMessage: null,
-            usersImgLinks: {}
+            usersImgLinks: {},
+            defaultUser: "https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Flh3.googleusercontent.com%2F-Zs7cWeyXzTI%2FAAAAAAAAAAI%2FAAAAAAAAAB4%2F5PA9c08gzhQ%2Fphoto.jpg&f=1"
         }
     },
     methods: {
@@ -77,25 +78,27 @@ export default {
     created() {
         if (this.roomData == null || this.$store.getters.getUserData == null) {
             this.$router.push('/');
-        } else {
-            this.$store.commit('setCurrentRoom', this.roomData.roomId);
         }
-        if (this.$store.getters.getProfileImageLink) {
-            // dont set the users profile images
-        } else {
-            let usersProfileImagePath = `Users/${this.$store.getters.getUserAuth.uid}/${this.$store.getters.getUserData.profileImage}`
-            this.getProfileImageLink(usersProfileImagePath).then(res => {
-                this.$store.commit('updateUserPictureURL', res)
-                console.log(res);
-            }).catch(err => {
-                console.log('TCL: created -> err', err);
-            })
 
-        }
-        console.log(this.roomData)
 
+        let usersProfileImagePath = `Users/${this.$store.getters.getUserAuth.uid}/${this.$store.getters.getUserData.profileImage}`
+        this.getProfileImageLink(usersProfileImagePath).then(res => {
+            this.$store.commit('updateUserPictureURL', res)
+            console.log(res);
+            console.log(this.$store.getters.getProfileImageLink)
+        }).catch(err => {
+            console.log('TCL: created -> err', err);
+        })
     },
     mounted() {
         this.getChatUpdate();
+    },
+    computed: {
+        userImageProfileLink() {
+            if (this.$store.getters.getProfileImageLink == null) {
+                return this.defaultUser
+            }
+            return this.$store.getters.getProfileImageLink
+        }
     },
 }

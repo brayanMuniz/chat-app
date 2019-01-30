@@ -1,31 +1,34 @@
 import firebase from '../firebaseConfig'
-import router from '../router'
 let firebaseRef = firebase.firebase
 let db = firebase.db
 let firestoreRoot = firebase.firebase.firestore
 const state = {
     userAuth: firebaseRef.auth().currentUser,
-    userData: null
+    userData: {}
 }
 const getters = {
     getUserData: (state) => {
+        if (Object.keys(state.userData).length == 0) {
+            return null
+        }
         return state.userData;
     },
     getUserAuth: (state) => {
         return state.userAuth;
     },
     getProfileImageLink: (state) => {
-        if (state.userData == null) {
+        if (Object.keys(state.userData).length == 0 || state.userData.profileImageLink == undefined) {
             console.log(state)
             return null
         } else {
-            console.log(state.userData.profileImageLink)
             return state.userData.profileImageLink
         }
     },
-    isAUserSignedIn: (state) => {
-        if (state.userData == null || state.userAuth == null) {
-            // redirect user to landing page
+    isUserSignedIn: (state) => {
+        if (Object.keys(state.userData).length == 0 || state.userAuth == null) {
+            return false
+        } else {
+            return true
         }
     },
     isUserVerified: (state) => {
@@ -46,10 +49,11 @@ const mutations = {
     },
     updateUserPictureURL(state, newData) {
         state.userData.profileImageLink = newData;
+        console.log(state.userData.profileImageLink)
     },
     clearUser(state) {
         state.userAuth = null;
-        state.userData = null;
+        state.userData = {};
     }
 }
 
@@ -65,6 +69,17 @@ const actions = {
             }).catch(error => {
                 reject(error)
             });
+        })
+    },
+    lookForuserName: ({}, userName) => {
+        return new Promise((resolve, reject) => {
+            db.collection("Users").where("userName", "==", userName).get().then(res => {
+                resolve(res)
+            }).catch(err => {
+                console.log(err)
+                reject(err)
+            })
+
         })
     },
     sendEmailVerification: ({}) => {

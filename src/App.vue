@@ -16,7 +16,7 @@ export default {
     "app-header": navbar,
     "app-footer": footer
   },
-  created() {
+  beforeCreate() {
     let firebaseRef = firebase.firebase;
     firebaseRef.auth().onAuthStateChanged(user => {
       if (user) {
@@ -26,16 +26,28 @@ export default {
             .dispatch("getUserData")
             .then(userDataGotten => {
               this.$store.commit("setUserData", userDataGotten);
+              let usersProfileImagePath = `Users/${
+                this.$store.getters.getUserAuth.uid
+              }/${this.$store.getters.getUserData.profileImage}`;
+              this.$store
+                .dispatch("getPicture", usersProfileImagePath)
+                .then(res => {
+                  this.$store.commit("updateUserPictureURL", res);
+                })
+                .catch(err => {
+                  console.log("TCL: beforeCreate App.vue -> err", err);
+                });
             })
             .catch(err => {
-              console.log(err);
+              console.log("TCL: beforeCreate -> err", err);
             });
         }
       } else {
         this.$store.commit("clearUser");
       }
     });
-  }
+  },
+  created() {}
 };
 </script>
 
