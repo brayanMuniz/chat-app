@@ -1,7 +1,7 @@
 import firebase from '../../firebaseConfig'
 import moment from 'moment'
-let firebaseRef = firebase.firebase
-let db = firebase.db
+let firebaseRef = firebase.firebase;
+let db = firebase.db;
 
 export default {
     name: 'room',
@@ -39,6 +39,12 @@ export default {
             })
 
         },
+        getRoomUpdate() {
+            db.collection('chatRooms').doc(this.roomData.roomId).onSnapshot(doc => {
+                console.log('TCL: getRoomUpdate -> doc', doc.data())
+                this.roomData.roomData.users = doc.data().users
+            })
+        },
         sendMessage() {
             // Todo: figure out a way to order the documnets
             let payload = {
@@ -62,11 +68,7 @@ export default {
                     console.log('​sendMessageToRoom -> err', err);
                 });
                 this.newMessage = null;
-                this.addUserToChat().then(res => {
-                    console.log('TCL: addUserToChat -> res', res)
-                }).catch(err => {
-                    console.log('TCL: sendMessage -> err', err)
-                })
+                this.addUserToChat()
             }
         },
         addUserToChat() {
@@ -81,7 +83,11 @@ export default {
             if (userAlreadyInChat) {
                 console.log('Doing nothing')
             } else {
-                return this.$store.dispatch('addUserToChat', this.roomData.roomId)
+                this.$store.dispatch('addUserToChat', this.roomData.roomId).then(res => {
+                    console.log('TCL: addUserToChat -> res', res)
+                }).catch(err => {
+                    console.log('TCL: addUserToChat -> err', err)
+                })
             }
         },
         convertTime(time) {
@@ -110,6 +116,7 @@ export default {
     },
     mounted() {
         this.getChatUpdate();
+        this.getRoomUpdate();
     },
     computed: {
         userImageProfileLink() {

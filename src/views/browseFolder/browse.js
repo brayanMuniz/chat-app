@@ -49,7 +49,6 @@ export default {
             let myUID = firebaseRef.auth().currentUser.uid;
             let userName = this.$store.getters.getUserData.userName;
             let userProfileImage = this.$store.getters.getProfileImageLink;
-
             let roomData = {
                 roomName: this.newRoomName,
                 msgLength: 0,

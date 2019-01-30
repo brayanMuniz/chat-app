@@ -84,6 +84,7 @@ const actions = {
         getters
     }, roomId) => {
         return new Promise((resolve, reject) => {
+            
             let myUID = firebaseRef.auth().currentUser.uid;
             let userName = getters.getUserData.userName;
             let userProfileImage = getters.getProfileImageLink;
