@@ -48,6 +48,8 @@ export default {
             // ! Room Picture gave an undefined 
             let myUID = firebaseRef.auth().currentUser.uid;
             let userName = this.$store.getters.getUserData.userName;
+            let userProfileImage = this.$store.getters.getProfileImageLink;
+
             let roomData = {
                 roomName: this.newRoomName,
                 msgLength: 0,
@@ -56,10 +58,13 @@ export default {
                 roomPicture: this.roomPictureUpload.name,
                 users: [{
                     userName: userName,
-                    userUID: myUID
+                    userUID: myUID,
+                    userProfileImage: userProfileImage,
+                    dateJoined: new Date()
                 }]
             }
-            console.log(roomData)
+
+            console.log(roomData);
             this.$store.dispatch('makeNewRoom', roomData).then(res => {
                 console.log(res.id)
                 let fullPath = `chatRooms/${res.id}/${this.roomPictureUpload.name}`

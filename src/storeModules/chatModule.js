@@ -1,5 +1,4 @@
 import firebase from '../firebaseConfig'
-import room from '../views/roomFolder/room';
 let firebaseRef = firebase.firebase
 let db = firebase.db
 
@@ -87,14 +86,15 @@ const actions = {
         return new Promise((resolve, reject) => {
             let myUID = firebaseRef.auth().currentUser.uid;
             let userName = getters.getUserData.userName;
-            let userProfileImage = getters.getProfileImageLink
+            let userProfileImage = getters.getProfileImageLink;
+
             let userData = {
                 userName: userName,
                 userUID: myUID,
-                userProfileImg: userProfileImage
+                userProfileImage: userProfileImage,
+                dateJoined: new Date()
             }
-            console.log(userData)
-            console.log(roomId)
+
             db.collection('chatRooms').doc(roomId).update({
                 users: firebaseRef.firestore.FieldValue.arrayUnion(userData)
             }).then(res => {
