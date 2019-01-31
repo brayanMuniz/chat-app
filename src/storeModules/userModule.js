@@ -59,8 +59,6 @@ const mutations = {
 
 // Do not check for valid data because that should be handled with vue-validate and generally in the clients
 const actions = {
-    // User Firebase Auth API 
-    // After the user signs up send them an email verification and add them to the databases
     createUserWithEmail: ({}, payload) => {
         console.log('createUserWithEmail', payload)
         return new Promise((resolve, reject) => {
@@ -121,10 +119,7 @@ const actions = {
             })
         })
     },
-    addUsersRooms: ({
-            commit,
-            dispatch
-        },
+    addUsersRooms: ({},
         roomData) => {
         let userUID = firebaseRef.auth().currentUser.uid
         let userRef = db.collection('Users').doc(userUID)
@@ -140,7 +135,6 @@ const actions = {
                 reject(err)
             })
         })
-
     },
     makeNewUser: ({
         dispatch,

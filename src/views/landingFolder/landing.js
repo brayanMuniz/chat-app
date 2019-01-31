@@ -1,9 +1,7 @@
 /* eslint-disable */
 // Todo: when actually writing to firebase use vuelidate for client side
 import firebase from '../../firebaseConfig'
-let firebaseRef = firebase.firebase
 let db = firebase.db
-let storage = firebase.firebase.storage();
 export default {
     name: 'landing',
     data() {
@@ -12,10 +10,8 @@ export default {
             allRooms: [],
             testUserName: null,
             newUser: {},
-            testRoomName: null,
             email: null,
             password: null,
-            testImg: null,
             profileImage: null,
             showProfileImg: null
         }
@@ -83,12 +79,14 @@ export default {
                 email: this.email,
                 password: this.password
             }
+
             this.$store.dispatch('logInUserAuth', payload).then(res => {
                 console.log('​signIn -> res', res)
                 this.$router.push('/browse')
             }).catch(err => {
                 console.log('​signIn -> err', err)
             })
+
         },
         uploadProfilePicture(path) {
             // Todo: verify that roomPicture is a actual file\

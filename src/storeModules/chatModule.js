@@ -33,13 +33,6 @@ const actions = {
             })
         });
     },
-    // Way later
-    inviteUserToChatRoom: ({}, payload) => {
-
-    },
-    deleteRoom: ({}, roomId) => {
-        // Make sure that user is an owner in that room
-    },
     sendMessageToRoom: ({
         dispatch,
     }, payload) => {
@@ -84,7 +77,7 @@ const actions = {
         getters
     }, roomId) => {
         return new Promise((resolve, reject) => {
-            
+
             let myUID = firebaseRef.auth().currentUser.uid;
             let userName = getters.getUserData.userName;
             let userProfileImage = getters.getProfileImageLink;

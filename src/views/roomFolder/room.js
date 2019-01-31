@@ -11,7 +11,6 @@ export default {
     data() {
         return {
             chatRoomMessages: [],
-            chatRoomData: null,
             newMessage: null,
             usersImgLinks: {},
             defaultUser: "https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Flh3.googleusercontent.com%2F-Zs7cWeyXzTI%2FAAAAAAAAAAI%2FAAAAAAAAAB4%2F5PA9c08gzhQ%2Fphoto.jpg&f=1",
