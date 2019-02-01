@@ -1,11 +1,12 @@
 import firebase from '../firebaseConfig'
-let firebaseRef = firebase.firebase
-let db = firebase.db
-let firestoreRoot = firebase.firebase.firestore
+let firebaseRef = firebase.firebase;
+let db = firebase.db;
+
 const state = {
     userAuth: firebaseRef.auth().currentUser,
     userData: {}
 }
+
 const getters = {
     getUserData: (state) => {
         if (Object.keys(state.userData).length == 0) {
@@ -36,11 +37,12 @@ const getters = {
             return false;
         } else {
             // ? emailVerified
-            return state.userAuth
+            return state.userAuth.emailVerified
         }
 
     }
 }
+
 const mutations = {
     setUserAuth(state) {
         state.userAuth = firebaseRef.auth().currentUser;
@@ -59,6 +61,7 @@ const mutations = {
 
 // Do not check for valid data because that should be handled with vue-validate and generally in the clients
 const actions = {
+    // Making the user
     createUserWithEmail: ({}, payload) => {
         console.log('createUserWithEmail', payload)
         return new Promise((resolve, reject) => {
@@ -93,48 +96,18 @@ const actions = {
         commit
     }, payload) => {
         // Todo: add Datecreated 
+        // Todo: configure rules in firebase so only the user with his UID can change his data
         return new Promise((resolve, reject) => {
             let userUID = firebaseRef.auth().currentUser.uid
-            commit('setUserData', payload)
-            // Todo: configure rules in firebase so only the user with his UID can change his data
             db.collection('Users').doc(userUID).set(payload).then(res => {
                 console.log('createUserInDB', res)
+                commit('setUserData', payload)
                 resolve(res)
             }).catch(err => {
                 reject(err)
             })
         })
 
-    },
-    getUserData: ({
-        commit
-    }) => {
-        let userUID = firebaseRef.auth().currentUser.uid
-        return new Promise((resolve, reject) => {
-            db.collection('Users').doc(userUID).get().then(querySnapshot => {
-                commit('setUserData', querySnapshot.data())
-                resolve(querySnapshot.data())
-            }).catch(err => {
-                reject(err)
-            })
-        })
-    },
-    addUsersRooms: ({},
-        roomData) => {
-        let userUID = firebaseRef.auth().currentUser.uid
-        let userRef = db.collection('Users').doc(userUID)
-        // roomData should have the roomName and room Id
-        return new Promise((resolve, reject) => {
-            userRef.update({
-                rooms: firestoreRoot.FieldValue.arrayUnion(roomData)
-            }).then(res => {
-                console.log(res)
-                resolve(res)
-            }).catch(err => {
-                console.log('​err', err)
-                reject(err)
-            })
-        })
     },
     makeNewUser: ({
         dispatch,
@@ -159,6 +132,40 @@ const actions = {
             })
         })
     },
+    // Updating users data
+    updateProfileImgLink: ({
+        commit,
+        dispatch
+    }, filePath) => {
+        return new Promise((resolve, reject) => {
+            dispatch('getPicture', filePath).then(imageLink => {
+                commit('updateUserPictureURL', imageLink)
+                let userDoc = db.collection('Users').doc(firebaseRef.auth().currentUser.uid)
+                userDoc.update({
+                    profileImageLink: imageLink
+                }).then(result => {
+                    resolve(result)
+                })
+            }).catch(err => {
+                console.log('TCL: err', err)
+                reject(err)
+            })
+        })
+    },
+    // Getting user data
+    getUserData: ({
+        commit
+    }) => {
+        let userUID = firebaseRef.auth().currentUser.uid
+        return new Promise((resolve, reject) => {
+            db.collection('Users').doc(userUID).get().then(querySnapshot => {
+                commit('setUserData', querySnapshot.data())
+                resolve(querySnapshot.data())
+            }).catch(err => {
+                reject(err)
+            })
+        })
+    },
     readAllUsers: () => {
         // One Time read
         return new Promise((resolve, reject) => {
@@ -169,6 +176,7 @@ const actions = {
             })
         })
     },
+
     logInUserAuth: ({
         commit,
         dispatch
@@ -187,6 +195,7 @@ const actions = {
             });
         })
     },
+    // Sign Out User
     signOutUserAuth: ({}) => {
         return new Promise((resolve, reject) => {
             firebaseRef.auth().signOut().then((res) => {
@@ -199,21 +208,17 @@ const actions = {
         })
     },
     signOutUserTotal: ({
-        commit,
         dispatch
     }) => {
         return new Promise((resolve, reject) => {
             dispatch('signOutUserAuth').then(res => {
-                commit('clearUser');
                 resolve(res);
             }).catch(err => {
                 reject(err);
             })
         })
     },
-    deleteUser: ({
-        commit
-    }) => {
+    deleteUser: ({}) => {
         return new Promise((resolve, reject) => {
             var user = firebaseRef.auth().currentUser;
             user.delete().then((res) => {

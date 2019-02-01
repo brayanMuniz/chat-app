@@ -20,8 +20,7 @@ const mutations = {
 const actions = {
     // Update the user rooms in his own data
     makeNewRoom: ({
-        getters,
-        dispatch
+        
     }, roomData) => {
         // Todo: set roomData correctlysa
         // Tip: Do not try to access state directly instead use getters to get it and commit to mutate it
@@ -80,6 +79,7 @@ const actions = {
 
             let myUID = firebaseRef.auth().currentUser.uid;
             let userName = getters.getUserData.userName;
+            // ? Link might not be defined on initial render
             let userProfileImage = getters.getProfileImageLink;
 
             let userData = {

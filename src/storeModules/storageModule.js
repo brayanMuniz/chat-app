@@ -1,8 +1,6 @@
 import firebase from '../firebaseConfig'
 let storage = firebase.firebase.storage();
-const state = {
-
-}
+const state = {}
 const getters = {}
 const mutations = {}
 const actions = {

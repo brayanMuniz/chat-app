@@ -108,10 +108,8 @@ export default {
         }
     },
     created() {
-        if (this.roomData == null || this.$store.getters.getUserData == null) {
-            this.$router.push('/');
-        }
         console.log(this.roomData)
+        console.log(this.$store.getters.isUserVerified)
     },
     mounted() {
         this.getChatUpdate();

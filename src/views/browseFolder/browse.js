@@ -14,10 +14,7 @@ export default {
             roomPictureUpload: null,
         }
     },
-    created() {
-        this.$store.getters.getProfileImageLink
-        // if there is no user redirect them to the landing page
-    },
+    created() {},
     // Todo: use the mehtods from projectModule.jss
     methods: {
         getRealTimeChatRooms() {
@@ -120,9 +117,7 @@ export default {
             this.roomPictureUpload = null;
         },
     },
-
     mounted() {
-        this.$store.getters.isAUserSignedIn
         this.getRealTimeChatRooms()
     }
 }

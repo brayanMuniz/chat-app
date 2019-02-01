@@ -7,7 +7,6 @@ export default {
     data() {
         return {
             allUsers: [],
-            allRooms: [],
             testUserName: null,
             newUser: {},
             email: null,
@@ -22,46 +21,31 @@ export default {
         }
     },
     methods: {
+        // New User Methodss
         userNameCheck(userName) {
             return this.$store.dispatch('lookForuserName', userName)
         },
         makeNewUser() {
             // Todo: add profileImage
             console.log(this.profileImage)
-            this.userNameCheck(this.testUserName).then(res => {
-                console.log(res)
-                if (res.empty) {
-                    console.log('user Name Not taken')
-                    // make the user
-                    let newUserData = {
-                        userName: this.testUserName,
-                        dateCreated: new Date(),
-                        profileImage: this.profileImage.name
-                    }
-                    let signUp = {
-                        email: this.email,
-                        password: this.password
-                    }
-                    this.newUser['signUp'] = signUp
-                    this.newUser['newUserData'] = newUserData
-                    console.log(this.newUser)
-                    this.$store.dispatch('makeNewUser', this.newUser).then(res => {
-                        console.log('TCL: makeNewUser -> res', res)
-                        if (this.profileImage == null || res.user.uid == null) {
-                            console.log('No Profile Image for the user ')
+            this.userNameCheck(this.testUserName).then(userNameTaken => {
+                if (userNameTaken.empty) {
+                    this.setNewUserData()
+                    // make the user => set profile image
+                    this.$store.dispatch('makeNewUser', this.newUser).then(newMadeUser => {
+                        console.log('TCL: makeNewUser -> newMadeUser', newMadeUser);
+                        this.uploadProfilePicture(newMadeUser.user.uid).then(uploadProfile => {
+                            console.log('TCL -> uploadProfile', uploadProfile)
                             this.$router.push('/browse')
-                        } else {
-                            let fullPath = `Users/${res.user.uid}/${this.profileImage.name}`
-                            this.uploadProfilePicture(fullPath).then(imageResult => {
-                                // Todo: Send a notification of uploaded successfully 
-                                console.log(imageResult)
-                                this.$router.push('/browse')
+                            this.setProfilePicture(newMadeUser.user.uid).then(setProfile => {
+                                console.log('TCL -> setProfile', setProfile)
+                                console.log('Set the users profileImageLink')
                             }).catch(err => {
-                                alert('Account was made but image could not be uploaded')
-                                console.log(err)
+                                console.log('TCL: makeNewUser -> err', err)
                             })
-                        }
-
+                        }).catch(err => {
+                            console.log('TCL: makeNewUser -> err', err)
+                        })
                     }).catch(err => {
                         alert('Could not make account')
                         console.log(err)
@@ -70,10 +54,48 @@ export default {
                     alert('User Name taken')
                 }
             }).catch(err => {
+                alert("There was a problem on our side")
                 console.log(err)
             })
 
         },
+        uploadProfilePicture(newUserUid) {
+            if (this.profileImage == null || newUserUid == null) {
+                console.log('No Profile Image for the user ')
+                this.$router.push('/browse')
+                return Promise.reject("There was no data to submit to firebase")
+            } else {
+                // Todo: add metadata
+                let fullPath = `Users/${newUserUid}/${this.profileImage.name}`
+                let fileData = {
+                    file: this.profileImage,
+                    path: fullPath
+                }
+                return this.$store.dispatch('uploadPicture', fileData)
+            }
+
+        },
+        setProfilePicture(newUserUid) {
+            let userImagePath = `Users/${newUserUid}/${this.profileImage.name}`
+            return this.$store.dispatch('updateProfileImgLink', userImagePath)
+        },
+        setNewUserData() {
+            console.log('Making User')
+            let newUserData = {
+                userName: this.testUserName,
+                dateCreated: new Date(),
+                profileImage: this.profileImage.name || null,
+                profileImageLink: null
+            }
+            let signUp = {
+                email: this.email,
+                password: this.password
+            }
+            this.newUser['signUp'] = signUp
+            this.newUser['newUserData'] = newUserData
+            console.log(this.newUser)
+        },
+
         signIn() {
             let payload = {
                 email: this.email,
@@ -88,15 +110,7 @@ export default {
             })
 
         },
-        uploadProfilePicture(path) {
-            // Todo: verify that roomPicture is a actual file\
-            // Todo: add metadata
-            let fileData = {
-                file: this.profileImage,
-                path: path
-            }
-            return this.$store.dispatch('uploadPicture', fileData)
-        },
+
         // Live Updates
         getRealTimeUserUpdates() {
             db.collection('Users').onSnapshot(doc => {
@@ -112,6 +126,8 @@ export default {
                 })
             })
         },
+
+
         // File changes
         // Todo: change room picture to profileImage
         onFileChange(e) {
@@ -133,10 +149,5 @@ export default {
             this.showProfileImg = null;
             this.profileImage = null;
         },
-        // Upload
-        uploadFile() {
-
-        }
-    },
-    computed: {}
+    }
 }
