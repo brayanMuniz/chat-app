@@ -2,7 +2,7 @@
 
     <div class="row">
 
-        <!-- Messages -->
+        <!-- Chat Room Messages -->
         <div class="col-md-8 col-xl-9 pr-0">
             <div class="chat">
                 <div class="card custom-card">
@@ -49,6 +49,8 @@
                             <!-- If you did not send this message -->
                             <div class="d-flex justify-content-start mb-2" v-else>
                                 <!-- Make an if='profilePicture' -->
+                                <!-- Match the user to their profile image link with a computed or methods -->
+                                <!-- users.uid.profileImageLink || -->
                                 <div class="img_cont_msg">
                                     <img :src="defaultUser" class="rounded-circle user_img_msg">
                                 </div>
@@ -114,9 +116,9 @@
 
                 <div class="card-footer"></div>
             </div>
-            
+
         </div>
-        
+
     </div>
-    
+
 </div>

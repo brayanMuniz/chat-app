@@ -1,5 +1,6 @@
 import firebase from '../firebaseConfig'
 let storage = firebase.firebase.storage();
+
 const state = {}
 const getters = {}
 const mutations = {}
@@ -9,10 +10,10 @@ const actions = {
         let testPath = '/chatRooms/2ZGpLzJ6xPnlJ8vpMd9d/Hello '
         return new Promise((resolve, reject) => {
             storage.ref(filePath).getDownloadURL().then(url => {
-                resolve(url)
+                resolve(url);
             }).catch(err => {
                 console.log('TCL: getStorage -> err', err)
-                reject(err)
+                reject(err);
             })
         })
     },

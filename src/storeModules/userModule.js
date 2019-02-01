@@ -118,6 +118,7 @@ const actions = {
             dispatch('createUserWithEmail', payload.signUp).then(madeUser => {
                 commit('setUserAuth')
                 // If either of these fail then the new user will be deleted
+                // ? If the email does not exist how does it send it over to it
                 Promise.all([dispatch('sendEmailVerification'), dispatch('createUserInDB', payload.newUserData)]).then(res => {
                     console.log('TCL: res', res)
                     resolve(madeUser)
