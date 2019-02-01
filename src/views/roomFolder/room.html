@@ -52,7 +52,7 @@
                                 <!-- Match the user to their profile image link with a computed or methods -->
                                 <!-- users.uid.profileImageLink || -->
                                 <div class="img_cont_msg">
-                                    <img :src="defaultUser" class="rounded-circle user_img_msg">
+                                    <img :src="matchUserToProfilePic(msg.messageData.from.userUID)" class="rounded-circle user_img_msg">
                                 </div>
                                 <div class="msg_cotainer">
                                     {{msg.messageData.newMessage}}

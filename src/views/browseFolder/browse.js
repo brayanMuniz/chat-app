@@ -46,9 +46,27 @@ export default {
         },
         makeNewRoom() {
             // ! Room Picture gave an undefined 
+            let roomData = this.setNewRoomData();
+            this.$store.dispatch('makeNewRoom', roomData).then(res => {
+                console.log(res.id)
+                let fullPath = `chatRooms/${res.id}/${this.roomPictureUpload.name}`
+                if (this.roomPicture == null || res.id == null) {
+                    console.log('did not');
+                } else {
+                    this.uploadRoomPicture(fullPath).then(res => {
+                        console.log(res)
+                    }).catch(err => {
+                        console.log(err)
+                    })
+                }
+            }).catch(err => {
+                console.log(err)
+            })
+        },
+        setNewRoomData() {
             let myUID = firebaseRef.auth().currentUser.uid;
             let userName = this.$store.getters.getUserData.userName;
-            let userProfileImage = this.$store.getters.getProfileImageLink;
+            let userProfileImage = this.$store.getters.getProfileImageLink
             let roomData = {
                 roomName: this.newRoomName,
                 msgLength: 0,
@@ -58,28 +76,12 @@ export default {
                 users: [{
                     userName: userName,
                     userUID: myUID,
-                    userProfileImage: userProfileImage,
-                    dateJoined: new Date()
+                    dateJoined: new Date(),
+                    userProfileImage: userProfileImage
                 }]
             }
-
             console.log(roomData);
-            this.$store.dispatch('makeNewRoom', roomData).then(res => {
-                console.log(res.id)
-                let fullPath = `chatRooms/${res.id}/${this.roomPictureUpload.name}`
-                if (this.roomPicture == null || res.id == null) {
-                    console.log('did nbot ')
-                } else {
-                    this.uploadRoomPicture(fullPath).then(res => {
-                        // Todo: Send a notification of uploaded successfully 
-                        console.log(res)
-                    }).catch(err => {
-                        console.log(err)
-                    })
-                }
-            }).catch(err => {
-                console.log(err)
-            })
+            return roomData
         },
         getPicture(filePath) {
             return this.$store.dispatch('getPicture', filePath)

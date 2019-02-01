@@ -61,7 +61,7 @@ const mutations = {
 
 // Do not check for valid data because that should be handled with vue-validate and generally in the clients
 const actions = {
-    // Making the user
+    // Making the user;
     createUserWithEmail: ({}, payload) => {
         console.log('createUserWithEmail', payload)
         return new Promise((resolve, reject) => {

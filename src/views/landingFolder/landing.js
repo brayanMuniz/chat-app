@@ -38,7 +38,6 @@ export default {
                             console.log('TCL -> uploadProfile', uploadProfile)
                             this.$router.push('/browse')
                             this.setProfilePicture(newMadeUser.user.uid).then(setProfile => {
-                                console.log('TCL -> setProfile', setProfile)
                                 console.log('Set the users profileImageLink')
                             }).catch(err => {
                                 console.log('TCL: makeNewUser -> err', err)

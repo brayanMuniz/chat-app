@@ -12,7 +12,6 @@ export default {
         return {
             chatRoomMessages: [],
             newMessage: null,
-            usersImgLinks: {},
             defaultUser: "https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Flh3.googleusercontent.com%2F-Zs7cWeyXzTI%2FAAAAAAAAAAI%2FAAAAAAAAAB4%2F5PA9c08gzhQ%2Fphoto.jpg&f=1",
             roomMsgLength: 0
         }
@@ -29,8 +28,8 @@ export default {
                         }
                         this.chatRoomMessages.push(msg)
                     }
-
                 })
+                console.log(this.chatRoomMessages)
                 if (this.roomMsgLength < this.chatRoomMessages.length) {
                     this.scrollChatToBottom()
                     this.roomMsgLength = this.chatRoomMessages.length
@@ -72,13 +71,15 @@ export default {
         },
         addUserToChat() {
             // decoupple these later
-            let userAlreadyInChat = false
+            let userAlreadyInChat = false;
+
             this.roomData.roomData.users.forEach(user => {
                 console.log('TCL: addUserToChat -> user', user)
                 if (user.userUID == firebaseRef.auth().currentUser.uid) {
                     userAlreadyInChat = true
                 }
-            })
+            });
+
             if (userAlreadyInChat) {
                 console.log('Doing nothing')
             } else {
@@ -100,11 +101,14 @@ export default {
             return this.$store.dispatch('getPicture', path)
         },
         matchUserToProfilePic(userUID) {
-            if (userUID in Object.keys(this.usersImgLinks)) {
-                return null;
-            } else {
-                // add userImgLink to it
-            }
+            console.log(userUID)
+            let usersProfilePictureLink = this.defaultUser
+            this.roomData.roomData.users.forEach(user => {
+                if (user.userUID == userUID) {
+                    usersProfilePictureLink = user.userProfileImage
+                }
+            })
+            return usersProfilePictureLink
         }
     },
     created() {
