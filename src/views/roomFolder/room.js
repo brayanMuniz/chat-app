@@ -39,8 +39,8 @@ export default {
         },
         getRoomUpdate() {
             db.collection('chatRooms').doc(this.roomData.roomId).onSnapshot(doc => {
-                console.log('TCL: getRoomUpdate -> doc', doc.data())
-                this.roomData.roomData.users = doc.data().users
+                console.log('TCL: getRoomUpdate -> doc', doc.data());
+                this.roomData.roomData.users = doc.data().users;
             })
         },
         sendMessage() {
@@ -101,13 +101,14 @@ export default {
             return this.$store.dispatch('getPicture', path)
         },
         matchUserToProfilePic(userUID) {
-            console.log(userUID)
-            let usersProfilePictureLink = this.defaultUser
+            let usersProfilePictureLink = this.defaultUser;
+            
             this.roomData.roomData.users.forEach(user => {
                 if (user.userUID == userUID) {
                     usersProfilePictureLink = user.userProfileImage
                 }
             })
+
             return usersProfilePictureLink
         }
     },

@@ -30,13 +30,13 @@ export default {
             console.log(this.profileImage)
             this.userNameCheck(this.testUserName).then(userNameTaken => {
                 if (userNameTaken.empty) {
-                    this.setNewUserData()
+                    this.setNewUserData();
                     // make the user => set profile image
                     this.$store.dispatch('makeNewUser', this.newUser).then(newMadeUser => {
                         console.log('TCL: makeNewUser -> newMadeUser', newMadeUser);
+                        this.$router.push('/browse')
                         this.uploadProfilePicture(newMadeUser.user.uid).then(uploadProfile => {
                             console.log('TCL -> uploadProfile', uploadProfile)
-                            this.$router.push('/browse')
                             this.setProfilePicture(newMadeUser.user.uid).then(setProfile => {
                                 console.log('Set the users profileImageLink')
                             }).catch(err => {
@@ -53,6 +53,7 @@ export default {
                     alert('User Name taken')
                 }
             }).catch(err => {
+                // ! Err without pic
                 alert("There was a problem on our side")
                 console.log(err)
             })
@@ -94,7 +95,6 @@ export default {
             this.newUser['newUserData'] = newUserData
             console.log(this.newUser)
         },
-
         signIn() {
             let payload = {
                 email: this.email,

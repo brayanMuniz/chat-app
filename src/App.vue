@@ -4,6 +4,7 @@
     <router-view></router-view>
     <app-footer></app-footer>
   </div>
+  
 </template>
 
 <script>
@@ -54,3 +55,7 @@ export default {
 <style lang="scss">
 @import "~bootstrap/scss/bootstrap";
 </style>
+<style>
+@import '~vuetify/dist/vuetify.min.css';
+</style>
+

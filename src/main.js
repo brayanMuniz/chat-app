@@ -4,6 +4,10 @@ import router from './router'
 import store from './store'
 import bootstrap from 'bootstrap'
 import VeeValidate from 'vee-validate';
+import Vuetify from "vuetify";
+import 'vuetify/dist/vuetify.min.css'
+Vue.use(Vuetify)
+
 import {
   library
 } from '@fortawesome/fontawesome-svg-core'
@@ -32,5 +36,6 @@ new Vue({
   router,
   store,
   bootstrap,
+  Vuetify,
   render: h => h(App),
 }).$mount('#app')
