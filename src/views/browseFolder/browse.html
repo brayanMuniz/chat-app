@@ -1,7 +1,7 @@
 <div class="container-fluid mt-5">
     <v-container fluid grid-list-xl class="mt-5">
         <v-layout row wrap transition="slide-y-transition">
-            <v-flex xs4 v-for='room in allRooms' :key='room.roomId'>
+            <v-flex xs12 sm12 md6 lg4 v-for='room in allRooms' :key='room.roomId'>
                 <v-card>
                     <v-img :src="room.urlPicture" v-if='room.urlPicture' aspect-ratio="1.778"></v-img>
                     <v-card-title primary-title>
@@ -11,7 +11,6 @@
                         </div>
                     </v-card-title>
                     <v-card-actions>
-                        <!-- @click=':to="{ name: "room", params: { roomName: room.roomData.roomName, roomData: room }}' -->
                         <v-btn flat color="blue" @click='$router.push({ name: "room", params: { roomName: room.roomData.roomName, roomData: room }})'>
                             Go To Room
                         </v-btn>
