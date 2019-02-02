@@ -66,8 +66,19 @@ export default {
                 console.log(err)
             })
         },
-        hideCard() {
-            // Todo: HIde the card
+        hideCard(roomId) {
+            console.log('TCL: hideCard -> roomId', roomId)
+            var index;
+            this.allRooms.forEach(room => {
+                if (room.roomId == roomId) {
+                    index = this.allRooms.indexOf(room)
+                }
+            })
+            if (index > -1) {
+                this.allRooms.splice(index, 1);
+            }
+            // Find the card in this.allRooms and then delete it locally
+
         },
         setNewRoomData() {
             let myUID = firebaseRef.auth().currentUser.uid;
