@@ -1,4 +1,5 @@
 <div class="container-fluid mt-5">
+
     <v-container fluid grid-list-xl class="mt-5">
         <v-layout row wrap transition="slide-y-transition">
             <v-flex xs12 sm12 md5 xl3 lg4 v-for='room in allRooms' :key='room.roomId'>
@@ -25,8 +26,6 @@
         </v-layout>
 
     </v-container>
-
-
 
     <v-dialog v-model="dialog" max-width='1000px' max-height='1000px'>
         <!-- ? add the image on the card -->
@@ -55,7 +54,7 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
-                    <v-btn color="blue darken-1" flat @click="dialog = false">New Room</v-btn>
+                    <v-btn color="blue darken-1" flat @click="makeNewRoom">New Room</v-btn>
                 </v-card-actions>
             </v-form>
         </v-card>
