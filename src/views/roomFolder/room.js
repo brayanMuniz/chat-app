@@ -18,22 +18,24 @@ export default {
     },
     methods: {
         getChatUpdate() {
-            db.collection('chatRooms').doc(this.roomData.roomId).collection('messages').orderBy('dateSent').onSnapshot(docData => {
+            db.collection('chatRooms').doc(this.roomData.roomId).collection('messages').orderBy('dateSent', 'desc').limit(15).onSnapshot(docData => {
+                console.log('TCL: getChatUpdate -> docData', docData)
                 this.chatRoomMessages = []
+                // docData.docs.reverse()
                 docData.docs.forEach(message => {
                     if (message.exists) {
                         let msg = {
                             messageId: message.id,
                             messageData: message.data()
                         }
+
                         this.chatRoomMessages.push(msg)
+
                     }
                 })
+                this.chatRoomMessages.reverse()
                 console.log(this.chatRoomMessages)
-                if (this.roomMsgLength < this.chatRoomMessages.length) {
-                    this.scrollChatToBottom()
-                    this.roomMsgLength = this.chatRoomMessages.length
-                }
+
             })
 
         },
@@ -56,12 +58,12 @@ export default {
                 },
                 roomId: this.roomData.roomId,
             }
+            console.log(this.newMessage)
             if (this.newMessage == null || this.newMessage.length > 1000 || this.newMessage.length == 0) {
                 alert('stop it');
             } else {
                 this.$store.dispatch('sendMessageToRoom', payload).then(res => {
                     console.log('​sendMessageToRoom -> res', res);
-                    this.scrollChatToBottom();
                 }).catch(err => {
                     console.log('​sendMessageToRoom -> err', err);
                 });
@@ -93,16 +95,12 @@ export default {
         convertTime(time) {
             return moment.unix(time).format("MMMM Do, h:mm:ss")
         },
-        scrollChatToBottom() {
-            let chatMSGScroll = document.getElementById('card_msg_body');
-            chatMSGScroll.scrollTo(0, chatMSGScroll.scrollHeight)
-        },
         getProfileImageLink(path) {
             return this.$store.dispatch('getPicture', path)
         },
         matchUserToProfilePic(userUID) {
             let usersProfilePictureLink = this.defaultUser;
-            
+
             this.roomData.roomData.users.forEach(user => {
                 if (user.userUID == userUID) {
                     usersProfilePictureLink = user.userProfileImage
@@ -115,6 +113,9 @@ export default {
     created() {
         console.log(this.roomData)
         console.log(this.$store.getters.isUserVerified)
+        if (this.roomData == null) {
+            this.$router.push('/browse')
+        }
     },
     mounted() {
         this.getChatUpdate();

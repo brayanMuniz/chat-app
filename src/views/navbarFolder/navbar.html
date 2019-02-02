@@ -1,40 +1,66 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-    <router-link class="navbar-brand" to='/'>Chat-App</router-link>
-    <!-- <font-awesome-icon icon='plus' /> -->
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
-        aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+<nav>
+    <v-toolbar app dark color="primary" v-if='$store.getters.getUserData'>
+        <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+        <v-toolbar-title class="white--text" flat @click='$router.push("/")'>
+            Chat-App
+        </v-toolbar-title>
+        <v-spacer></v-spacer>
+    </v-toolbar>
 
-    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        
-        <ul class="navbar-nav ml-auto" v-if='$store.getters.getUserData'>
-            <li class="nav-item dropdown">
-                <router-link to='/browse' class="nav-link active">
-                    Browse
-                </router-link>
-            </li>
-            <li class="nav-item dropdown mr-3">
-                <a class="nav-link active dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false">{{getUserName}}</a>
-                <div class="dropdown-menu" aria-labelledby="dropdown01">
-                    <a class="dropdown-item" href="#" @click='signOutUser'>Sign Out</a>
-                </div>
-            </li>
+    <v-navigation-drawer v-model="drawer" absolute temporary>
+        <v-list class="pa-1">
+            <v-list-tile avatar>
+                <v-list-tile-avatar>
+                    <img :src="$store.getters.getProfileImageLink">
+                </v-list-tile-avatar>
 
-        </ul>
+                <v-list-tile-content>
+                    <v-list-tile-title>{{getUserName}}</v-list-tile-title>
+                </v-list-tile-content>
+            </v-list-tile>
+        </v-list>
 
-        <!-- <ul class="navbar-nav ml-auto" v-else>
+        <v-list class="pt-0" dense>
+            <v-divider></v-divider>
+            <!-- Home -->
+            <v-list-tile @click='$router.push("/")'>
+                <!-- wrap a router link arond all of it -->
+                <v-list-tile-action>
+                    <v-icon>home</v-icon>
+                </v-list-tile-action>
 
-            <li class="nav-item">
-                <a class="nav-link" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sign
-                    Up</a>
-            </li>
+                <v-list-tile-content>
+                    <v-list-tile-title>
+                        Home
+                    </v-list-tile-title>
+                </v-list-tile-content>
+            </v-list-tile>
+            <!-- Browse -->
+            <v-list-tile @click='$router.push("/browse")'>
+                <v-list-tile-action>
+                    <v-icon>dashboard</v-icon>
+                </v-list-tile-action>
 
-            <li class="nav-item">
-                <a class="nav-link" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sign
-                    In</a>
-            </li>
-        </ul> -->
-    </div>
+                <v-list-tile-content>
+                    <v-list-tile-title>
+                        Browse
+                    </v-list-tile-title>
+                </v-list-tile-content>
+            </v-list-tile>
+            <!-- Sign Out -->
+            <v-list-tile @click='signOutUser'>
+                <v-list-tile-action>
+                    <v-icon>account_box</v-icon>
+                </v-list-tile-action>
+
+                <v-list-tile-content>
+                    <v-list-tile-title>
+                        Sign Out
+                    </v-list-tile-title>
+                </v-list-tile-content>
+            </v-list-tile>
+        </v-list>
+
+    </v-navigation-drawer>
+
 </nav>

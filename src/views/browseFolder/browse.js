@@ -12,6 +12,7 @@ export default {
             newRoomDesc: null,
             roomPicture: null,
             roomPictureUpload: null,
+            dialog: false
         }
     },
     created() {},
@@ -48,6 +49,7 @@ export default {
             // ! Room Picture gave an undefined 
             let roomData = this.setNewRoomData();
             this.$store.dispatch('makeNewRoom', roomData).then(res => {
+                // this.$router.push('/room/:roomName')
                 console.log(res.id)
                 let fullPath = `chatRooms/${res.id}/${this.roomPictureUpload.name}`
                 if (this.roomPicture == null || res.id == null) {

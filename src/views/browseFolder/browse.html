@@ -1,70 +1,65 @@
-<div class="container-fluid mt-5 pt-2">
-    <div class="row">
-        <main class="col-md-8">
-            <h1>Public Rooms</h1>
-            <div class="card-columns mt-2">
-                <div class="card" v-for='room in allRooms' :key='room.roomId'>
-                    <h4 class="card-header bg-dark text-white">
-                        <router-link class="text-white" :to="{ name: 'room', params: { roomName: room.roomData.roomName, roomData: room }}">
-                            {{room.roomData.roomName}}
-                        </router-link>
-                        <div class="float-right small">
-                            <!-- <a class="btn btn-raised btn-danger" href="#" title="Ver perfil de Miguel92" data-toggle="tooltip"
-                                data-placement="top">
-                                <i class="fa fa-user-circle" aria-hidden="true"></i> -->
-                            </a>
-                            <!-- <a class="btn btn-raised btn-danger" href="#">
-                                <i class="fa fa-envelope" aria-hidden="true"></i>
-                            </a>
-                            <a class="btn btn-raised btn-danger" href="#">
-                                <i class="fa fa-eye" aria-hidden="true"></i>
-                            </a> -->
+<div class="container-fluid mt-5">
+    <v-container fluid grid-list-xl class="mt-5">
+        <v-layout row wrap transition="slide-y-transition">
+            <v-flex xs4 v-for='room in allRooms' :key='room.roomId'>
+                <v-card>
+                    <v-img :src="room.urlPicture" v-if='room.urlPicture' aspect-ratio="1.778"></v-img>
+                    <v-card-title primary-title>
+                        <div>
+                            <h3 class="headline mb-0"> {{room.roomData.roomName}}</h3>
+                            <div>{{room.roomData.roomDescription}}</div>
                         </div>
-                    </h4>
-                    <div class="card-body">
-                        <div class="image float-left user-l">
-                            <router-link :to="{ name: 'room', params: { roomName: room.roomData.roomName, roomData: room }}">
-                                <img :src="room.urlPicture" v-if='room.urlPicture' class="img-thumbnail" alt="avatar" />
-                            </router-link>
-                        </div>
-                        <!-- <h4 class="card-title">{{room.roomData.roomName}}</h4> -->
-                        <p class="card-text" v-if='room.roomData.roomDescription'>{{room.roomData.roomDescription}}</p>
-                    </div>
-                </div>
-            </div>
-        </main>
+                    </v-card-title>
+                    <v-card-actions>
+                        <!-- @click=':to="{ name: "room", params: { roomName: room.roomData.roomName, roomData: room }}' -->
+                        <v-btn flat color="blue" @click='$router.push({ name: "room", params: { roomName: room.roomData.roomName, roomData: room }})'>
+                            Go To Room
+                        </v-btn>
+                        <v-btn flat color="red">Hide</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-flex>
 
-        <aside class="col-md-3 mb-2 ml-5">
-            <div class="sticky-top">
-                <h4>Make New Room</h4>
-                <form @submit.prevent="makeNewRoom">
+            <v-btn fab small color="blue" bottom right absolute fixed @click="dialog = !dialog" class="mb-5">
+                <v-icon>add</v-icon>
+            </v-btn>
+        </v-layout>
 
-                    <div class="form-row">
-                        <label>Room Name</label>
-                        <input type="text" class="form-control" v-model='newRoomName' placeholder="New Room Name">
-                    </div>
+    </v-container>
 
-                    <div class="form-row">
-                        <label>Room Description</label>
-                        <textarea rows="3" type="text" class="form-control" v-model='newRoomDesc' placeholder="Room Description"></textarea>
-                        <!-- <input type="text" class="form-control" v-model='newRoomDesc' placeholder="Room Description"> -->
-                    </div>
+
+
+    <v-dialog v-model="dialog" max-width='1000px' max-height='1000px'>
+        <!-- ? add the image on the card -->
+        <v-card>
+
+            <v-form @submit.prevent="makeNewRoom">
+                <v-container>
+                    <v-flex>
+                        <v-text-field v-model.trim='newRoomName' :counter="50" label="Room Name" required></v-text-field>
+                    </v-flex>
+                    <v-flex>
+                        <v-text-field v-model.trim='newRoomDesc' :counter="500" label="Room Description" required></v-text-field>
+                    </v-flex>
 
                     <div class="custom-file mx-auto my-2" v-if="!roomPicture">
                         <input type="file" class="custom-file-input form-control" id="customFile" @change="onFileChange">
                         <label class="custom-file-label">Room Picture</label>
                     </div>
 
-                    <div v-else class="mt-2">
-                        <img class="img-fluid" :src="roomPicture" />
-                        <button class="btn-sm btn p-1 btn-danger mt-3 ml-auto" @click="removeImage" type="buttons">Remove
-                            image</button>
+                    <div v-else>
+                        <v-img :src="roomPicture" aspect-ratio="1.778" max-width='500px' max-height='500px'></v-img>
+                        <v-btn color="red darken-1" @click="removeImage" class="white--text"> Remove image</v-btn>
                     </div>
+                </v-container>
 
-                    <button type="submit" class="btn btn-primary ml-auto my-2">New Room</button>
-                </form>
-            </div>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" flat @click="dialog = false">Close</v-btn>
+                    <v-btn color="blue darken-1" flat @click="dialog = false">New Room</v-btn>
+                </v-card-actions>
+            </v-form>
+        </v-card>
+    </v-dialog>
 
-        </aside>
-    </div>
 </div>

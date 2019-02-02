@@ -3,6 +3,7 @@ export default {
     data() {
         return {
             userName: null,
+            drawer: null,
         }
     },
     created() {},

@@ -1,126 +1,96 @@
-<div class="mt-5">
+<div class="row mt-5">
+    <!-- Todo: use vuetifies breakpoint system instead -->
+    <!-- Add a slide y transition -->
+    <div class="col-md-9 pr-0">
+        <div class="card custom-card">
+            <!-- Head -->
+            <v-layout>
+                <v-flex xs12 sm12>
+                    <v-card max-width>
+                        <!-- <v-img :src="roomData.urlPicture" aspect-ratio=""></v-img> -->
 
-    <div class="row">
-
-        <!-- Chat Room Messages -->
-        <div class="col-md-8 col-xl-9 pr-0">
-            <div class="chat">
-                <div class="card custom-card">
-
-                    <!-- Head -->
-                    <div class="card-header msg_head">
-
-                        <div class="d-flex bd-highlight">
-                            <div class="room_img_cont">
-                                <img :src="roomData.urlPicture" class="img-fluid">
-                                <!-- <span class="online_icon"></span> -->
+                        <v-card-title primary-title>
+                            <div>
+                                <h3 class="headline mb-0">{{roomData.roomData.roomName}}</h3>
+                                <div>{{roomData.roomData.roomDescription}}</div>
                             </div>
-                            <div class="user_info">
-                                <span>{{roomData.roomData.roomName}} </span>
-                                <p class="mb-1">{{chatRoomMessages.length}} Messages</p>
-                                <!-- <p class="mt-0">{{chatRoomMessages.length}} Users Online</p> -->
-                            </div>
-                        </div>
-                        <span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span>
-                        <div class="action_menu">
-                            <ul>
-                                <li><i class="fas fa-user-circle"></i> View profile</li>
-                                <li><i class="fas fa-users"></i> Add to close friends</li>
-                                <li><i class="fas fa-plus"></i> Add to group</li>
-                                <li><i class="fas fa-ban"></i> Block</li>
-                            </ul>
-                        </div>
-                    </div>
+                        </v-card-title>
 
-                    <!-- Messages -->
-                    <div class="card-body msg_card_body px-4" id="card_msg_body">
-                        <div v-for='msg in chatRoomMessages' :key='msg.id'>
-                            <!-- If you Sent message -->
-                            <div class="d-flex justify-content-end mb-2" v-if='msg.messageData.from.userUID == $store.getters.getUserAuth.uid'>
-                                <div class="msg_cotainer_send">
-                                    {{msg.messageData.newMessage}}
-                                    <span class="msg_time_send" v-if='msg.messageData.newMessage.length > 10'>{{convertTime(msg.messageData.dateSent.seconds)}}</span>
-                                </div>
-                                <div class="img_cont_msg">
-                                    <img :src="userImageProfileLink" class="rounded-circle user_img_msg">
-                                </div>
+                        <v-card-actions>
+                            <v-btn flat color="orange">{{roomData.roomData.msgLength}} Messages</v-btn>
+                        </v-card-actions>
 
-                            </div>
-                            <!-- If you did not send this message -->
-                            <div class="d-flex justify-content-start mb-2" v-else>
-                                <!-- Make an if='profilePicture' -->
-                                <!-- Match the user to their profile image link with a computed or methods -->
-                                <!-- users.uid.profileImageLink || -->
-                                <div class="img_cont_msg">
-                                    <img :src="matchUserToProfilePic(msg.messageData.from.userUID)" class="rounded-circle user_img_msg">
-                                </div>
-                                <div class="msg_cotainer">
-                                    {{msg.messageData.newMessage}}
-                                    <span class="msg_time" v-if='msg.messageData.newMessage.length > 10'>{{convertTime(msg.messageData.dateSent.seconds)}}</span>
-                                </div>
-                            </div>
+                    </v-card>
+                </v-flex>
+            </v-layout>
+            <!-- Messages -->
+            <v-layout row>
+                <v-flex xs12 sm12>
+                    <v-list>
+                        <v-list-tile v-for='msg in chatRoomMessages' :key='msg.id' avatar @click="">
+                            <v-list-tile-avatar>
+                                <img :src="matchUserToProfilePic(msg.messageData.from.userUID)">
+                            </v-list-tile-avatar>
 
-                        </div>
-                    </div>
+                            <v-list-tile-content>
+                                <v-list-tile-title v-text="msg.messageData.newMessage"></v-list-tile-title>
+                            </v-list-tile-content>
 
-                    <!-- Send Messages Footer-->
-                    <div class="card-footer mt-0">
-                        <form class="input-group" @submit.prevent='sendMessage' @keyup.enter="sendMessage">
-                            <!-- <div class="input-group-append">
-                        <span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
-                    </div> -->
-                            <!-- <input v-validate="'min:3'" data-vv-as="field" name="min_field" type="text"> -->
-                            <textarea v-model.trim='newMessage' class="form-control" placeholder="Type your message..."></textarea>
-                            <!-- <div class="input-group-append">
-                        <span class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></span>
-                    </div> -->
-                            <button class="btn btn-primary" type="submit">Send</button>
-                        </form>
-                    </div>
+                            <!-- <v-list-tile-avatar v-if='msg.messageData.from.userUID == $store.getters.getUserAuth.uid'>
+                                <img :src="matchUserToProfilePic(msg.messageData.from.userUID)">
+                            </v-list-tile-avatar> -->
 
-                </div>
-            </div>
+                        </v-list-tile>
+                    </v-list>
+                </v-flex>
+            </v-layout>
+            <!-- Send Messages -->
+            <v-form @submit.prevent='sendMessage'>
+                <v-container>
+                    <!-- Todo: have both of these in the same row -->
+                    <v-flex xs12 md12>
+                        <v-text-field v-model.trim='newMessage' :counter="500" label="Message" required></v-text-field>
+                        <v-btn type='submit'>submit</v-btn>
+                    </v-flex>
+                </v-container>
+            </v-form>
         </div>
+    </div>
 
-        <!-- Users In Chat Room -->
-        <div class="col-md-4 col-xl-3 chat pl-0">
+    <!-- Users In Chat Room -->
+    <div class="col-md-3">
+        <v-layout row>
+            <v-flex xs12 sm12>
+                <v-card>
+                    <v-toolbar color="indigo" dark>
 
-            <div class="card custom-card mb-md-0 contacts_card px-0 border-0">
+                        <v-toolbar-title>Users In Room</v-toolbar-title>
 
-                <div class="card-header">
-                    <!-- <div class="input-group text-white">
-                        <input type="text" placeholder="Search..." name="" class="form-control search text-white">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text search_btn"><i class="fas fa-search"></i></span>
-                        </div>
-                    </div> -->
-                </div>
-                
-                <div class="card-body contacts_body">
-                    <ul class="contacts">
-                        <!-- Todo: Make all of these router links -->
-                        <!-- Todo: Add a like and disklike button -->
-                        <!-- Todo: Add a petition voting system -->
-                        <li class="active my-0 py-0 mb-0" v-for='user in roomData.roomData.users' :key='user.userUID'>
-                            <div class="d-flex bd-highlight mb-0">
-                                <div class="room_img_cont">
-                                    <img :src="user.userProfileImage || defaultUser" class="img-fluid">
-                                    <!-- <span class="online_icon"></span> -->
-                                </div>
-                                <div class="user_info">
-                                    <span>{{user.userName}}</span>
-                                    <!-- <p>{{user}}</p> -->
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+                        <v-spacer></v-spacer>
 
-                <div class="card-footer"></div>
-            </div>
+                        <v-btn icon>
+                            <v-icon>search</v-icon>
+                        </v-btn>
 
-        </div>
+                        <v-btn icon>
+                            <v-icon>more_vert</v-icon>
+                        </v-btn>
+                    </v-toolbar>
+                    
+                    <v-list>
+                        <v-list-tile v-for='user in roomData.roomData.users' :key='user.userUID' avatar @click="">
+                            <v-list-tile-content>
+                                <v-list-tile-title v-text="user.userName"></v-list-tile-title>
+                            </v-list-tile-content>
 
+                            <v-list-tile-avatar>
+                                <img :src="user.userProfileImage || defaultUser">
+                            </v-list-tile-avatar>
+                        </v-list-tile>
+                    </v-list>
+                </v-card>
+            </v-flex>
+        </v-layout>
     </div>
 
 </div>

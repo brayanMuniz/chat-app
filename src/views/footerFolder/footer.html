@@ -1,13 +1,17 @@
-<footer class="page-footer font-small navbar-dark bg-dark text-white">
+<v-footer dark height="auto">
+    <v-card class="flex" flat tile>
+        <!-- <v-card-title class="teal">
+            <strong class="subheading">Get connected with us on social networks!</strong>
 
-    <!-- Copyright -->
-    <div class="footer-copyright text-center py-3">Made by:
-        <a class="text-white" href="https://www.brayanmuniz.com">Brayan Muniz</a>
-    </div>
-    <!-- Copyright -->
-    <!-- <v-app>
-        <v-content>
-            <v-container>Hello world</v-container>
-        </v-content>
-    </v-app> -->
-</footer>
+            <v-spacer></v-spacer>
+
+            <v-btn v-for="icon in icons" :key="icon" class="mx-3" dark icon>
+                <v-icon size="24px">{{ icon }}</v-icon>
+            </v-btn>
+        </v-card-title> -->
+
+        <v-card-actions class="grey darken-3 justify-center">
+            <a class="text-white" href="https://www.brayanmuniz.com">Brayan Muniz</a>
+        </v-card-actions>
+    </v-card>
+</v-footer>

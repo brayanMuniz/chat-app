@@ -1,4 +1,4 @@
-.chat {
+/* .chat {
     margin-top: auto;
     margin-bottom: auto;
 }
@@ -24,7 +24,6 @@
 }
 
 .card-footer {
-    /* border-radius: 0 0 15px 15px !important; */
     border-top: 0 !important;
 }
 
@@ -41,9 +40,7 @@
 }
 
 .type_msg {
-    /* background-color: rgba(0, 0, 0, 0.3) !important; */
     border: 0 !important;
-    /* color: white !important; */
     height: 60px !important;
     overflow-y: auto;
 }
@@ -250,4 +247,4 @@
     .contacts_card {
         margin-bottom: 15px !important;
     }
-}
+} */
