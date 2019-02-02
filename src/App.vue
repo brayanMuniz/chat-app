@@ -4,7 +4,6 @@
     <router-view></router-view>
     <app-footer></app-footer>
   </div>
-  
 </template>
 
 <script>
@@ -53,9 +52,13 @@ export default {
 </script>
 
 <style lang="scss">
+// Todo: The goal is to elimante all of bootstrap
+// Todo: When done uninstall bootstrap
 @import "~bootstrap/scss/bootstrap";
+$material-design-icons-font-path: "~material-design-icons-iconfont/dist/fonts/";
+@import "~material-design-icons-iconfont/src/material-design-icons";
 </style>
 <style>
-@import '~vuetify/dist/vuetify.min.css';
+@import "~vuetify/dist/vuetify.min.css";
 </style>
 
