@@ -49,6 +49,7 @@ export default {
             // ! Room Picture gave an undefined 
             let roomData = this.setNewRoomData();
             this.$store.dispatch('makeNewRoom', roomData).then(res => {
+                this.dialog = false;
                 // this.$router.push('/room/:roomName')
                 console.log(res.id)
                 let fullPath = `chatRooms/${res.id}/${this.roomPictureUpload.name}`
@@ -64,6 +65,9 @@ export default {
             }).catch(err => {
                 console.log(err)
             })
+        },
+        hideCard() {
+            // Todo: HIde the card
         },
         setNewRoomData() {
             let myUID = firebaseRef.auth().currentUser.uid;
