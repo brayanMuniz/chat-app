@@ -12,7 +12,8 @@ export default {
             email: null,
             password: null,
             profileImage: null,
-            showProfileImg: null
+            showProfileImg: null,
+            showPassword: false
         }
     },
     created() {
