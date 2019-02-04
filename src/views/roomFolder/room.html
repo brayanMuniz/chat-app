@@ -4,25 +4,28 @@
     <div class="col-md-9 pr-0">
         <div class="card custom-card">
             <!-- Head -->
-            <v-layout>
-                <v-flex xs12 sm12>
-                    <v-card max-width>
-                        <!-- <v-img :src="roomData.urlPicture" aspect-ratio=""></v-img> -->
-
-                        <v-card-title primary-title>
-                            <div>
-                                <h3 class="headline mb-0">{{roomData.roomData.roomName}}</h3>
-                                <div>{{roomData.roomData.roomDescription}}</div>
-                            </div>
-                        </v-card-title>
-
-                        <v-card-actions>
-                            <v-btn flat color="orange">{{roomData.roomData.msgLength}} Messages</v-btn>
-                        </v-card-actions>
-
-                    </v-card>
-                </v-flex>
-            </v-layout>
+            <v-flex xs12>
+                <v-card>
+                    <v-layout>
+                        <v-flex xs2>
+                            <v-img :src="roomData.urlPicture" height="125px" contain></v-img>
+                        </v-flex>
+                        <v-flex xs7>
+                            <v-card-title primary-title>
+                                <div>
+                                    <div class="headline">{{roomData.roomData.roomName}}</div>
+                                    <div>{{roomData.roomData.roomDescription}}</div>
+                                    <!-- <div>(2014)</div> -->
+                                </div>
+                            </v-card-title>
+                        </v-flex>
+                    </v-layout>
+                    <!-- <v-divider light></v-divider>
+                    <v-card-actions>
+                        <v-icon>star_border</v-icon>
+                    </v-card-actions> -->
+                </v-card>
+            </v-flex>
             <!-- Messages -->
             <v-layout row>
                 <v-flex xs12 sm12>
@@ -48,7 +51,7 @@
             <v-form @submit.prevent='sendMessage'>
                 <v-container>
                     <!-- Todo: have both of these in the same row -->
-                    <v-flex xs12 md12>
+                    <v-flex xs12>
                         <v-text-field v-model.trim='newMessage' :counter="500" label="Message" required></v-text-field>
                         <v-btn type='submit'>submit</v-btn>
                     </v-flex>
@@ -66,7 +69,7 @@
 
                         <v-toolbar-title>Users In Room</v-toolbar-title>
 
-                        <v-spacer></v-spacer>
+                        <!-- <v-spacer></v-spacer>
 
                         <v-btn icon>
                             <v-icon>search</v-icon>
@@ -74,9 +77,9 @@
 
                         <v-btn icon>
                             <v-icon>more_vert</v-icon>
-                        </v-btn>
+                        </v-btn> -->
                     </v-toolbar>
-                    
+
                     <v-list>
                         <v-list-tile v-for='user in roomData.roomData.users' :key='user.userUID' avatar @click="">
                             <v-list-tile-content>
