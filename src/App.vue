@@ -44,6 +44,7 @@ export default {
         }
       } else {
         this.$store.commit("clearUser");
+        this.$router.push("/");
       }
     });
   },

@@ -4,7 +4,8 @@ let db = firebase.db;
 
 const state = {
     userAuth: firebaseRef.auth().currentUser,
-    userData: {}
+    userData: {},
+    defaultUserImage: 'https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Flh3.googleusercontent.com%2F-Zs7cWeyXzTI%2FAAAAAAAAAAI%2FAAAAAAAAAB4%2F5PA9c08gzhQ%2Fphoto.jpg&f=1'
 }
 
 const getters = {
@@ -20,7 +21,7 @@ const getters = {
     getProfileImageLink: (state) => {
         if (Object.keys(state.userData).length == 0 || state.userData.profileImageLink == undefined) {
             console.log(state)
-            return null
+            return state.defaultUserImage
         } else {
             return state.userData.profileImageLink
         }

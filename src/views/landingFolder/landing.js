@@ -32,7 +32,6 @@ export default {
             this.userNameCheck(this.testUserName).then(userNameTaken => {
                 if (userNameTaken.empty) {
                     this.setNewUserData();
-                    // make the user => set profile image
                     this.$store.dispatch('makeNewUser', this.newUser).then(newMadeUser => {
                         console.log('TCL: makeNewUser -> newMadeUser', newMadeUser);
                         this.$router.push('/browse')
@@ -82,10 +81,16 @@ export default {
         },
         setNewUserData() {
             console.log('Making User')
+            let profileImageName
+            if (this.profileImage) {
+                profileImageName = this.profileImage.name
+            } else {
+                profileImageName = null
+            }
             let newUserData = {
                 userName: this.testUserName,
                 dateCreated: new Date(),
-                profileImage: this.profileImage.name || null,
+                profileImage: profileImageName,
                 profileImageLink: null
             }
             let signUp = {
@@ -111,6 +116,7 @@ export default {
 
         },
 
+
         // Live Updates
         getRealTimeUserUpdates() {
             db.collection('Users').onSnapshot(doc => {
@@ -126,8 +132,6 @@ export default {
                 })
             })
         },
-
-
         // File changes
         // Todo: change room picture to profileImage
         onFileChange(e) {

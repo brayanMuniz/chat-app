@@ -1,9 +1,7 @@
-<div class="container-fluid mt-5 mb-5">
-    <!-- Users -->
-    <div class="row container-fluid">
-
-        <!-- Sign Up -->
-        <div class="col-md-5 mt-5 mx-1">
+<v-container class="my-5">
+    <v-layout row wrap>
+        <!-- Sign up -->
+        <v-flex sm12 md6>
             <h5>Sign Up</h5>
             <v-form @submit.prevent="makeNewUser">
                 <v-container>
@@ -34,10 +32,9 @@
                     <v-btn color="blue darken-1" flat type='submit'>Make Account</v-btn>
                 </v-card-actions>
             </v-form>
-        </div>
-
+        </v-flex>
         <!-- Sign In -->
-        <div class="col-md-5 mt-5 ml-5 mx-1">
+        <v-flex sm12 md6>
             <h5>Sign In</h5>
             <v-form @submit.prevent="signIn">
                 <v-container>
@@ -57,8 +54,6 @@
                     <v-btn color="blue darken-1" flat type='submit'>Log In</v-btn>
                 </v-card-actions>
             </v-form>
-        </div>
-    </div>
-
-
-</div>
+        </v-flex>
+    </v-layout>
+</v-container>
