@@ -76,7 +76,6 @@ export default {
             let userAlreadyInChat = false;
 
             this.roomData.roomData.users.forEach(user => {
-                console.log('TCL: addUserToChat -> user', user)
                 if (user.userUID == firebaseRef.auth().currentUser.uid) {
                     userAlreadyInChat = true
                 }

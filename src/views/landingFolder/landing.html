@@ -9,7 +9,7 @@
                         <v-text-field v-model.trim='testUserName' :counter="20" label="userName" required></v-text-field>
                     </v-flex>
                     <v-flex>
-                        <v-text-field v-model.trim='email' :counter="50" label="Email" required></v-text-field>
+                        <v-text-field append-icon="person" v-model.trim='email' :counter="50" label="Email" required></v-text-field>
                     </v-flex>
 
                     <v-text-field v-model="password" :append-icon="showPassword ? 'visibility_off' : 'visibility'"
@@ -39,7 +39,7 @@
             <v-form @submit.prevent="signIn">
                 <v-container>
                     <v-flex>
-                        <v-text-field v-model.trim='email' :counter="50" label="Email" required></v-text-field>
+                        <v-text-field append-icon="person" v-model.trim='email' :counter="50" label="Email" required></v-text-field>
                     </v-flex>
 
                     <v-text-field v-model="password" :append-icon="showPassword ? 'visibility_off' : 'visibility'"

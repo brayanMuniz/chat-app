@@ -1,8 +1,7 @@
-<div class="row mt-5">
-    <!-- Todo: use vuetifies breakpoint system instead -->
-    <!-- Add a slide y transition -->
-    <div class="col-md-9 pr-0">
-        <div class="card custom-card">
+<v-layout class="mt-5" row wrap>
+
+    <v-flex sm12 md8>
+        <v-container>
             <!-- Head -->
             <v-flex xs12>
                 <v-card>
@@ -21,14 +20,15 @@
                         </v-flex>
                     </v-layout>
                     <!-- <v-divider light></v-divider>
-                    <v-card-actions>
-                        <v-icon>star_border</v-icon>
-                    </v-card-actions> -->
+                            <v-card-actions>
+                                <v-icon>star_border</v-icon>
+                            </v-card-actions> -->
                 </v-card>
             </v-flex>
             <!-- Messages -->
             <v-layout row>
                 <v-flex xs12 sm12>
+                    <!-- <v-slide-y-transition group tag="v-list"></v-slide-y-transition> -->
                     <v-list>
                         <v-list-tile v-for='msg in chatRoomMessages' :key='msg.id' avatar @click="">
                             <v-list-tile-avatar>
@@ -40,8 +40,8 @@
                             </v-list-tile-content>
 
                             <!-- <v-list-tile-avatar v-if='msg.messageData.from.userUID == $store.getters.getUserAuth.uid'>
-                                <img :src="matchUserToProfilePic(msg.messageData.from.userUID)">
-                            </v-list-tile-avatar> -->
+                                        <img :src="matchUserToProfilePic(msg.messageData.from.userUID)">
+                                    </v-list-tile-avatar> -->
 
                         </v-list-tile>
                     </v-list>
@@ -57,43 +57,47 @@
                     </v-flex>
                 </v-container>
             </v-form>
-        </div>
-    </div>
+        </v-container>
+    </v-flex>
 
-    <!-- Users In Chat Room -->
-    <div class="col-md-3">
-        <v-layout row>
-            <v-flex xs12 sm12>
-                <v-card>
-                    <v-toolbar color="indigo" dark>
+    <v-flex sm12 md4>
+        <v-container>
+            <v-layout row>
+                <v-flex xs12 sm12>
+                    <v-card>
+                        <v-toolbar color="indigo" dark>
 
-                        <v-toolbar-title>Users In Room</v-toolbar-title>
+                            <v-toolbar-title>Users In Room</v-toolbar-title>
 
-                        <!-- <v-spacer></v-spacer>
+                            <!-- <v-spacer></v-spacer>
+                        
+                                                <v-btn icon>
+                                                    <v-icon>search</v-icon>
+                                                </v-btn>
+                        
+                                                <v-btn icon>
+                                                    <v-icon>more_vert</v-icon>
+                                                </v-btn> -->
+                        </v-toolbar>
 
-                        <v-btn icon>
-                            <v-icon>search</v-icon>
-                        </v-btn>
+                        <v-list>
+                            <v-list-tile v-for='user in roomData.roomData.users' :key='user.userUID' avatar @click="">
+                                <v-list-tile-content>
+                                    <v-list-tile-title v-text="user.userName"></v-list-tile-title>
+                                </v-list-tile-content>
 
-                        <v-btn icon>
-                            <v-icon>more_vert</v-icon>
-                        </v-btn> -->
-                    </v-toolbar>
+                                <v-list-tile-avatar>
+                                    <img :src="user.userProfileImage || defaultUser">
+                                </v-list-tile-avatar>
+                            </v-list-tile>
+                        </v-list>
+                    </v-card>
+                </v-flex>
+            </v-layout>
+        </v-container>
 
-                    <v-list>
-                        <v-list-tile v-for='user in roomData.roomData.users' :key='user.userUID' avatar @click="">
-                            <v-list-tile-content>
-                                <v-list-tile-title v-text="user.userName"></v-list-tile-title>
-                            </v-list-tile-content>
+    </v-flex>
 
-                            <v-list-tile-avatar>
-                                <img :src="user.userProfileImage || defaultUser">
-                            </v-list-tile-avatar>
-                        </v-list-tile>
-                    </v-list>
-                </v-card>
-            </v-flex>
-        </v-layout>
-    </div>
-
-</div>
+</v-layout>
+<!-- Todo: use vuetifies breakpoint system instead -->
+<!-- Add a slide y transition -->
