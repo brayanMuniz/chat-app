@@ -38,7 +38,6 @@
                             <v-list-tile-content>
                                 <v-list-tile-title v-text="msg.messageData.newMessage"></v-list-tile-title>
                             </v-list-tile-content>
-
                             <!-- <v-list-tile-avatar v-if='msg.messageData.from.userUID == $store.getters.getUserAuth.uid'>
                                         <img :src="matchUserToProfilePic(msg.messageData.from.userUID)">
                                     </v-list-tile-avatar> -->
@@ -63,8 +62,9 @@
     <v-flex sm12 md4>
         <v-container>
             <v-layout row>
-                <v-flex xs12 sm12>
+                <v-flex xs12 sm12 fixed>
                     <v-card>
+
                         <v-toolbar color="indigo" dark>
 
                             <v-toolbar-title>Users In Room</v-toolbar-title>
@@ -99,5 +99,3 @@
     </v-flex>
 
 </v-layout>
-<!-- Todo: use vuetifies breakpoint system instead -->
-<!-- Add a slide y transition -->
