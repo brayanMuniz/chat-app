@@ -25,22 +25,23 @@
                             </v-card-actions> -->
                 </v-card>
             </v-flex>
-            <!-- Messages -->
+            <!-- Room Messages -->
             <v-layout row>
                 <v-flex xs12 sm12>
                     <!-- <v-slide-y-transition group tag="v-list"></v-slide-y-transition> -->
                     <v-list>
                         <v-list-tile v-for='msg in chatRoomMessages' :key='msg.id' avatar @click="">
-                            <v-list-tile-avatar>
+                            <v-list-tile-avatar v-if='!isUsersMessage(msg.messageData.from.userUID)'>
                                 <img :src="matchUserToProfilePic(msg.messageData.from.userUID)">
                             </v-list-tile-avatar>
 
                             <v-list-tile-content>
-                                <v-list-tile-title v-text="msg.messageData.newMessage"></v-list-tile-title>
+                                <v-list-tile-title v-text="msg.messageData.newMessage" :class='{"text-xs-right": isUsersMessage(msg.messageData.from.userUID)}'></v-list-tile-title>
                             </v-list-tile-content>
-                            <!-- <v-list-tile-avatar v-if='msg.messageData.from.userUID == $store.getters.getUserAuth.uid'>
-                                        <img :src="matchUserToProfilePic(msg.messageData.from.userUID)">
-                                    </v-list-tile-avatar> -->
+
+                            <v-list-tile-avatar v-if='isUsersMessage(msg.messageData.from.userUID)'>
+                                <img :src="matchUserToProfilePic(msg.messageData.from.userUID)">
+                            </v-list-tile-avatar>
 
                         </v-list-tile>
                     </v-list>
@@ -50,36 +51,38 @@
             <v-form @submit.prevent='sendMessage'>
                 <v-container>
                     <!-- Todo: have both of these in the same row -->
-                    <v-flex xs12>
-                        <v-text-field v-model.trim='newMessage' :counter="500" label="Message" required></v-text-field>
-                        <v-btn type='submit'>submit</v-btn>
+                    <v-flex xs12 id="dropdown-example" grid-list-xl>
+
+                        <!-- <v-container id="dropdown-example" grid-list-xl> -->
+                        <v-layout row wrap>
+                            <!-- <v-flex xs12 sm4>
+                                <v-overflow-btn :items="dropdown_font" label="Overflow Btn" target="#dropdown-example"></v-overflow-btn>
+                            </v-flex> -->
+                            <v-text-field v-model.trim='newMessage' :counter="500" label="Message" required></v-text-field>
+                            <v-btn type='submit'>submit</v-btn>
+                        </v-layout>
+                        <!-- </v-container> -->
+
+
                     </v-flex>
                 </v-container>
             </v-form>
         </v-container>
     </v-flex>
 
+    <!-- Todo: sHave a collapsable -->
+    <!-- Todo: Make this follow -->
     <v-flex sm12 md4>
         <v-container>
             <v-layout row>
-                <v-flex xs12 sm12 fixed>
+
+                <v-flex xs12 sm12>
                     <v-card>
 
                         <v-toolbar color="indigo" dark>
-
                             <v-toolbar-title>Users In Room</v-toolbar-title>
-
-                            <!-- <v-spacer></v-spacer>
-                        
-                                                <v-btn icon>
-                                                    <v-icon>search</v-icon>
-                                                </v-btn>
-                        
-                                                <v-btn icon>
-                                                    <v-icon>more_vert</v-icon>
-                                                </v-btn> -->
                         </v-toolbar>
-
+                        <!-- Messages -->
                         <v-list>
                             <v-list-tile v-for='user in roomData.roomData.users' :key='user.userUID' avatar @click="">
                                 <v-list-tile-content>
@@ -91,6 +94,7 @@
                                 </v-list-tile-avatar>
                             </v-list-tile>
                         </v-list>
+
                     </v-card>
                 </v-flex>
             </v-layout>

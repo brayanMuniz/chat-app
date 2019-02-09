@@ -1,5 +1,5 @@
 <nav>
-    
+
     <v-toolbar app dark color="primary">
         <v-toolbar-side-icon @click.stop="drawer = !drawer" v-if='$store.getters.isUserSignedIn'></v-toolbar-side-icon>
         <v-toolbar-title class="white--text" flat @click='$router.push("/")' style="cursor: pointer;">
@@ -10,7 +10,7 @@
 
     <v-navigation-drawer v-model="drawer" absolute temporary v-if='$store.getters.isUserSignedIn'>
         <v-list class="pa-1">
-            <v-list-tile avatar>
+            <v-list-tile avatar @click='$router.push({ name: "user", params: { userName: getUserName }})'>
                 <v-list-tile-avatar>
                     <img :src="$store.getters.getProfileImageLink">
                 </v-list-tile-avatar>

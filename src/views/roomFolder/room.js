@@ -13,7 +13,8 @@ export default {
             chatRoomMessages: [],
             newMessage: null,
             defaultUser: "https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Flh3.googleusercontent.com%2F-Zs7cWeyXzTI%2FAAAAAAAAAAI%2FAAAAAAAAAB4%2F5PA9c08gzhQ%2Fphoto.jpg&f=1",
-            roomMsgLength: 0
+            roomMsgLength: 0,
+            dropdown_font: ['Arial', 'Calibri', 'Courier', 'Verdana'],
         }
     },
     methods: {
@@ -107,12 +108,17 @@ export default {
             })
 
             return usersProfilePictureLink
+        },
+        isUsersMessage(userUID) {
+            if (userUID == this.$store.getters.getUserAuth.uid) {
+                return true
+            }
+            return false
         }
     },
     created() {
         console.log(this.roomData)
-        console.log(this.$store.getters.isUserVerified)
-        if (this.roomData == null) {
+        if (this.roomData == undefined) {
             this.$router.push('/browse')
         }
     },
