@@ -23,6 +23,7 @@ export default {
             db.collection('chatRooms').orderBy('dateCreated').onSnapshot(doc => {
                 this.allRooms = [];
                 doc.docs.forEach(kek => {
+                    console.log('TCL: getRealTimeChatRooms -> kek', kek)
                     if (kek.exists) {
                         let room = {
                             roomId: kek.id,

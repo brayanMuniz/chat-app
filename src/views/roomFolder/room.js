@@ -18,7 +18,11 @@ export default {
             attachImage: false,
             attachmentPictureUpload: null,
             attachmentPicture: null,
-            hoverPicture: false
+            hoverPicture: false,
+            seeImage: {
+                show: false,
+                imageUrl: null
+            }
         };
     },
     methods: {
@@ -55,9 +59,7 @@ export default {
         },
         sendMessage() {
             this.attachImage = false;
-            // Todo: figure out a way to order the documnets
             let payload = this.setMessagePayload();
-            console.log(this.newMessage);
 
             if (this.attachmentPictureUpload) {
                 payload.msgData['messagePicture'] = this.attachmentPictureUpload.name;
@@ -89,7 +91,7 @@ export default {
                 return null;
             }
 
-            if (this.newMessage == null || this.newMessage.length > 1000 || this.newMessage.length == 0 || this.) {
+            if (this.newMessage == null || this.newMessage.length > 1000 || this.newMessage.length == 0) {
                 alert('stop it');
                 this.newMessage = null;
                 return null;
@@ -183,6 +185,18 @@ export default {
         },
         convertTime(time) {
             return moment.unix(time).format('MMMM Do, h:mm:ss');
+        },
+        imagePopUp(imageUrl) {
+            if (imageUrl == undefined) {
+                alert('err')
+                return false
+            }
+            this.seeImage.imageUrl = imageUrl;
+            this.seeImage.show = true;
+        },
+        imageClose() {
+            this.seeImage.show = false
+            this.seeImage.imageUrl = null;
         },
         // File changes
         onFileChange(e) {

@@ -1,7 +1,6 @@
 <v-layout class="mt-5" row wrap>
     <!-- Todo: truncate it
     pop up when click button
-    
     -->
     <v-flex sm12 md8>
         <v-container>
@@ -47,11 +46,9 @@
 
                                         <v-flex xs10>
                                             <v-card-title primary-title>
-                                                <!-- <div> -->
+                                                <v-img max-width='300px' v-if='msg.messageData.messagePictureURL != null'
+                                                    :src="msg.messageData.messagePictureURL" aspect-ratio="2.75" @click='imagePopUp(msg.messageData.messagePictureURL)'></v-img>
                                                 <div v-if='msg.messageData.newMessage'>{{msg.messageData.newMessage}}</div>
-                                                <v-img max-width='300px' v-if='msg.messageData.messagePictureURL' :src="msg.messageData.messagePictureURL"
-                                                    aspect-ratio="2.75"></v-img>
-                                                <!-- </div> -->
                                             </v-card-title>
                                         </v-flex>
 
@@ -109,6 +106,7 @@
                         <!-- Messages -->
                         <v-list>
                             <v-list-tile v-for='user in roomData.roomData.users' :key='user.userUID' avatar @click="">
+
                                 <v-list-tile-content>
                                     <v-list-tile-title v-text="user.userName"></v-list-tile-title>
                                 </v-list-tile-content>
@@ -116,6 +114,7 @@
                                 <v-list-tile-avatar>
                                     <img :src="user.userProfileImage || defaultUser">
                                 </v-list-tile-avatar>
+
                             </v-list-tile>
                         </v-list>
 
@@ -149,6 +148,20 @@
 
         </v-card>
     </v-dialog>
+
+    <!-- <v-dialog v-model='seeImage.show' max-width='1000px' max-height='1000px'>
+        <v-card v-if='seeImage.show'>
+            <v-container>
+                <v-img :src="seeImage.imageUrl" aspect-ratio="1.778" max-width='500px' max-height='500px'></v-img>
+            </v-container>
+
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="green darken-1" flat @click="seeImage.show = false">Close</v-btn>
+
+            </v-card-actions>
+        </v-card>
+    </v-dialog> -->
     <!-- Use this when uploading pic -->
     <!-- <v-progress-circular indeterminate color="primary"></v-progress-circular>-->
 </v-layout>
