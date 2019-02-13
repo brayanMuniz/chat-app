@@ -2,21 +2,23 @@
 
     <v-container fluid grid-list-xl class="mt-5">
         <v-layout row wrap>
-            <v-flex xs12 sm6 md4 lg4 xl3 v-for='room in allRooms' :key='room.roomId'>
+            <v-flex xs12 sm4 md3 lg3 xl3 v-for='room in allRooms' :key='room.roomId'>
                 <v-card>
-                    <v-img v-if='room.urlPicture' :src="room.urlPicture" v-if='room.urlPicture' aspect-ratio="1.778"></v-img>
+                    <v-img v-if='room.urlPicture' :src="room.urlPicture" aspect-ratio="1.778"></v-img>
                     <v-card-title primary-title>
-                        <div>
+                        <div class="text-truncate">
                             <h3 class="headline mb-0"> {{room.roomData.roomName}}</h3>
-                            <div>{{room.roomData.roomDescription}}</div>
+                            <div class="text-truncate text-no-wrap">{{room.roomData.roomDescription}}</div>
                         </div>
                     </v-card-title>
+
                     <v-card-actions>
                         <v-btn flat color="blue" @click='$router.push({ name: "room", params: { roomName: room.roomData.roomName, roomData: room }})'>
                             Go To Room
                         </v-btn>
                         <v-btn flat color="red" @click='hideCard(room.roomId)'>Hide</v-btn>
                     </v-card-actions>
+
                 </v-card>
             </v-flex>
 
@@ -27,10 +29,7 @@
 
     </v-container>
 
-
-    <!-- Make new room -->
     <v-dialog v-model="dialog" max-width='1000px' max-height='1000px'>
-        <!-- ? add the image on the card -->
         <v-card>
             <v-form @submit.prevent="makeNewRoom">
                 <v-container>
