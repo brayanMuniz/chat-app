@@ -79,8 +79,9 @@ export default {
                             .catch((pictureErr) => {
                                 console.log('TCL: sendMessage -> pictureErr', pictureErr);
                             })
-                        this.attachmentPictureUpload = null
-                        this.attachmentPicture = null
+                        this.attachmentPictureUpload = null;
+                        this.attachmentPicture = null;
+                        this.newMessage = null;
                     })
                     .catch((err) => {
                         console.log('​sendMessageToRoom -> err', err);
@@ -88,7 +89,7 @@ export default {
                 return null;
             }
 
-            if (this.newMessage == null || this.newMessage.length > 1000 || this.newMessage.length == 0) {
+            if (this.newMessage == null || this.newMessage.length > 1000 || this.newMessage.length == 0 || this.) {
                 alert('stop it');
                 this.newMessage = null;
                 return null;
