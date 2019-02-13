@@ -45,7 +45,7 @@
                                         </v-flex>
 
                                         <v-flex xs10>
-                                            <v-card-title primary-title>
+                                            <v-card-title primary-title class="text-truncate">
                                                 <v-img style="cursor: pointer;" max-width='300px' v-if='msg.messageData.messagePictureURL != null'
                                                     :src="msg.messageData.messagePictureURL" aspect-ratio="2.75" @click='imagePopUp(msg.messageData.messagePictureURL)'></v-img>
                                                 <div v-if='msg.messageData.newMessage'>{{msg.messageData.newMessage}}</div>
