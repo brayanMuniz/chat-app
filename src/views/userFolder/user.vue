@@ -1,9 +1,4 @@
-<template src="./user.html">
-    
-</template>
-
-<style scoped src="./user.css">
-</style>
+<template src="./user.html"></template>
 
 <script src="./user.js">
 </script>

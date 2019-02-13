@@ -1,5 +1,4 @@
 <v-layout class="mt-5" row wrap>
-
     <v-flex sm12 md8>
         <v-container>
             <!-- Head -->
@@ -25,44 +24,65 @@
                             </v-card-actions> -->
                 </v-card>
             </v-flex>
+            <!-- Todo: @click of user have a little popup card -->
+            <!-- Todo: if there is a picture have a new comp that renders it -->
             <!-- Room Messages -->
             <v-layout row>
                 <v-flex xs12 sm12>
-                    <!-- <v-slide-y-transition group tag="v-list"></v-slide-y-transition> -->
-                    <v-list>
-                        <v-list-tile v-for='msg in chatRoomMessages' :key='msg.id' avatar @click="">
-                            <v-list-tile-avatar v-if='!isUsersMessage(msg.messageData.from.userUID)'>
-                                <img :src="matchUserToProfilePic(msg.messageData.from.userUID)">
-                            </v-list-tile-avatar>
 
-                            <v-list-tile-content>
-                                <v-list-tile-title v-text="msg.messageData.newMessage" :class='{"text-xs-right": isUsersMessage(msg.messageData.from.userUID)}'></v-list-tile-title>
-                            </v-list-tile-content>
+                    <v-container fluid grid-list-lg>
+                        <v-layout row wrap xs12 sm12>
+                            <v-flex xs12 v-for='msg in chatRoomMessages' :key='msg.id'>
+                                <v-card @click=''>
+                                    <v-layout row>
+                                        <v-flex xs2 mr-0 pr-0 v-if='!isUsersMessage(msg.messageData.from.userUID)'>
+                                            <v-img :src="matchUserToProfilePic(msg.messageData.from.userUID)" max-width='150px'
+                                                height="75px" contain mr-0 pr-0></v-img>
+                                        </v-flex>
 
-                            <v-list-tile-avatar v-if='isUsersMessage(msg.messageData.from.userUID)'>
-                                <img :src="matchUserToProfilePic(msg.messageData.from.userUID)">
-                            </v-list-tile-avatar>
+                                        <v-flex xs10>
+                                            <v-card-title primary-title>
+                                                <!-- <div> -->
+                                                <div v-if='msg.messageData.newMessage'>{{msg.messageData.newMessage}}</div>
+                                                <v-img max-width='300px' v-if='msg.messageData.messagePictureURL' :src="msg.messageData.messagePictureURL"
+                                                    aspect-ratio="2.75"></v-img>
+                                                <!-- </div> -->
+                                            </v-card-title>
+                                        </v-flex>
 
-                        </v-list-tile>
-                    </v-list>
+                                        <v-flex xs2 v-if='isUsersMessage(msg.messageData.from.userUID)'>
+                                            <v-img :src="matchUserToProfilePic(msg.messageData.from.userUID)" max-width='150px'
+                                                height="75px" contain mr-0 pr-0></v-img>
+                                        </v-flex>
+
+                                    </v-layout>
+                                </v-card>
+                            </v-flex>
+                        </v-layout>
+                    </v-container>
+
                 </v-flex>
             </v-layout>
+
+            <!-- Todo: Figure out how hover works -->
+            <!-- Todo: Once there is a picture have it set as blue -->
             <!-- Send Messages -->
             <v-form @submit.prevent='sendMessage'>
                 <v-container>
                     <!-- Todo: have both of these in the same row -->
                     <v-flex xs12 id="dropdown-example" grid-list-xl>
 
-                        <!-- <v-container id="dropdown-example" grid-list-xl> -->
                         <v-layout row wrap>
-                            <!-- <v-flex xs12 sm4>
-                                <v-overflow-btn :items="dropdown_font" label="Overflow Btn" target="#dropdown-example"></v-overflow-btn>
-                            </v-flex> -->
-                            <v-text-field v-model.trim='newMessage' :counter="500" label="Message" required></v-text-field>
+                            <v-hover>
+                                <v-icon medium @click="attachImage = !attachImage" slot-scope="{ hover }">
+                                    attach_file
+                                </v-icon>
+                            </v-hover>
+
+                            <v-text-field prepend-icon="search" v-model.trim='newMessage' :counter="500" label="Message"
+                                required></v-text-field>
                             <v-btn type='submit'>submit</v-btn>
                         </v-layout>
-                        <!-- </v-container> -->
-
 
                     </v-flex>
                 </v-container>
@@ -101,5 +121,28 @@
         </v-container>
 
     </v-flex>
+    <v-dialog v-model="attachImage" max-width='1000px' max-height='1000px'>
+        <!-- ? add the image on the card -->
+        <v-card>
+            <v-container>
+                <div class="custom-file mx-auto my-2" v-if="!attachmentPicture">
+                    <input type="file" class="custom-file-input form-control" id="customFile" @change="onFileChange">
+                    <label class="custom-file-label">Upload Picture</label>
+                </div>
 
+                <div v-else>
+                    <v-img :src="attachmentPicture" aspect-ratio="1.778" max-width='500px' max-height='500px'></v-img>
+                    <v-btn color="red darken-1" @click="removeImage" class="white--text"> Remove image</v-btn>
+                </div>
+            </v-container>
+
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" flat @click="attachImage = false">Close</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
+
+    <!-- Use this when uploading pic -->
+    <!-- <v-progress-circular indeterminate color="primary"></v-progress-circular>-->
 </v-layout>

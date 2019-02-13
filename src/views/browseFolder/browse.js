@@ -50,7 +50,6 @@ export default {
             let roomData = this.setNewRoomData();
             this.$store.dispatch('makeNewRoom', roomData).then(res => {
                 this.dialog = false;
-                // this.$router.push('/room/:roomName')
                 console.log(res.id)
                 let fullPath = `chatRooms/${res.id}/${this.roomPictureUpload.name}`
                 if (this.roomPicture == null || res.id == null) {
@@ -106,7 +105,6 @@ export default {
         uploadRoomPicture(path) {
             // Todo: verify that roomPicture is a actual file\
             // Todo: add metadata
-            // const metadata = { contentType: file.type };
             let fileData = {
                 file: this.roomPictureUpload,
                 fileMeta: {},

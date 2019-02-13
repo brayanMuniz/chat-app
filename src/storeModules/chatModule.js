@@ -37,7 +37,7 @@ const actions = {
     }, payload) => {
         let roomData = payload.msgData
         return new Promise((resolve, reject) => {
-            dispatch('changeRoomMSGLength', payload.roomId).then(res => {
+            dispatch('changeRoomMSGLength', payload.roomId).then(changeRoomMSGLength => {
                 db.collection('chatRooms').doc(payload.roomId).collection('messages').add(
                         roomData
                     ).then(res => {
@@ -48,6 +48,27 @@ const actions = {
                         console.error("Error writing document: ", error);
                         reject(error);
                     });
+            })
+
+        })
+    },
+    setMessagePictureUrl: ({
+        dispatch,
+    }, payload) => {
+        return new Promise((resolve, reject) => {
+            dispatch('getPicture', payload.filePath).then(pictureUrl => {
+                let messageDoc = db.doc(payload.messageDocId)
+
+                messageDoc.update(({
+                    messagePictureURL: pictureUrl
+                })).then(updatedCorrectly => {
+                    resolve(updatedCorrectly)
+                }).catch(err => {
+                    reject(err)
+                })
+
+            }).catch(err => {
+                reject(err)
             })
 
         })
@@ -92,10 +113,8 @@ const actions = {
             db.collection('chatRooms').doc(roomId).update({
                 users: firebaseRef.firestore.FieldValue.arrayUnion(userData)
             }).then(res => {
-                console.log('TCL: res', res)
                 resolve(res)
             }).catch(err => {
-                console.log('TCL: err', err)
                 reject(err)
             })
         })

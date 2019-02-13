@@ -59,7 +59,6 @@ const mutations = {
         state.userData = {};
     }
 }
-
 // Do not check for valid data because that should be handled with vue-validate and generally in the clients
 const actions = {
     // Making the user;
