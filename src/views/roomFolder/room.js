@@ -102,6 +102,7 @@ export default {
                 this.newMessage = null;
                 this.addUserToChat();
             }
+
         },
         sendMessageToFirebase(payload) {
             return this.$store.dispatch('sendMessageToRoom', payload);
@@ -187,6 +188,8 @@ export default {
             return moment.unix(time).format('MMMM Do, h:mm:ss');
         },
         imagePopUp(imageUrl) {
+            console.log(imageUrl)
+            console.log(this.seeImage)
             if (imageUrl == undefined) {
                 alert('err')
                 return false

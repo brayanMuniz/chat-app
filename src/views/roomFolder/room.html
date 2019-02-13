@@ -46,7 +46,7 @@
 
                                         <v-flex xs10>
                                             <v-card-title primary-title>
-                                                <v-img max-width='300px' v-if='msg.messageData.messagePictureURL != null'
+                                                <v-img style="cursor: pointer;" max-width='300px' v-if='msg.messageData.messagePictureURL != null'
                                                     :src="msg.messageData.messagePictureURL" aspect-ratio="2.75" @click='imagePopUp(msg.messageData.messagePictureURL)'></v-img>
                                                 <div v-if='msg.messageData.newMessage'>{{msg.messageData.newMessage}}</div>
                                             </v-card-title>
@@ -149,7 +149,7 @@
         </v-card>
     </v-dialog>
 
-    <!-- <v-dialog v-model='seeImage.show' max-width='1000px' max-height='1000px'>
+    <v-dialog v-model='seeImage.show' max-width='1000px' max-height='1000px'>
         <v-card v-if='seeImage.show'>
             <v-container>
                 <v-img :src="seeImage.imageUrl" aspect-ratio="1.778" max-width='500px' max-height='500px'></v-img>
@@ -161,7 +161,7 @@
 
             </v-card-actions>
         </v-card>
-    </v-dialog> -->
+    </v-dialog>
     <!-- Use this when uploading pic -->
     <!-- <v-progress-circular indeterminate color="primary"></v-progress-circular>-->
 </v-layout>
