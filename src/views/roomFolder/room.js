@@ -54,6 +54,7 @@ export default {
             });
         },
         sendMessage() {
+            this.attachImage = false;
             // Todo: figure out a way to order the documnets
             let payload = this.setMessagePayload();
             console.log(this.newMessage);
@@ -77,7 +78,9 @@ export default {
                             })
                             .catch((pictureErr) => {
                                 console.log('TCL: sendMessage -> pictureErr', pictureErr);
-                            });
+                            })
+                        this.attachmentPictureUpload = null
+                        this.attachmentPicture = null
                     })
                     .catch((err) => {
                         console.log('​sendMessageToRoom -> err', err);

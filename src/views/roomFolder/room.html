@@ -1,4 +1,8 @@
 <v-layout class="mt-5" row wrap>
+    <!-- Todo: truncate it
+    pop up when click button
+    
+    -->
     <v-flex sm12 md8>
         <v-container>
             <!-- Head -->
@@ -26,6 +30,7 @@
             </v-flex>
             <!-- Todo: @click of user have a little popup card -->
             <!-- Todo: if there is a picture have a new comp that renders it -->
+            <!-- Todo: @click popup the image -->
             <!-- Room Messages -->
             <v-layout row>
                 <v-flex xs12 sm12>
@@ -79,8 +84,7 @@
                                 </v-icon>
                             </v-hover>
 
-                            <v-text-field prepend-icon="search" v-model.trim='newMessage' :counter="500" label="Message"
-                                required></v-text-field>
+                            <v-text-field v-model.trim='newMessage' :counter="500" label="Message" required></v-text-field>
                             <v-btn type='submit'>submit</v-btn>
                         </v-layout>
 
@@ -90,7 +94,7 @@
         </v-container>
     </v-flex>
 
-    <!-- Todo: sHave a collapsable -->
+    <!-- Todo: Have a collapsable -->
     <!-- Todo: Make this follow -->
     <v-flex sm12 md4>
         <v-container>
@@ -121,6 +125,7 @@
         </v-container>
 
     </v-flex>
+
     <v-dialog v-model="attachImage" max-width='1000px' max-height='1000px'>
         <!-- ? add the image on the card -->
         <v-card>
@@ -138,11 +143,12 @@
 
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" flat @click="attachImage = false">Close</v-btn>
+                <v-btn color="green darken-1" flat @click="attachImage = false">Close</v-btn>
+                <v-btn type='submit' color="blue darken-1" flat @click="sendMessage">Submit</v-btn>
             </v-card-actions>
+
         </v-card>
     </v-dialog>
-
     <!-- Use this when uploading pic -->
     <!-- <v-progress-circular indeterminate color="primary"></v-progress-circular>-->
 </v-layout>
