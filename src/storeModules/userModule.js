@@ -5,7 +5,7 @@ let db = firebase.db;
 const state = {
     userAuth: firebaseRef.auth().currentUser,
     userData: {},
-    hiddenRooms: [],
+    hiddenRooms: ['HYDpgApDJv0RmjWiiw3q'],
     defaultUserImage: 'https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Flh3.googleusercontent.com%2F-Zs7cWeyXzTI%2FAAAAAAAAAAI%2FAAAAAAAAAB4%2F5PA9c08gzhQ%2Fphoto.jpg&f=1'
 }
 
@@ -26,6 +26,9 @@ const getters = {
         } else {
             return state.userData.profileImageLink
         }
+    },
+    getHiddenRoomsIDs: (state) => {
+        return state.hiddenRooms
     },
     isUserSignedIn: (state) => {
         if (Object.keys(state.userData).length == 0 || state.userAuth == null) {
@@ -58,11 +61,21 @@ const mutations = {
     clearUser(state) {
         state.userAuth = null;
         state.userData = {};
+    },
+    updateUserHiddenrooms(state, payload) {
+        // payload should be object with roomId and what it should do. Ex: deleteId or addId
+        if (payload.addId) {
+            state.hiddenRooms.push(payload.newId)
+        } else {
+            state.hiddenRooms = state.hiddenRooms.filter(function (item) {
+                return item != payload.newId
+            })
+        }
     }
 }
 // Do not check for valid data because that should be handled with vue-validate and generally in the clients
 const actions = {
-    // Making the user;
+    // Making the user
     createUserWithEmail: ({}, payload) => {
         console.log('createUserWithEmail', payload)
         return new Promise((resolve, reject) => {
@@ -197,7 +210,7 @@ const actions = {
             });
         })
     },
-    // Sign Out User
+    // Sign Out User and deleting user
     signOutUserAuth: ({}) => {
         return new Promise((resolve, reject) => {
             firebaseRef.auth().signOut().then((res) => {
