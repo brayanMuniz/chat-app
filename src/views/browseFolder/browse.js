@@ -1,6 +1,7 @@
 /* eslint-disable */
 import moment from 'moment';
 import firebase from '../../firebaseConfig';
+import cardComp from '../../components/cardsComp/cards.vue'
 let db = firebase.db;
 let firebaseRef = firebase.firebase;
 export default {
@@ -15,7 +16,9 @@ export default {
 			dialog: false
 		};
 	},
-	created() {},
+	components: {
+		'card-component': cardComp
+	},
 	methods: {
 		getRealTimeChatRooms() {
 			db.collection('chatRooms').orderBy('dateCreated').onSnapshot((doc) => {
@@ -47,6 +50,22 @@ export default {
 				this.filterOutCards();
 			});
 		},
+		filterOutCards() {
+			var index;
+			this.allRooms.forEach((room) => {
+				if (this.$store.getters.getHiddenRoomsIDs.includes(room.roomId)) {
+					index = this.allRooms.indexOf(room);
+					this.allRooms.splice(index, 1);
+				}
+			});
+		},
+		idNotHidden(roomId) {
+			if (this.$store.getters.getHiddenRoomsIDs.includes(roomId)) {
+				return false;
+			}
+			return true;
+		},
+		// Make new rooms
 		makeNewRoom() {
 			// ! Room Picture gave an undefined
 			let roomData = this.setNewRoomData();
@@ -88,6 +107,7 @@ export default {
 			console.log(`New Room data will be =>` + roomData);
 			return roomData;
 		},
+
 		// Module GET And POST
 		getPicture(filePath) {
 			return this.$store.dispatch('getPicture', filePath);
@@ -103,33 +123,7 @@ export default {
 			console.log(path);
 			return this.$store.dispatch('uploadPicture', fileData);
 		},
-		// computed With parameters
-		showAmountOfUsers(usersAmount) {
-			if (usersAmount == 1) {
-				return `${usersAmount} user`
-			}
-			return `${usersAmount} users`
-		},
-		convertTime(time) {
-			return moment.unix(time).format('MMMM Do');
-		},
-		hideCard(roomId) {
-			let payload = {
-				newId: roomId,
-				addId: true
-			}
-			this.$store.commit('updateUserHiddenrooms', payload);
-			this.filterOutCards();
-		},
-		filterOutCards() {
-			var index;
-			this.allRooms.forEach((room) => {
-				if (this.$store.getters.getHiddenRoomsIDs.includes(room.roomId)) {
-					index = this.allRooms.indexOf(room);
-					this.allRooms.splice(index, 1);
-				}
-			});
-		},
+
 		// File changes
 		onFileChange(e) {
 			var files = e.target.files || e.dataTransfer.files;

@@ -2,34 +2,8 @@
 
     <v-container fluid grid-list-xl class="mt-5">
         <v-layout row wrap>
-            <v-flex xs12 sm4 md3 lg3 xl3 v-for='room in allRooms' :key='room.roomId'>
-                <v-hover>
-                    <v-card slot-scope="{ hover }" :class="`elevation-${hover ? 12 : 2}`">
-                        <!-- Image and hover Data -->
-                        <v-img v-if='room.urlPicture' :src="room.urlPicture" aspect-ratio="1.778">
-                            <v-expand-transition>
-                                <div v-if="hover" class="d-flex transition-fast-in-fast-out grey darken-2 v-card--reveal display-1 white--text"
-                                    style="height: 100%;">
-                                    {{showAmountOfUsers(room.roomData.users.length)}}
-                                </div>
-                            </v-expand-transition>
-                        </v-img>
-                        <!-- Below image data -->
-                        <v-card-title primary-title>
-                            <div class="text-truncate">
-                                <h3 class="headline mb-0 text-truncate text-no-wrap"> {{room.roomData.roomName}}</h3>
-                                <div class="text-truncate text-no-wrap">{{room.roomData.roomDescription}}</div>
-                            </div>
-                        </v-card-title>
-                        <!-- Buttons -->
-                        <v-card-actions>
-                            <v-btn flat color="blue" @click='$router.push({ name: "room", params: { roomName: room.roomData.roomName, roomData: room }})'>
-                                Go To Room
-                            </v-btn>
-                            <v-btn flat color="red" @click='hideCard(room.roomId)'>Hide</v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-hover>
+            <v-flex xs12 sm4 md3 lg3 xl3 v-for='room in allRooms' :key='room.roomId' v-if='idNotHidden(room.roomId)'>
+                <card-component :room='room'></card-component>
             </v-flex>
 
             <v-btn fab small color="blue" bottom right absolute fixed @click="dialog = !dialog" class="mb-5">
