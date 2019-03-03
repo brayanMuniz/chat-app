@@ -14,6 +14,7 @@ export default new Vuex.Store({
     storageModule: storageModule,
     functionsModule: functionsModule
   },
+
   state: {},
   getters: {},
   mutations: {},
