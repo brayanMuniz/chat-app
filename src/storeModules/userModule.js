@@ -63,7 +63,6 @@ const mutations = {
         state.userData = {};
     },
     updateUserHiddenrooms(state, payload) {
-        // payload should be object with roomId and what it should do. Ex: deleteId or addId
         if (payload.addId) {
             state.hiddenRooms.push(payload.newId)
         } else {

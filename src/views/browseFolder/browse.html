@@ -3,7 +3,7 @@
     <v-container fluid grid-list-xl class="mt-5">
         <v-layout row wrap>
             <v-flex xs12 sm4 md3 lg3 xl3 v-for='room in allRooms' :key='room.roomId' v-if='idNotHidden(room.roomId)'>
-                <card-component :room='room'></card-component>
+                <card-component :room='room' show></card-component>
             </v-flex>
 
             <v-btn fab small color="blue" bottom right absolute fixed @click="dialog = !dialog" class="mb-5">

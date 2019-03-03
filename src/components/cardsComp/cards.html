@@ -21,7 +21,7 @@
             <v-btn flat color="blue" @click='$router.push({ name: "room", params: { roomName: room.roomData.roomName, roomData: room }})'>
                 Go To Room
             </v-btn>
-            <v-btn flat color="red" @click='hideCardInStore(room.roomId)'>Hide</v-btn>
+            <v-btn flat color="red" @click='updateCardInStore(room.roomId)'>{{typeOfAction}}</v-btn>
         </v-card-actions>
     </v-card>
 </v-hover>
