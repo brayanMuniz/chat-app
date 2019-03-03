@@ -46,21 +46,17 @@ export default {
 				});
 			});
 		},
-		convertTime(time) {
-			return moment.unix(time).format('MMMM Do');
-		},
 		makeNewRoom() {
 			// ! Room Picture gave an undefined
 			let roomData = this.setNewRoomData();
-			this.$store
-				.dispatch('makeNewRoom', roomData)
+			this.$store.dispatch('makeNewRoom', roomData)
 				.then((res) => {
 					this.dialog = false;
-					console.log(res.id);
-					let fullPath = `chatRooms/${res.id}/${this.roomPictureUpload.name}`;
+					console.log("New Room Id is =>" + res.id);
 					if (this.roomPicture == null || res.id == null) {
-						console.log('did not');
+						console.log('did not try to upload picture');
 					} else {
+						let fullPath = `chatRooms/${res.id}/${this.roomPictureUpload.name}`;
 						this.uploadRoomPicture(fullPath)
 							.then((res) => {
 								console.log(res);
@@ -74,23 +70,7 @@ export default {
 					console.log(err);
 				});
 		},
-		hideCard(roomId) {
-			console.log('TCL: hideCard -> roomId', roomId);
-			var index;
-			this.allRooms.forEach((room) => {
-				if (room.roomId == roomId) {
-					index = this.allRooms.indexOf(room);
-				}
-			});
-			if (index > -1) {
-				this.allRooms.splice(index, 1);
-			}
-			// Find the card in this.allRooms and then delete it locally
-		},
 		setNewRoomData() {
-			let myUID = firebaseRef.auth().currentUser.uid;
-			let userName = this.$store.getters.getUserData.userName;
-			let userProfileImage = this.$store.getters.getProfileImageLink;
 			let roomData = {
 				roomName: this.newRoomName,
 				msgLength: 0,
@@ -98,15 +78,16 @@ export default {
 				roomDescription: this.newRoomDesc,
 				roomPicture: this.roomPictureUpload.name,
 				users: [{
-					userName: userName,
-					userUID: myUID,
+					userName: this.$store.getters.getUserData.userName,
+					userUID: firebaseRef.auth().currentUser.uid,
 					dateJoined: new Date(),
-					userProfileImage: userProfileImage
+					userProfileImage: this.$store.getters.getProfileImageLink
 				}]
 			};
-			console.log(roomData);
+			console.log(`New Room data will be =>` + roomData);
 			return roomData;
 		},
+		// Module GET And POST
 		getPicture(filePath) {
 			return this.$store.dispatch('getPicture', filePath);
 		},
@@ -127,6 +108,22 @@ export default {
 				return `${usersAmount} user`
 			}
 			return `${usersAmount} users`
+		},
+		convertTime(time) {
+			return moment.unix(time).format('MMMM Do');
+		},
+		hideCard(roomId) {
+			console.log('TCL: hideCard -> roomId', roomId);
+			var index;
+			this.allRooms.forEach((room) => {
+				if (room.roomId == roomId) {
+					index = this.allRooms.indexOf(room);
+				}
+			});
+			if (index > -1) {
+				this.allRooms.splice(index, 1);
+			}
+			// Find the card in this.allRooms and then delete it locally
 		},
 		// File changes
 		onFileChange(e) {
