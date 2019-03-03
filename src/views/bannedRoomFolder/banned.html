@@ -1,0 +1,7 @@
+<v-container fluid grid-list-xl class="mt-5">
+    <v-layout row wrap>
+        <v-flex xs12 sm4 md3 lg3 xl3 v-for='room in allRooms' :key='room.roomId'>
+            <card-component :room='room'></card-component>
+        </v-flex>
+    </v-layout>
+</v-container>

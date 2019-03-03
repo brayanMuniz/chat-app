@@ -48,6 +48,18 @@
                     </v-list-tile-title>
                 </v-list-tile-content>
             </v-list-tile>
+            <!-- Browse -->
+            <v-list-tile @click='$router.push("/hiddenRooms")'>
+                <v-list-tile-action>
+                    <v-icon>block</v-icon>
+                </v-list-tile-action>
+
+                <v-list-tile-content>
+                    <v-list-tile-title>
+                        Hidden Rooms
+                    </v-list-tile-title>
+                </v-list-tile-content>
+            </v-list-tile>
             <!-- Sign Out -->
             <v-list-tile @click='signOutUser'>
                 <v-list-tile-action>

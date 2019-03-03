@@ -1,5 +1,4 @@
 /* eslint-disable */
-import moment from 'moment';
 import firebase from '../../firebaseConfig';
 import cardComp from '../../components/cardsComp/cards.vue'
 let db = firebase.db;

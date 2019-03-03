@@ -5,6 +5,7 @@ import room from "./views/roomFolder/room.vue";
 import landing from './views/landingFolder/landing.vue'
 import browse from './views/browseFolder/browse.vue'
 import User from './views/userFolder/user.vue'
+import banned from './views/bannedRoomFolder/banned.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -28,6 +29,11 @@ export default new Router({
       path: '/browse',
       name: 'browse',
       component: browse
+    },
+    {
+      path: '/hiddenRooms',
+      name: 'hiddenRooms',
+      component: banned
     }
   ],
   mode: 'history'
