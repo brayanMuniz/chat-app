@@ -16,21 +16,21 @@ export default {
 		};
 	},
 	created() {},
-	// Todo: use the mehtods from projectModule.jss
 	methods: {
 		getRealTimeChatRooms() {
-			// use.doc(roomUID) to get realtime updates there
-			// I might have to render it again
 			db.collection('chatRooms').orderBy('dateCreated').onSnapshot((doc) => {
 				console.log('TCL: getRealTimeChatRooms -> firstRoomData', doc.docs[0].data())
 				this.allRooms = [];
+				// Todo: write a better name instead of kek. kek = room 
+				// Todo: Filter out rooms that are hidden  
+				console.log('amount of rooms ' + doc.docs.length)
 				doc.docs.forEach((kek) => {
-					if (kek.exists) {
+					// This is nasty PLEASE change it 
+					if (kek.exists && !this.$store.getters.getHiddenRoomsIDs.includes(kek.id)) {
 						let room = {
 							roomId: kek.id,
 							roomData: kek.data()
 						};
-
 						let fullPath = `chatRooms/${room.roomId}/${room.roomData.roomPicture}`;
 						this.getPicture(fullPath)
 							.then((res) => {
@@ -44,6 +44,7 @@ export default {
 							});
 					}
 				});
+				this.filterOutCards();
 			});
 		},
 		makeNewRoom() {
@@ -113,17 +114,21 @@ export default {
 			return moment.unix(time).format('MMMM Do');
 		},
 		hideCard(roomId) {
-			console.log('TCL: hideCard -> roomId', roomId);
+			let payload = {
+				newId: roomId,
+				addId: true
+			}
+			this.$store.commit('updateUserHiddenrooms', payload);
+			this.filterOutCards();
+		},
+		filterOutCards() {
 			var index;
 			this.allRooms.forEach((room) => {
-				if (room.roomId == roomId) {
+				if (this.$store.getters.getHiddenRoomsIDs.includes(room.roomId)) {
 					index = this.allRooms.indexOf(room);
+					this.allRooms.splice(index, 1);
 				}
 			});
-			if (index > -1) {
-				this.allRooms.splice(index, 1);
-			}
-			// Find the card in this.allRooms and then delete it locally
 		},
 		// File changes
 		onFileChange(e) {
