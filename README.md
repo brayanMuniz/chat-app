@@ -1,6 +1,6 @@
 # chat-app
 
-## [Live demo]: https://bcaa.netlify.com/
+## https://bcaa.netlify.com/
 
 ## Project setup
 ```
