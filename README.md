@@ -1,5 +1,7 @@
 # chat-app
 
+[Live demo]: https://bcaa.netlify.com/
+
 ## Project setup
 ```
 npm install
@@ -19,3 +21,4 @@ npm run build
 ```
 npm run lint
 ```
+
