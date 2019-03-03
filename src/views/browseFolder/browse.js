@@ -1,6 +1,6 @@
 /* eslint-disable */
 import firebase from '../../firebaseConfig';
-import cardComp from '../../components/cardsComp/cards.vue'
+import cardComp from '../../components/cardsComp/cards.vue';
 let db = firebase.db;
 let firebaseRef = firebase.firebase;
 export default {
@@ -21,13 +21,13 @@ export default {
 	methods: {
 		getRealTimeChatRooms() {
 			db.collection('chatRooms').orderBy('dateCreated').onSnapshot((doc) => {
-				console.log('TCL: getRealTimeChatRooms -> firstRoomData', doc.docs[0].data())
+				console.log('TCL: getRealTimeChatRooms -> firstRoomData', doc.docs[0].data());
 				this.allRooms = [];
-				// Todo: write a better name instead of kek. kek = room 
-				// Todo: Filter out rooms that are hidden  
-				console.log('amount of rooms ' + doc.docs.length)
+				// Todo: write a better name instead of kek. kek = room
+				// Todo: Filter out rooms that are hidden
+				console.log('amount of rooms ' + doc.docs.length);
 				doc.docs.forEach((kek) => {
-					// This is nasty PLEASE change it 
+					// This is nasty PLEASE change it
 					if (kek.exists && !this.$store.getters.getHiddenRoomsIDs.includes(kek.id)) {
 						let room = {
 							roomId: kek.id,
@@ -68,13 +68,15 @@ export default {
 		makeNewRoom() {
 			// ! Room Picture gave an undefined
 			let roomData = this.setNewRoomData();
-			this.$store.dispatch('makeNewRoom', roomData)
+			this.$store
+				.dispatch('makeNewRoom', roomData)
 				.then((res) => {
 					this.dialog = false;
-					console.log("New Room Id is =>" + res.id);
+					console.log('New Room Id is =>' + res.id);
 					if (this.roomPicture == null || res.id == null) {
 						console.log('did not try to upload picture');
-					} else {
+					}
+					else {
 						let fullPath = `chatRooms/${res.id}/${this.roomPictureUpload.name}`;
 						this.uploadRoomPicture(fullPath)
 							.then((res) => {
@@ -96,12 +98,14 @@ export default {
 				dateCreated: new Date(),
 				roomDescription: this.newRoomDesc,
 				roomPicture: this.roomPictureUpload.name,
-				users: [{
-					userName: this.$store.getters.getUserData.userName,
-					userUID: firebaseRef.auth().currentUser.uid,
-					dateJoined: new Date(),
-					userProfileImage: this.$store.getters.getProfileImageLink
-				}]
+				users: [
+					{
+						userName: this.$store.getters.getUserData.userName,
+						userUID: firebaseRef.auth().currentUser.uid,
+						dateJoined: new Date(),
+						userProfileImage: this.$store.getters.getProfileImageLink
+					}
+				]
 			};
 			console.log(`New Room data will be =>` + roomData);
 			return roomData;
