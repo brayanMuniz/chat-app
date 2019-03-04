@@ -27,29 +27,20 @@ export default {
     },
     methods: {
         getChatUpdate() {
-            db
-                .collection('chatRooms')
-                .doc(this.roomData.roomId)
-                .collection('messages')
-                .orderBy('dateSent', 'desc')
-                .limit(15)
-                .onSnapshot((docData) => {
-                    console.log('TCL: getChatUpdate -> docData', docData);
-                    this.chatRoomMessages = [];
-                    // docData.docs.reverse()
-                    docData.docs.forEach((message) => {
-                        if (message.exists) {
-                            let msg = {
-                                messageId: message.id,
-                                messageData: message.data()
-                            };
-
-                            this.chatRoomMessages.push(msg);
+            db.collection('chatRooms').doc(this.roomData.roomId).collection('messages').orderBy('dateSent', 'desc').limit(15).onSnapshot((docData) => {
+                console.log('TCL: getChatUpdate -> docData', docData);
+                this.chatRoomMessages = [];
+                docData.docs.forEach((message) => {
+                    if (message.exists) {
+                        let msg = {
+                            messageId: message.id,
+                            messageData: message.data()
                         }
-                    });
-                    this.chatRoomMessages.reverse();
-                    console.log(this.chatRoomMessages);
+                        this.chatRoomMessages.push(msg);
+                    }
                 });
+                this.chatRoomMessages.reverse();
+            });
         },
         getRoomUpdate() {
             db.collection('chatRooms').doc(this.roomData.roomId).onSnapshot((doc) => {
@@ -58,9 +49,10 @@ export default {
             });
         },
         sendMessage() {
+            // the reasons its taking so long is beacuse it only renders when the link is set to it 
             this.attachImage = false;
             let payload = this.setMessagePayload();
-
+            // This should be a seperate function by itself that should be activated when a different button is clicked
             if (this.attachmentPictureUpload) {
                 payload.msgData['messagePicture'] = this.attachmentPictureUpload.name;
                 console.log(payload);
@@ -108,12 +100,10 @@ export default {
             return this.$store.dispatch('sendMessageToRoom', payload);
         },
         sendPicture() {
-            let roomId = this.roomData.roomId;
-            let path = `chatRooms/${roomId}/pictureMessages/${this.attachmentPictureUpload.name}`;
             let fileData = {
                 file: this.attachmentPictureUpload,
                 fileMeta: {},
-                path: path
+                path: `chatRooms/${this.roomData.roomId}/pictureMessages/${this.attachmentPictureUpload.name}`
             };
             console.log(fileData);
             return this.$store.dispatch('uploadPicture', fileData);
@@ -167,40 +157,6 @@ export default {
         getProfileImageLink(path) {
             return this.$store.dispatch('getPicture', path);
         },
-        matchUserToProfilePic(userUID) {
-            let usersProfilePictureLink = this.defaultUser;
-
-            this.roomData.roomData.users.forEach((user) => {
-                if (user.userUID == userUID) {
-                    usersProfilePictureLink = user.userProfileImage;
-                }
-            });
-
-            return usersProfilePictureLink;
-        },
-        isUsersMessage(userUID) {
-            if (userUID == this.$store.getters.getUserAuth.uid) {
-                return true;
-            }
-            return false;
-        },
-        convertTime(time) {
-            return moment.unix(time).format('MMMM Do, h:mm:ss');
-        },
-        imagePopUp(imageUrl) {
-            console.log(imageUrl)
-            console.log(this.seeImage)
-            if (imageUrl == undefined) {
-                alert('err')
-                return false
-            }
-            this.seeImage.imageUrl = imageUrl;
-            this.seeImage.show = true;
-        },
-        imageClose() {
-            this.seeImage.show = false
-            this.seeImage.imageUrl = null;
-        },
         // File changes
         onFileChange(e) {
             var files = e.target.files || e.dataTransfer.files;
@@ -219,7 +175,42 @@ export default {
         removeImage() {
             this.attachmentPicture = null;
             this.attachmentPictureUpload = null;
-        }
+        },
+        // computed with methods
+        convertTime(time) {
+            return moment.unix(time).format('MMMM Do, h:mm:ss');
+        },
+        imagePopUp(imageUrl) {
+            console.log(imageUrl)
+            console.log(this.seeImage)
+            if (imageUrl == undefined) {
+                alert('err')
+                return false
+            }
+            this.seeImage.imageUrl = imageUrl;
+            this.seeImage.show = true;
+        },
+        imageClose() {
+            this.seeImage.show = false
+            this.seeImage.imageUrl = null;
+        },
+        matchUserToProfilePic(userUID) {
+            let usersProfilePictureLink = this.defaultUser;
+
+            this.roomData.roomData.users.forEach((user) => {
+                if (user.userUID == userUID) {
+                    usersProfilePictureLink = user.userProfileImage;
+                }
+            });
+
+            return usersProfilePictureLink;
+        },
+        isUsersMessage(userUID) {
+            if (userUID == this.$store.getters.getUserAuth.uid) {
+                return true;
+            }
+            return false;
+        },
     },
     created() {
         console.log(this.roomData);

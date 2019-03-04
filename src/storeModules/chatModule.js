@@ -19,9 +19,7 @@ const mutations = {
 
 const actions = {
     // Update the user rooms in his own data
-    makeNewRoom: ({
-
-    }, roomData) => {
+    makeNewRoom: ({}, roomData) => {
         // Todo: set roomData correctlysa
         // Tip: Do not try to access state directly instead use getters to get it and commit to mutate it
         return new Promise((resolve, reject) => {
