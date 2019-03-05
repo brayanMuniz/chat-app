@@ -9,19 +9,25 @@
                 </div>
             </v-expand-transition>
         </v-img>
+
         <!-- Below image data -->
         <v-card-title primary-title>
             <div class="text-truncate">
                 <h3 class="headline mb-0 text-truncate text-no-wrap"> {{room.roomData.roomName}}</h3>
-                <div class="text-truncate text-no-wrap">{{room.roomData.roomDescription}}</div>
+                <!-- <div class="text-truncate text-no-wrap">{{room.roomData.roomDescription}}</div> -->
+                <div class="ml-2 grey--text text--darken-2">
+                    <span>{{room.roomData.roomDescription}}</span>
+                </div>
             </div>
         </v-card-title>
+
         <!-- Buttons -->
         <v-card-actions>
-            <v-btn flat color="blue" @click='$router.push({ name: "room", params: { roomName: room.roomData.roomName, roomData: room }})'>
+            <v-btn flat color="blue" @click='pushToChatRoom(room)'>
                 Go To Room
             </v-btn>
             <v-btn flat color="red" @click='updateCardInStore(room.roomId)'>{{typeOfAction}}</v-btn>
         </v-card-actions>
+
     </v-card>
 </v-hover>

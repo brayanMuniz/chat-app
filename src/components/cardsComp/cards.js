@@ -7,6 +7,9 @@ export default {
         room: Object,
         show: Boolean
     },
+    data: () => ({
+        showCardText: false
+    }),
     created() {},
     methods: {
         // computed With parameters
@@ -26,6 +29,16 @@ export default {
                 addId: this.show
             };
             this.$store.commit('updateUserHiddenrooms', payload);
+        },
+        // @click='$router.push({ name: "room", params: { roomName: room.roomData.roomName, roomData: room }
+        pushToChatRoom(room) {
+            this.$router.push({
+                name: 'room',
+                params: {
+                    roomName: room.roomData.roomName,
+                    roomData: room
+                }
+            })
         }
     },
     computed: {
