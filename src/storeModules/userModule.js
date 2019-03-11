@@ -5,7 +5,7 @@ let db = firebase.db;
 const state = {
     userAuth: firebaseRef.auth().currentUser,
     userData: {},
-    hiddenRooms: ['HYDpgApDJv0RmjWiiw3q'],
+    hiddenRooms: ['HYDpgApDJv0RmjWiiw3q', 'r6zRJzXqfHLuslFsEF1n'],
     defaultUserImage: 'https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Flh3.googleusercontent.com%2F-Zs7cWeyXzTI%2FAAAAAAAAAAI%2FAAAAAAAAAB4%2F5PA9c08gzhQ%2Fphoto.jpg&f=1'
 }
 
@@ -74,6 +74,7 @@ const mutations = {
 }
 // Do not check for valid data because that should be handled with vue-validate and generally in the clients
 const actions = {
+    // TODO BIG TODO Change most of these to async and await instead of promise for readibility 
     // Making the user
     createUserWithEmail: ({}, payload) => {
         console.log('createUserWithEmail', payload)
