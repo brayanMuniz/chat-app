@@ -7,11 +7,11 @@ let config = {
     storageBucket: "chat-app-f27df.appspot.com",
     messagingSenderId: "916628150615"
 };
+
 firebase.initializeApp(config);
 let db = firebase.firestore();
 let storage = firebase.storage();
 let fbFunctions = firebase.functions();
-console.log(fbFunctions);
 
 export default {
     firebase,

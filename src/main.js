@@ -5,11 +5,12 @@ import store from './store'
 import bootstrap from 'bootstrap'
 import VeeValidate from 'vee-validate';
 import Vuetify from "vuetify";
-import 'vuetify/dist/vuetify.min.css'
+
 Vue.use(Vuetify)
 Vue.use(VeeValidate);
 
 Vue.config.productionTip = true;
+
 new Vue({
   router,
   store,
