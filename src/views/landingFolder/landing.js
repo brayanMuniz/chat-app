@@ -115,8 +115,6 @@ export default {
             })
 
         },
-
-
         // Live Updates
         getRealTimeUserUpdates() {
             db.collection('Users').onSnapshot(doc => {

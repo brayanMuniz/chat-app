@@ -1,7 +1,9 @@
 /* eslint-disable */
 import cardComp from '../../components/cardsComp/cards.vue';
 import firebase from '../../firebaseConfig.js';
+import async from 'async'
 let db = firebase.db;
+
 export default {
     name: 'banned',
     data() {
@@ -13,41 +15,32 @@ export default {
         'card-component': cardComp
     },
     methods: {
-        getHiddenChatRooms() {
-            // todo: figure out if it is more cost effective to get a colleciton or read each room one by one
-            this.$store.getters.getHiddenRoomsIDs.forEach((roomId) => {
-                db
-                    .collection('chatRooms')
-                    .doc(roomId)
-                    .get()
-                    .then((doc) => {
-                        console.log('TCL: getHiddenChatRooms -> doc', doc);
-                        if (doc.exists) {
-                            let room = {
-                                roomId: doc.id,
-                                roomData: doc.data()
-                            };
-                            let fullPath = `chatRooms/${room.roomId}/${room.roomData.roomPicture}`;
-                            this.getPicture(fullPath)
-                                .then((res) => {
-                                    room['urlPicture'] = res;
-                                    this.allRooms.push(room);
-                                })
-                                .catch((err) => {
-                                    console.log('TCL: getRealTimeChatRooms -> err', err);
-                                    room['urlPicture'] = null;
-                                    this.allRooms.push(room);
-                                });
-                        }
-                    })
-                    .catch((err) => {
-                        console.log('TCL: getHiddenChatRooms -> err', err);
-                    });
-            });
+        async getHiddenChatRooms() {
+            // todo: Figure out if it is more cost effective to get a colleciton or read each room one by one
+            async.each(this.$store.getters.getHiddenRoomsIDs, async roomId => {
+                // Developer note: Remeber to keep using anonymus funciotns otherwise "this" will not work
+                let doc = await db.collection('chatRooms').doc(roomId).get()
+                if (doc.exists) {
+
+                    let room = {
+                        roomId: doc.id,
+                        roomData: doc.data()
+                    };
+
+                    let fullPath = `chatRooms/${room.roomId}/${room.roomData.roomPicture}`;
+                    let roomPicture = await this.getPicture(fullPath)
+                    room['urlPicture'] = roomPicture ? roomPicture : null;
+                    this.allRooms.push(room);
+
+                }
+            }, err => {
+                console.log('TCL: test -> err', err);
+            })
         },
-        getPicture(filePath) {
+        async getPicture(filePath) {
             return this.$store.dispatch('getPicture', filePath);
         },
+        // Client Rendering
         idInList(roomId) {
             if (this.$store.getters.getHiddenRoomsIDs.includes(roomId)) {
                 return true;

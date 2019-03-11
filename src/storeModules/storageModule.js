@@ -6,8 +6,7 @@ const getters = {}
 const mutations = {}
 const actions = {
     getPicture({}, filePath) {
-        // ! SPACES MATTER
-        let testPath = '/chatRooms/2ZGpLzJ6xPnlJ8vpMd9d/Hello '
+
         return new Promise((resolve, reject) => {
             storage.ref(filePath).getDownloadURL().then(url => {
                 resolve(url);
@@ -20,6 +19,7 @@ const actions = {
     uploadPicture({}, fileData) {
         return new Promise((resolve, reject) => {
             // To have a progress bar set storage.ref().put into a variable and get its snapshot
+            // Todo: when the upload is complete try to get the url link so you can upload it later
             storage.ref(fileData.path).put(fileData.file).then(res => {
                 console.log('TCL: uploadPicture -> res', res)
                 resolve(res)
