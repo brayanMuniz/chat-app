@@ -30,91 +30,77 @@ const actions = {
             })
         });
     },
-    sendMessageToRoom: ({
+    async sendMessageToRoom({
         dispatch,
-    }, payload) => {
-        let roomData = payload.msgData
-        return new Promise((resolve, reject) => {
-            dispatch('changeRoomMSGLength', payload.roomId).then(changeRoomMSGLength => {
-                db.collection('chatRooms').doc(payload.roomId).collection('messages').add(
-                        roomData
-                    ).then(res => {
-                        console.log("Document successfully written!");
-                        resolve(res);
-                    })
-                    .catch(error => {
-                        console.error("Error writing document: ", error);
-                        reject(error);
-                    });
-            })
-
-        })
+    }, payload) {
+        console.log('Sending Message...')
+        let roomData = payload.msgData;
+        await dispatch('changeRoomMSGLength', payload.roomId)
+        return db.collection('chatRooms').doc(payload.roomId).collection('messages').add(roomData)
     },
-    setMessagePictureUrl: ({
+    async setMessagePictureUrl({
         dispatch,
-    }, payload) => {
-        return new Promise((resolve, reject) => {
-            dispatch('getPicture', payload.filePath).then(pictureUrl => {
-                let messageDoc = db.doc(payload.messageDocId)
+    }, payload) {
+        console.log('Setting Pic Url...')
+        let pictureUrl = await dispatch('getPicture', payload.filePath)
+        let messageDoc = db.doc(payload.messageDocId)
 
-                messageDoc.update(({
-                    messagePictureURL: pictureUrl
-                })).then(updatedCorrectly => {
-                    resolve(updatedCorrectly)
-                }).catch(err => {
-                    reject(err)
-                })
+        return messageDoc.update(({
+            messagePictureURL: pictureUrl
+        }))
+        // return new Promise((resolve, reject) => {
+        //     dispatch('getPicture', payload.filePath).then(pictureUrl => {
+        //         let messageDoc = db.doc(payload.messageDocId)
 
-            }).catch(err => {
-                reject(err)
-            })
+        //         messageDoc.update(({
+        //             messagePictureURL: pictureUrl
+        //         })).then(updatedCorrectly => {
+        //             resolve(updatedCorrectly)
+        //         }).catch(err => {
+        //             reject(err)
+        //         })
 
-        })
+        //     }).catch(err => {
+        //         reject(err)
+        //     })
+
+        // })
     },
     // abstract this with a an additional parameter saying if you want to add or subtract it and by how much
-    changeRoomMSGLength: ({}, roomId) => {
-        let roomRef = db.collection('chatRooms').doc(roomId);
-        return new Promise((resolve, reject) => {
-            db.runTransaction(transaction => {
-                return transaction.get(roomRef).then(res => {
-                    if (res.exists) {
-                        let newRoomAmount = res.data().msgLength + 1;
-                        transaction.update(roomRef, {
-                            msgLength: newRoomAmount
-                        })
-                    }
-                }).catch(err => {
-                    reject(err)
-                })
-            }).then(res => {
-                resolve(res)
+    async changeRoomMSGLength({}, roomId) {
+        console.log('Changing Room Msg length...')
+        let roomRef = await db.collection('chatRooms').doc(roomId);
+        let transaction = await db.runTransaction(transaction => {
+            return transaction.get(roomRef).then(res => {
+                if (res.exists) {
+                    let newRoomAmount = res.data().msgLength + 1;
+                    transaction.update(roomRef, {
+                        msgLength: newRoomAmount
+                    })
+                }
             })
         })
+        console.log('Room Length Change Finish')
+        return transaction
     },
-    addUserToChat: ({
+    async addUserToChat({
         getters
-    }, roomId) => {
-        return new Promise((resolve, reject) => {
+    }, roomId) {
 
-            let myUID = firebaseRef.auth().currentUser.uid;
-            let userName = getters.getUserData.userName;
-            // ? Link might not be defined on initial render
-            let userProfileImage = getters.getProfileImageLink;
+        let myUID = firebaseRef.auth().currentUser.uid;
+        let userName = getters.getUserData.userName;
+        // ? Link might not be defined on initial render
+        let userProfileImage = getters.getProfileImageLink;
 
-            let userData = {
-                userName: userName,
-                userUID: myUID,
-                userProfileImage: userProfileImage,
-                dateJoined: new Date()
-            }
-
-            db.collection('chatRooms').doc(roomId).update({
-                users: firebaseRef.firestore.FieldValue.arrayUnion(userData)
-            }).then(res => {
-                resolve(res)
-            }).catch(err => {
-                reject(err)
-            })
+        let userData = {
+            userName: userName,
+            userUID: myUID,
+            userProfileImage: userProfileImage,
+            dateJoined: new Date()
+        }
+        // ? Returns an undefined Dont know y
+        return db.collection('chatRooms').doc(roomId).update({
+            users: firebaseRef.firestore.FieldValue.arrayUnion(userData)
         })
     }
 }

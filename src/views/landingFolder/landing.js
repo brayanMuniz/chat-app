@@ -26,9 +26,8 @@ export default {
         userNameCheck(userName) {
             return this.$store.dispatch('lookForuserName', userName)
         },
-        makeNewUser() {
+        async makeNewUser() {
             // Todo: add profileImage
-            console.log(this.profileImage)
             this.userNameCheck(this.testUserName).then(userNameTaken => {
                 if (userNameTaken.empty) {
                     this.setNewUserData();
@@ -81,18 +80,15 @@ export default {
         },
         setNewUserData() {
             console.log('Making User')
-            let profileImageName
-            if (this.profileImage) {
-                profileImageName = this.profileImage.name
-            } else {
-                profileImageName = null
-            }
+            let profileImageName = this.profileImage.name ? this.profileImage.name : null
+
             let newUserData = {
                 userName: this.testUserName,
                 dateCreated: new Date(),
                 profileImage: profileImageName,
                 profileImageLink: null
             }
+
             let signUp = {
                 email: this.email,
                 password: this.password
