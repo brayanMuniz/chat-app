@@ -31,7 +31,7 @@ export default {
 				.collection('chatRooms')
 				.doc(this.roomData.roomId)
 				.collection('messages')
-				.orderBy('dateSent', 'desc')
+				// .orderBy('dateSent', 'desc')
 				.limit(15)
 				.onSnapshot((docData) => {
 					// Todo: To prevent getting unnecessary data(especially with images), compare the new data and the previous data
@@ -45,7 +45,9 @@ export default {
 							this.chatRoomMessages.push(msg);
 						}
 					});
-					this.chatRoomMessages.reverse();
+					let roomMessages = this.chatRoomMessages.reverse();
+
+					this.$store.commit('changeRecentRoomData', roomMessages);
 					// Todo: at the end of it store the data locally or maybe even in the store of the previous 15 messages
 				});
 		},
@@ -54,6 +56,9 @@ export default {
 				console.log('TCL: getRoomUpdate -> doc', doc.data());
 				this.roomData.roomData.users = doc.data().users;
 			});
+		},
+		sameChatData() {
+
 		},
 		async sendMessage() {
 			this.attachImage = false;
