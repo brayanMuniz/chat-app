@@ -126,7 +126,7 @@
     </v-flex>
 
     <v-dialog v-model="attachImage" max-width='1000px' max-height='1000px'>
-        <!-- ? add the image on the card -->
+        <!-- Todo:  add the image on the card -->
         <v-card>
             <v-container>
                 <div class="custom-file mx-auto my-2" v-if="!attachmentPicture">
@@ -143,7 +143,7 @@
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="green darken-1" flat @click="attachImage = false">Close</v-btn>
-                <v-btn type='submit' color="blue darken-1" flat @click="sendMessage">Submit</v-btn>
+                <v-btn type='submit' color="blue darken-1" flat @click="sendImagePicture">Submit</v-btn>
             </v-card-actions>
 
         </v-card>
