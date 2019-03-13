@@ -6,15 +6,9 @@ export default {
             drawer: null,
         }
     },
-    created() {},
-    mounted() {},
     methods: {
         signOutUser() {
-            this.$store.dispatch('signOutUserTotal').then(res => {
-                console.log(res)
-            }).catch(err => {
-                console.log(err)
-            })
+            this.$store.dispatch('signOutUserTotal')
         }
     },
     computed: {

@@ -16,27 +16,24 @@ export default {
     "app-header": navbar,
     "app-footer": footer
   },
-  beforeCreate() {
+  created() {
+    // Todo porfavor make this async and await i can bearly read what i wrote
     let firebaseRef = firebase.firebase;
     firebaseRef.auth().onAuthStateChanged(user => {
       if (user) {
         this.$store.commit("setUserAuth");
-        if (this.$store.state.userData == null) {
-          this.$store
-            .dispatch("getUserData")
+        if (this.userHasNoData()) {
+          this.getUserData()
             .then(userDataGotten => {
               this.$store.commit("setUserData", userDataGotten);
-              let usersProfileImagePath = `Users/${
-                this.$store.getters.getUserAuth.uid
-              }/${this.$store.getters.getUserData.profileImage}`;
-              this.$store
-                .dispatch("getPicture", usersProfileImagePath)
-                .then(res => {
+              if (this.userPicExist()) {
+                let usersProfileImagePath = `Users/${
+                  this.$store.getters.getUserAuth.uid
+                }/${this.$store.getters.getUserData.profileImage}`;
+                this.getUserProfilePic().then(res => {
                   this.$store.commit("updateUserPictureURL", res);
-                })
-                .catch(err => {
-                  console.log("TCL: beforeCreate App.vue -> err", err);
                 });
+              }
             })
             .catch(err => {
               console.log("TCL: beforeCreate -> err", err);
@@ -47,6 +44,32 @@ export default {
         this.$router.push("/");
       }
     });
+  },
+  methods: {
+    userPicExist() {
+      if (
+        this.$store.getters.getUserData == null ||
+        this.$store.getters.getUserData.profileImage == null ||
+        this.$store.getters.getUserData.profileImageLink == null
+      ) {
+        return false;
+      }
+      return true;
+    },
+    userHasNoData() {
+      if (this.$store.getters.userData == null) {
+        return true;
+      }
+    },
+    async getUserData() {
+      return this.$store.dispatch("getUserData");
+    },
+    async getUserProfilePic() {
+      let usersProfileImagePath = `Users/${
+        this.$store.getters.getUserAuth.uid
+      }/${this.$store.getters.getUserData.profileImage}`;
+      return this.$store.dispatch("getPicture", usersProfileImagePath);
+    }
   }
 };
 </script>

@@ -21,7 +21,6 @@ export default {
 	methods: {
 		getRealTimeChatRooms() {
 			db.collection('chatRooms').orderBy('dateCreated').onSnapshot((doc) => {
-				console.log('TCL: getRealTimeChatRooms -> firstRoomData', doc.docs[0].data());
 				this.allRooms = [];
 				// Todo: write a better name instead of kek. kek = room
 				// Todo: Filter out rooms that are hidden

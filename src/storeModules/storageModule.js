@@ -6,9 +6,10 @@ const getters = {}
 const mutations = {}
 const actions = {
     getPicture({}, filePath) {
-
+        console.log('GettingPIcture...')
         return new Promise((resolve, reject) => {
             storage.ref(filePath).getDownloadURL().then(url => {
+                console.log('Got Picture')
                 resolve(url);
             }).catch(err => {
                 console.log('TCL: getStorage -> err', err)

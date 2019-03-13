@@ -12,6 +12,7 @@ const state = {
 const getters = {
     getUserData: (state) => {
         if (Object.keys(state.userData).length == 0) {
+            console.log('NO User data to be found')
             return null;
         }
         return state.userData;
@@ -21,7 +22,6 @@ const getters = {
     },
     getProfileImageLink: (state) => {
         if (Object.keys(state.userData).length == 0 || state.userData.profileImageLink == undefined) {
-            console.log(state);
             return state.defaultUserImage;
         } else {
             return state.userData.profileImageLink;
@@ -75,47 +75,16 @@ const mutations = {
 const actions = {
     // TODO BIG TODO Change most of these to async and await instead of promise for readibility
     // Making the user
-    createUserWithEmail: ({}, payload) => {
+    async createUserWithEmail({}, payload) {
         console.log('createUserWithEmail', payload);
-        return new Promise((resolve, reject) => {
-            firebaseRef
-                .auth()
-                .createUserWithEmailAndPassword(payload.email, payload.password)
-                .then((res) => {
-                    resolve(res);
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
+        console.log('Creating User With email module...');
+        return firebaseRef.auth().createUserWithEmailAndPassword(payload.email, payload.password);
     },
-    lookForuserName: ({}, userName) => {
-        return new Promise((resolve, reject) => {
-            db
-                .collection('Users')
-                .where('userName', '==', userName)
-                .get()
-                .then((res) => {
-                    resolve(res);
-                })
-                .catch((err) => {
-                    console.log(err);
-                    reject(err);
-                });
-        });
+    async lookForuserName({}, userName) {
+        return db.collection('Users').where('userName', '==', userName).get();
     },
-    sendEmailVerification: ({}) => {
-        return new Promise((resolve, reject) => {
-            firebaseRef
-                .auth()
-                .currentUser.sendEmailVerification()
-                .then((res) => {
-                    resolve(res);
-                })
-                .catch((err) => {
-                    reject(err);
-                });
-        });
+    async sendEmailVerification({}) {
+        return firebaseRef.auth().currentUser.sendEmailVerification();
     },
     async createUserInDB({
         commit
@@ -130,11 +99,11 @@ const actions = {
         dispatch,
         commit
     }, payload) {
-        console.log("Making User. Module...")
+        console.log('Making User. Module...');
         let madeUser = await dispatch('createUserWithEmail', payload.signUp);
         commit('setUserAuth');
-        dispatch('sendEmailVerification')
-        await dispatch('createUserInDB', payload.newUserData)
+        dispatch('sendEmailVerification');
+        await dispatch('createUserInDB', payload.newUserData);
         return madeUser;
     },
     // Updating users data
@@ -163,104 +132,39 @@ const actions = {
         });
     },
     // Getting user data
-    getUserData: ({
+    async getUserData({
         commit
-    }) => {
+    }) {
         let userUID = firebaseRef.auth().currentUser.uid;
-        return new Promise((resolve, reject) => {
-            db
-                .collection('Users')
-                .doc(userUID)
-                .get()
-                .then((querySnapshot) => {
-                    commit('setUserData', querySnapshot.data());
-                    resolve(querySnapshot.data());
-                })
-                .catch((err) => {
-                    reject(err);
-                });
-        });
+        let userData = await db.collection('Users').doc(userUID).get()
+        commit('setUserData', userData.data());
+        return userData.data()
     },
-    readAllUsers: () => {
-        // One Time read
-        return new Promise((resolve, reject) => {
-            db
-                .collection('Users')
-                .get()
-                .then((querySnapshot) => {
-                    resolve(querySnapshot);
-                })
-                .catch((err) => {
-                    reject(err);
-                });
-        });
-    },
-
-    logInUserAuth: ({
+    async logInUserAuth({
         commit,
         dispatch
-    }, payload) => {
-        return new Promise((resolve, reject) => {
-            firebaseRef
-                .auth()
-                .signInWithEmailAndPassword(payload.email, payload.password)
-                .then((res) => {
-                    commit('setUserAuth');
-                    dispatch('getUserData')
-                        .then((res) => {
-                            console.log(res);
-                            resolve(res);
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                        });
-                })
-                .catch((error) => {
-                    reject(error);
-                });
-        });
+    }, payload) {
+        console.log('Logging in User from userModule...');
+        let signedIn = await firebaseRef.auth().signInWithEmailAndPassword(payload.email, payload.password);
+        if (signedIn.user) {
+            commit('setUserAuth');
+        }
+        return await dispatch('getUserData');
     },
     // Sign Out User and deleting user
-    signOutUserAuth: ({}) => {
-        return new Promise((resolve, reject) => {
-            firebaseRef.auth().signOut().then(
-                (res) => {
-                    console.log('Signed Out');
-                    resolve(res);
-                },
-                (err) => {
-                    console.error('Sign Out Error', error);
-                    reject(err);
-                }
-            );
-        });
+    async signOutUserAuth({}) {
+        console.log('Sign Out User From userModule..');
+        return await firebaseRef.auth().signOut();
     },
-    signOutUserTotal: ({
+    async signOutUserTotal({
         dispatch
-    }) => {
-        return new Promise((resolve, reject) => {
-            dispatch('signOutUserAuth')
-                .then((res) => {
-                    resolve(res);
-                })
-                .catch((err) => {
-                    reject(err);
-                });
-        });
+    }) {
+        return await dispatch('signOutUserAuth');
     },
-    deleteUser: ({}) => {
-        console.log('Deleting User MOD...')
-        return new Promise((resolve, reject) => {
-            var user = firebaseRef.auth().currentUser;
-            user
-                .delete()
-                .then((res) => {
-                    resolve(res);
-                })
-                .catch((err) => {
-                    reject(err);
-                });
-        });
+    async deleteUser({}) {
+        console.log('Deleting User From Module...');
+        var user = firebaseRef.auth().currentUser;
+        return user.delete();
     }
 };
 

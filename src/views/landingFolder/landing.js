@@ -27,25 +27,27 @@ export default {
             return this.$store.dispatch('lookForuserName', userName)
         },
         async makeNewUser() {
-            // Todo: add profileImage
+            // IF you use async and await some of the problems might go away
             this.userNameCheck(this.testUserName).then(userNameTaken => {
                 if (userNameTaken.empty) {
                     this.setNewUserData();
                     this.$store.dispatch('makeNewUser', this.newUser).then(newMadeUser => {
                         console.log('TCL: makeNewUser -> newMadeUser', newMadeUser);
+                        console.log('Made User')
                         this.$router.push('/browse')
                         this.uploadProfilePicture(newMadeUser.user.uid).then(uploadProfile => {
                             console.log('TCL -> uploadProfile', uploadProfile)
                             this.setProfilePicture(newMadeUser.user.uid).then(setProfile => {
                                 console.log('Set the users profileImageLink')
                             }).catch(err => {
-                                console.log('TCL: makeNewUser -> err', err)
+                                console.log('TCL: setProfilePicture -> err', err)
                             })
                         }).catch(err => {
-                            console.log('TCL: makeNewUser -> err', err)
+                            console.log('TCL: uploadProfilePicture -> err', err)
                         })
                     }).catch(err => {
                         alert('Could not make account')
+                        alert(err.message)
                         console.log(err)
                     })
                 } else {
@@ -95,7 +97,6 @@ export default {
             }
             this.newUser['signUp'] = signUp
             this.newUser['newUserData'] = newUserData
-            console.log(this.newUser)
         },
         signIn() {
             let payload = {
