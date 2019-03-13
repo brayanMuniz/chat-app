@@ -19,16 +19,9 @@ const mutations = {
 
 const actions = {
     // Update the user rooms in his own data
-    makeNewRoom: ({}, roomData) => {
+    async makeNewRoom({}, roomData) {
         // Todo: set roomData correctlysa
-        // Tip: Do not try to access state directly instead use getters to get it and commit to mutate it
-        return new Promise((resolve, reject) => {
-            db.collection('chatRooms').add(roomData).then(res => {
-                resolve(res);
-            }).catch(err => {
-                reject(err);
-            })
-        });
+        return db.collection('chatRooms').add(roomData)
     },
     async sendMessageToRoom({
         dispatch,
@@ -48,39 +41,22 @@ const actions = {
         return messageDoc.update(({
             messagePictureURL: pictureUrl
         }))
-        // return new Promise((resolve, reject) => {
-        //     dispatch('getPicture', payload.filePath).then(pictureUrl => {
-        //         let messageDoc = db.doc(payload.messageDocId)
-
-        //         messageDoc.update(({
-        //             messagePictureURL: pictureUrl
-        //         })).then(updatedCorrectly => {
-        //             resolve(updatedCorrectly)
-        //         }).catch(err => {
-        //             reject(err)
-        //         })
-
-        //     }).catch(err => {
-        //         reject(err)
-        //     })
-
-        // })
     },
     // abstract this with a an additional parameter saying if you want to add or subtract it and by how much
     async changeRoomMSGLength({}, roomId) {
         console.log('Changing Room Msg length...')
         let roomRef = await db.collection('chatRooms').doc(roomId);
-        let transaction = await db.runTransaction(transaction => {
+        let transaction = db.runTransaction(transaction => {
             return transaction.get(roomRef).then(res => {
                 if (res.exists) {
                     let newRoomAmount = res.data().msgLength + 1;
                     transaction.update(roomRef, {
                         msgLength: newRoomAmount
                     })
+                    console.log('Room Length Change Finish')
                 }
             })
         })
-        console.log('Room Length Change Finish')
         return transaction
     },
     async addUserToChat({

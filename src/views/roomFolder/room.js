@@ -12,8 +12,7 @@ export default {
 		return {
 			chatRoomMessages: [],
 			newMessage: null,
-			defaultUser:
-				'https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Flh3.googleusercontent.com%2F-Zs7cWeyXzTI%2FAAAAAAAAAAI%2FAAAAAAAAAB4%2F5PA9c08gzhQ%2Fphoto.jpg&f=1',
+			defaultUser: 'https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Flh3.googleusercontent.com%2F-Zs7cWeyXzTI%2FAAAAAAAAAAI%2FAAAAAAAAAB4%2F5PA9c08gzhQ%2Fphoto.jpg&f=1',
 			roomMsgLength: 0,
 			dropdown_font: ['Arial', 'Calibri', 'Courier', 'Verdana'],
 			attachImage: false,
@@ -35,7 +34,7 @@ export default {
 				.orderBy('dateSent', 'desc')
 				.limit(15)
 				.onSnapshot((docData) => {
-					console.log('TCL: getChatUpdate -> docData', docData);
+					// Todo: To prevent getting unnecessary data(especially with images), compare the new data and the previous data
 					this.chatRoomMessages = [];
 					docData.docs.forEach((message) => {
 						if (message.exists) {
@@ -47,6 +46,7 @@ export default {
 						}
 					});
 					this.chatRoomMessages.reverse();
+					// Todo: at the end of it store the data locally or maybe even in the store of the previous 15 messages
 				});
 		},
 		getRoomUpdate() {
@@ -55,47 +55,14 @@ export default {
 				this.roomData.roomData.users = doc.data().users;
 			});
 		},
-		sendMessage() {
-			// the reasons its taking so long is beacuse it only renders when the link is set to it
+		async sendMessage() {
 			this.attachImage = false;
 			let payload = this.setMessagePayload();
-			// This should be a seperate function by itself that should be activated when a different button is clicked
-			if (this.attachmentPictureUpload) {
-				payload.msgData['messagePicture'] = this.attachmentPictureUpload.name;
-				console.log(payload);
-				this.sendMessageToFirebase(payload)
-					.then((res) => {
-						console.log('TCL: sendMessageToFirebase -> res', res);
-						this.sendPicture()
-							.then((pictureSucc) => {
-								console.log('TCL: sendMessage -> pictureSucc', pictureSucc);
-								this.setMessagePictureURL(res.path, pictureSucc.ref.fullPath)
-									.then((setUrl) => {
-										console.log('TCL: sendMessage -> setUrl', setUrl);
-									})
-									.catch((setUrlErr) => {
-										console.log('TCL: sendMessage -> setUrlErr', setUrlErr);
-									});
-							})
-							.catch((pictureErr) => {
-								console.log('TCL: sendMessage -> pictureErr', pictureErr);
-							});
-						this.attachmentPictureUpload = null;
-						this.attachmentPicture = null;
-						this.newMessage = null;
-					})
-					.catch((err) => {
-						console.log('​sendMessageToRoom -> err', err);
-					});
-				return null;
-			}
-
 			if (this.newMessage == null || this.newMessage.length > 1000 || this.newMessage.length == 0) {
 				alert('stop it');
 				this.newMessage = null;
 				return null;
-			}
-			else {
+			} else {
 				this.sendMessageToFirebase(payload).catch((err) => {
 					console.log('​sendMessageToRoom -> err', err);
 				});
@@ -103,10 +70,25 @@ export default {
 				this.addUserToChat();
 			}
 		},
-		sendMessageToFirebase(payload) {
+		async sendImagePicture() {
+			this.attachImage = false;
+			let payload = this.setMessagePayload();
+			if (this.attachmentPictureUpload) {
+				payload.msgData['messagePicture'] = this.attachmentPictureUpload.name;
+				console.log(payload);
+				let res = await this.sendMessageToFirebase(payload)
+				let storageResult = await this.sendPictureToStorage()
+				await this.setMessagePictureURL(res.path, storageResult.ref.fullPath)
+				this.attachmentPictureUpload = null;
+				this.attachmentPicture = null;
+				this.newMessage = null;
+				return null;
+			}
+		},
+		async sendMessageToFirebase(payload) {
 			return this.$store.dispatch('sendMessageToRoom', payload);
 		},
-		sendPicture() {
+		sendPictureToStorage() {
 			let fileData = {
 				file: this.attachmentPictureUpload,
 				fileMeta: {},
@@ -150,8 +132,7 @@ export default {
 
 			if (userAlreadyInChat) {
 				console.log('Doing nothing');
-			}
-			else {
+			} else {
 				this.$store
 					.dispatch('addUserToChat', this.roomData.roomId)
 					.then((res) => {
@@ -165,6 +146,7 @@ export default {
 		getProfileImageLink(path) {
 			return this.$store.dispatch('getPicture', path);
 		},
+
 		// File changes
 		onFileChange(e) {
 			var files = e.target.files || e.dataTransfer.files;
@@ -184,6 +166,7 @@ export default {
 			this.attachmentPicture = null;
 			this.attachmentPictureUpload = null;
 		},
+
 		// computed with methods
 		convertTime(time) {
 			return moment.unix(time).format('MMMM Do, h:mm:ss');
