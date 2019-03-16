@@ -6,7 +6,6 @@ Vue.use(Vuex)
 import chatModule from "./storeModules/chatModule";
 import userModule from './storeModules/userModule'
 import storageModule from './storeModules/storageModule'
-import functionsModule from './storeModules/functionsModule'
 import browseModule from "./storeModules/browseModule";
 
 export default new Vuex.Store({
@@ -14,7 +13,6 @@ export default new Vuex.Store({
     chatModule: chatModule,
     userModule: userModule,
     storageModule: storageModule,
-    functionsModule: functionsModule,
     browseModule: browseModule
   },
 

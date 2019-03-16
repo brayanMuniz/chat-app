@@ -5,9 +5,11 @@ import store from './store'
 import bootstrap from 'bootstrap'
 import VeeValidate from 'vee-validate';
 import Vuetify from "vuetify";
+import Vuefire from 'vuefire'
 
 Vue.use(Vuetify)
 Vue.use(VeeValidate);
+Vue.use(Vuefire)
 
 Vue.config.productionTip = true;
 

@@ -26,6 +26,7 @@
     "vee-validate": "^2.1.6",
     "vue": "^2.5.21",
     "vue-router": "^3.0.2",
+    "vuefire": "^1.4.5",
     "vuelidate": "^0.7.4",
     "vuetify": "^1.4.4",
     "vuex": "^3.1.0"
