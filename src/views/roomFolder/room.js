@@ -1,4 +1,5 @@
 import firebase from '../../firebaseConfig';
+import recentChatNav from '../../components/recentChatsSidenav/recentChats.vue'
 import moment from 'moment';
 let firebaseRef = firebase.firebase;
 let db = firebase.db;
@@ -7,6 +8,9 @@ export default {
 	name: 'room',
 	props: {
 		roomData: Object
+	},
+	components: {
+		'recent-chat-nav': recentChatNav
 	},
 	data() {
 		return {
@@ -31,7 +35,7 @@ export default {
 				.collection('chatRooms')
 				.doc(this.roomData.roomId)
 				.collection('messages')
-				// .orderBy('dateSent', 'desc')
+				.orderBy('dateSent', 'desc')
 				.limit(15)
 				.onSnapshot((docData) => {
 					// Todo: To prevent getting unnecessary data(especially with images), compare the new data and the previous data
@@ -46,6 +50,7 @@ export default {
 						}
 					});
 					let roomMessages = this.chatRoomMessages.reverse();
+					console.log('TCL: getChatUpdate -> roomMessages', roomMessages)
 
 					this.$store.commit('changeRecentRoomData', roomMessages);
 					// Todo: at the end of it store the data locally or maybe even in the store of the previous 15 messages
@@ -57,9 +62,7 @@ export default {
 				this.roomData.roomData.users = doc.data().users;
 			});
 		},
-		sameChatData() {
-
-		},
+		sameChatData() {},
 		async sendMessage() {
 			this.attachImage = false;
 			let payload = this.setMessagePayload();
@@ -81,9 +84,9 @@ export default {
 			if (this.attachmentPictureUpload) {
 				payload.msgData['messagePicture'] = this.attachmentPictureUpload.name;
 				console.log(payload);
-				let res = await this.sendMessageToFirebase(payload)
-				let storageResult = await this.sendPictureToStorage()
-				await this.setMessagePictureURL(res.path, storageResult.ref.fullPath)
+				let res = await this.sendMessageToFirebase(payload);
+				let storageResult = await this.sendPictureToStorage();
+				await this.setMessagePictureURL(res.path, storageResult.ref.fullPath);
 				this.attachmentPictureUpload = null;
 				this.attachmentPicture = null;
 				this.newMessage = null;
