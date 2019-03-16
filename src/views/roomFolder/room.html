@@ -37,58 +37,60 @@
         <v-container>
 
             <v-layout row>
-                <v-flex xs12 sm12 >
+                <v-flex xs12 sm12>
 
-                        <v-layout row wrap xs12 sm12>
-                            <v-flex xs12 v-for='msg in chatRoomMessages' :key='msg.id'>
-                                <v-card flat>
+                    <v-layout row wrap xs12 sm12>
+                        <v-flex xs12 v-for='msg in chatRoomMessages' :key='msg.id'>
+                            <v-card flat>
 
-                                    <v-layout row>
+                                <v-layout row>
 
-                                        <!-- Other peoples messages  -->
-                                        <v-flex xs1 v-if='!isUsersMessage(msg.messageData.from.userUID)' ml-4>
-                                            <v-layout justify-center column>
+                                    <!-- Other peoples messages  -->
+                                    <v-flex xs1 v-if='!isUsersMessage(msg.messageData.from.userUID)' ml-4>
+                                        <v-layout justify-center column>
 
-                                                <v-img :src="matchUserToProfilePic(msg.messageData.from.userUID)" max-width='110px'
-                                                    max-height="50px" contain>
-                                                </v-img>
-                                                
-                                                <v-card-text>
-                                                    {{msg.messageData.from.userName}}
-                                                </v-card-text>
-                                            
-                                            </v-layout>
-                                            
-                                        </v-flex>
-                                        
-                                        <!-- The message itself -->
-                                        <v-flex xs11 my-1>
-                                            <v-layout :justify-end='isUsersMessage(msg.messageData.from.userUID)' :mr-5='isUsersMessage(msg.messageData.from.userUID)'>
-
-                                                <v-img style="cursor: pointer;" contain max-width='300px' max-height='400px' v-if='msg.messageData.messagePictureURL != null'
-                                                    :src="msg.messageData.messagePictureURL" aspect-ratio="2.75" @click='imagePopUp(msg.messageData.messagePictureURL)'>
-                                                </v-img>
-
-
-                                                <v-card-text v-else='msg.messageData.newMessage' class="text-truncate" mr-5 pt-5>
-                                                        {{msg.messageData.newMessage}}
-                                                </v-card-text>
-
-                                            </v-layout>
-                                                
-                                        </v-flex>
-
-                                        <!-- Users messages -->
-                                        <v-flex xs1 v-if='isUsersMessage(msg.messageData.from.userUID)' mr-5 ml-1 pl-0>
                                             <v-img :src="matchUserToProfilePic(msg.messageData.from.userUID)" max-width='110px'
+                                                max-height="50px" contain>
+                                            </v-img>
+
+                                            <v-card-text>
+                                                {{msg.messageData.from.userName}}
+                                            </v-card-text>
+
+                                        </v-layout>
+
+                                    </v-flex>
+
+                                    <!-- The message itself -->
+                                    <v-flex xs11 my-1>
+                                        <v-layout :justify-end='isUsersMessage(msg.messageData.from.userUID)' :ml-5='isUsersMessage(msg.messageData.from.userUID)'>
+
+                                            <v-img style="cursor: pointer;" contain max-width='300px' max-height='400px'
+                                                v-if='msg.messageData.messagePictureURL != null' :src="msg.messageData.messagePictureURL"
+                                                aspect-ratio="2.75" @click='imagePopUp(msg.messageData.messagePictureURL)'>
+                                            </v-img>
+
+
+                                            <v-card-text v-else='msg.messageData.newMessage' class="text-truncate" mr-5
+                                                pt-5>
+                                                {{msg.messageData.newMessage}}
+                                            </v-card-text>
+
+                                        </v-layout>
+
+                                    </v-flex>
+
+                                    <!-- Users messages -->
+                                    <v-flex xs1 v-if='isUsersMessage(msg.messageData.from.userUID)' mr-5 ml-1 pl-0>
+                                        <v-img :src="matchUserToProfilePic(msg.messageData.from.userUID)" max-width='110px'
                                             height="50px" contain mr-0 pr-0></v-img>
-                                        </v-flex>
+                                    </v-flex>
 
-                                    </v-layout>
-                                </v-card>
+                                </v-layout>
+                            </v-card>
 
-                            </v-flex>
-                        </v-layout>
+                        </v-flex>
+                    </v-layout>
 
                 </v-flex>
             </v-layout>
