@@ -12,7 +12,7 @@ firebase.initializeApp(config);
 let db = firebase.firestore();
 let storage = firebase.storage();
 let fbFunctions = firebase.functions();
-
+console.log('this will')
 export default {
     firebase,
     db,

@@ -1,5 +1,13 @@
 <v-hover>
+    <!-- <v-tooltip v-model="showToolBar" right>
+        <template v-slot:activator="{ on }">
+            <v-btn icon v-on="on">
+                <v-icon color="grey lighten-1">shopping_cart</v-icon>
+            </v-btn>
+        </template> -->
+    <span>Programmatic tooltip</span>
     <v-card slot-scope="{ hover }" :class="`elevation-${hover ? 12 : 2}`">
+
         <!-- Image and hover Data -->
         <v-img v-if='room.urlPicture' :src="room.urlPicture" aspect-ratio="1.778">
             <v-expand-transition>
@@ -30,4 +38,6 @@
         </v-card-actions>
 
     </v-card>
+
+    <!-- </v-tooltip> -->
 </v-hover>

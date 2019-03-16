@@ -8,7 +8,9 @@ export default {
         show: Boolean
     },
     data: () => ({
-        showCardText: false
+        showCardText: false,
+        on: true,
+        showToolBar: false
     }),
     created() {},
     methods: {
