@@ -204,11 +204,25 @@ export default {
 
 			return usersProfilePictureLink;
 		},
+		// Todo: combine both of these to not repeat code
 		isUsersMessage(userUID) {
 			if (userUID == this.$store.getters.getUserAuth.uid) {
 				return true;
 			}
 			return false;
+		},
+		usersMessageClasses(userUID) {
+			console.log((userUID == this.$store.getters.getUserAuth.uid))
+			if (userUID == this.$store.getters.getUserAuth.uid) {
+				return {
+					'text-right': true,
+					"float-right": true,
+					'ml-auto': true
+				};
+			}
+			return {
+				'text-right': false
+			};
 		}
 	},
 	created() {

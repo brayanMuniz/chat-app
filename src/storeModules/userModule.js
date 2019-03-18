@@ -106,12 +106,17 @@ const actions = {
         await dispatch('createUserInDB', payload.newUserData);
         return madeUser;
     },
+    // Todo: could do this with fb functions
+    // Todo: figure out how to test better so you dont have to make a new user every time
     // Updating users data
-    // Todo: update with async and await
     async updateProfileImgLink({
         commit,
         dispatch
     }, filePath) {
+        console.log('Updating Profile Image link...')
+        let imageLink = await dispatch('getPicture', filePath)
+        console.log('TCL: imageLink', imageLink)
+
         return new Promise((resolve, reject) => {
             dispatch('getPicture', filePath)
                 .then((imageLink) => {
@@ -130,6 +135,15 @@ const actions = {
                     reject(err);
                 });
         });
+    },
+    // Todo: when done. Have it so rooms render correctly according to the data from the server
+    async updateUsersHiddenRooms({
+        commit,
+        dispatch
+    }, payload) {
+        console.log('Updating users Rooms...')
+        // payload should have a parameter to add or remove the room and room id: payload.actionType payload.id
+
     },
     // Getting user data
     async getUserData({
