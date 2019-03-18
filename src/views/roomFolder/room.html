@@ -1,38 +1,7 @@
 <v-layout class="mt-5" row wrap>
-    <!--  users  -->
-    <v-flex sm0 md3>
-        <v-container>
-            <v-layout row>
-
-                <v-flex xs12 sm12>
-                    <v-card>
-
-                        <v-toolbar color="indigo" dark flat>
-                            <v-toolbar-title>Users In Room</v-toolbar-title>
-                        </v-toolbar>
-                        <!-- Messages -->
-                        <v-list>
-                            <v-list-tile v-for='user in roomData.roomData.users' :key='user.userUID' avatar @click="">
-
-                                <v-list-tile-content>
-                                    <v-list-tile-title v-text="user.userName"></v-list-tile-title>
-                                </v-list-tile-content>
-
-                                <v-list-tile-avatar>
-                                    <img :src="user.userProfileImage || defaultUser">
-                                </v-list-tile-avatar>
-
-                            </v-list-tile>
-                        </v-list>
-
-                    </v-card>
-                </v-flex>
-            </v-layout>
-        </v-container>
-
-    </v-flex>
 
     <!-- messages -->
+    <!-- Todo: instead showing the userName directly under the pic, when hover show it with data in the chat -->
     <v-flex sm12 md9>
         <v-container>
 
@@ -46,23 +15,28 @@
                                 <v-layout row>
 
                                     <!-- Other peoples messages  -->
-                                    <v-flex xs1 v-if='!isUsersMessage(msg.messageData.from.userUID)' ml-4>
-                                        <v-layout justify-center column>
+                                    <v-flex xs1 v-if='!isUsersMessage(msg.messageData.from.userUID)'>
+                                        <v-layout justify-center column  class="ml-4">
 
-                                            <v-img :src="matchUserToProfilePic(msg.messageData.from.userUID)" max-width='110px'
+                                            <v-flex xs6>
+                                                <v-img :src="matchUserToProfilePic(msg.messageData.from.userUID)" max-width='110px'
                                                 max-height="50px" contain>
                                             </v-img>
-
-                                            <v-card-text>
-                                                {{msg.messageData.from.userName}}
-                                            </v-card-text>
-
+                                            
+                                        </v-flex>
+                                            <v-flex xs6 my-0 py-0>
+                                                <v-card-text class="py-0 mx-0">
+                                                    {{msg.messageData.from.userName}}
+                                                </v-card-text>
+    
+                                            </v-flex>
+                                        
                                         </v-layout>
 
                                     </v-flex>
 
                                     <!-- The message itself -->
-                                    <v-flex xs11 my-1>
+                                    <v-flex xs9 my-1>
                                         <v-layout :justify-end='isUsersMessage(msg.messageData.from.userUID)' :ml-5='isUsersMessage(msg.messageData.from.userUID)'>
 
                                             <v-img style="cursor: pointer;" contain max-width='300px' max-height='400px'
@@ -81,7 +55,7 @@
                                     </v-flex>
 
                                     <!-- Users messages -->
-                                    <v-flex xs1 v-if='isUsersMessage(msg.messageData.from.userUID)' mr-5 ml-1 pl-0>
+                                    <v-flex xs1 v-if='isUsersMessage(msg.messageData.from.userUID)' mr-5 ml-1>
                                         <v-img :src="matchUserToProfilePic(msg.messageData.from.userUID)" max-width='110px'
                                             height="50px" contain mr-0 pr-0></v-img>
                                     </v-flex>
@@ -116,6 +90,40 @@
                 </v-container>
             </v-form>
 
+        </v-container>
+
+    </v-flex>
+
+    <!--  users  -->
+    <!-- Todo: if it is in sm get rid of this side -->
+    <v-flex sm0 md3>
+        <v-container>
+            <v-layout row>
+
+                <v-flex xs12 sm12>
+                    <v-card>
+
+                        <v-toolbar color="indigo" dark flat>
+                            <v-toolbar-title>Users In Room</v-toolbar-title>
+                        </v-toolbar>
+                        <!-- Messages -->
+                        <v-list>
+                            <v-list-tile v-for='user in roomData.roomData.users' :key='user.userUID' avatar @click="">
+
+                                <v-list-tile-content>
+                                    <v-list-tile-title v-text="user.userName"></v-list-tile-title>
+                                </v-list-tile-content>
+
+                                <v-list-tile-avatar>
+                                    <img :src="user.userProfileImage || defaultUser">
+                                </v-list-tile-avatar>
+
+                            </v-list-tile>
+                        </v-list>
+
+                    </v-card>
+                </v-flex>
+            </v-layout>
         </v-container>
 
     </v-flex>
