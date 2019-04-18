@@ -6,7 +6,8 @@ const state = {
 	userAuth: firebaseRef.auth().currentUser,
 	userData: {},
 	hiddenRooms: ['HYDpgApDJv0RmjWiiw3q', 'r6zRJzXqfHLuslFsEF1n'],
-	defaultUserImage: 'https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Flh3.googleusercontent.com%2F-Zs7cWeyXzTI%2FAAAAAAAAAAI%2FAAAAAAAAAB4%2F5PA9c08gzhQ%2Fphoto.jpg&f=1'
+	defaultUserImage:
+		'https://proxy.duckduckgo.com/iu/?u=https%3A%2F%2Flh3.googleusercontent.com%2F-Zs7cWeyXzTI%2FAAAAAAAAAAI%2FAAAAAAAAAB4%2F5PA9c08gzhQ%2Fphoto.jpg&f=1'
 };
 
 const getters = {
@@ -23,24 +24,30 @@ const getters = {
 	getProfileImageLink: (state) => {
 		if (Object.keys(state.userData).length == 0 || state.userData.profileImageLink == undefined) {
 			return state.defaultUserImage;
-		} else {
+		}
+		else {
 			return state.userData.profileImageLink;
 		}
 	},
 	getHiddenRoomsIDs: (state) => {
-		return state.hiddenRooms;
+		if (state.hiddenRooms != null || state.hiddenRooms != undefined) {
+			return state.hiddenRooms;
+		}
+		return [];
 	},
 	isUserSignedIn: (state) => {
 		if (Object.keys(state.userData).length == 0 || state.userAuth == null) {
 			return false;
-		} else {
+		}
+		else {
 			return true;
 		}
 	},
 	isUserVerified: (state) => {
 		if (state.userAuth == null) {
 			return false;
-		} else {
+		}
+		else {
 			// ? emailVerified
 			return state.userAuth.emailVerified;
 		}
@@ -62,13 +69,14 @@ const mutations = {
 		state.userData = {};
 	},
 	setHiddenRooms(state, payload) {
-		state.hiddenRooms = payload
+		state.hiddenRooms = payload;
 	},
 	updateUserHiddenrooms(state, payload) {
 		if (payload.addId) {
 			state.hiddenRooms.push(payload.newId);
-		} else {
-			state.hiddenRooms = state.hiddenRooms.filter(function (item) {
+		}
+		else {
+			state.hiddenRooms = state.hiddenRooms.filter(function(item) {
 				return item != payload.newId;
 			});
 		}
@@ -90,19 +98,14 @@ const actions = {
 	async sendEmailVerification({}) {
 		return firebaseRef.auth().currentUser.sendEmailVerification();
 	},
-	async createUserInDB({
-		commit
-	}, payload) {
+	async createUserInDB({commit}, payload) {
 		console.log('Creating User in DB...');
 		commit('setUserData', payload);
 		let userUID = firebaseRef.auth().currentUser.uid;
 		return await db.collection('Users').doc(userUID).set(payload);
 		// Todo: configure rules in firebase so only the user with his UID can change his data
 	},
-	async makeNewUser({
-		dispatch,
-		commit
-	}, payload) {
+	async makeNewUser({dispatch, commit}, payload) {
 		console.log('Making User. Module...');
 		let madeUser = await dispatch('createUserWithEmail', payload.signUp);
 		commit('setUserAuth');
@@ -112,16 +115,13 @@ const actions = {
 	},
 	// Todo: figure out how to test better so you dont have to make a new user every time
 	// Updating users data
-	async updateProfileImgLink({
-		commit,
-		dispatch
-	}, filePath) {
+	async updateProfileImgLink({commit, dispatch}, filePath) {
 		console.log('Updating Profile Image link...');
 		let imageLink = await dispatch('getPicture', filePath);
 		// imgLink.catch return will not work
 		console.log('TCL: imageLink', imageLink);
 		commit('updateUserPictureURL', imageLink);
-		let userUID = firebaseRef.auth().currentUser.uid
+		let userUID = firebaseRef.auth().currentUser.uid;
 		let userDoc = db.collection('Users').doc(userUID);
 		return await userDoc.update({
 			profileImageLink: imageLink
@@ -131,27 +131,21 @@ const actions = {
 	async updateUsersHiddenRooms({}, payload) {
 		// ? Could copy this implementation for updating the users favorite rooms
 		console.log('Updating users Rooms...');
-		let userUID = firebaseRef.auth().currentUser.uid
+		let userUID = firebaseRef.auth().currentUser.uid;
 		let userReference = db.collection('Users').doc(userUID);
 		await userReference.update({
 			hiddenRooms: payload
-		})
-
+		});
 	},
 	// Getting user data
-	async getUserData({
-		commit
-	}) {
+	async getUserData({commit}) {
 		let userUID = firebaseRef.auth().currentUser.uid;
 		let userData = await db.collection('Users').doc(userUID).get();
 		commit('setUserData', userData.data());
-		commit('setHiddenRooms', userData.data().hiddenRooms)
+		commit('setHiddenRooms', userData.data().hiddenRooms);
 		return userData.data();
 	},
-	async logInUserAuth({
-		commit,
-		dispatch
-	}, payload) {
+	async logInUserAuth({commit, dispatch}, payload) {
 		console.log('Logging in User from userModule...');
 		let signedIn = await firebaseRef.auth().signInWithEmailAndPassword(payload.email, payload.password);
 		if (signedIn.user) {
@@ -165,12 +159,9 @@ const actions = {
 		return await firebaseRef.auth().signOut();
 	},
 	// This method is here for additional things that needs to be updated in the database
-	async signOutUserTotal({
-		dispatch,
-		getters
-	}) {
-		// Todo: compare if anything changed so there is not an extra request 
-		await dispatch('updateUsersHiddenRooms', getters.getHiddenRoomsIDs)
+	async signOutUserTotal({dispatch, getters}) {
+		// Todo: compare if anything changed so there is not an extra request
+		await dispatch('updateUsersHiddenRooms', getters.getHiddenRoomsIDs);
 		return await dispatch('signOutUserAuth');
 	},
 	async deleteUser({}) {
